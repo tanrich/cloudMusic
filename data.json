@@ -1,0 +1,335 @@
+{
+  "result": {
+    // 单曲 || 歌词
+    "songs": [
+      {
+        "rtUrls": [],
+        "ar": [
+          {
+            "id": 6452,
+            "name": "周杰伦"
+          }
+        ],
+        "al": {
+          "id": 18896,
+          "name": "十一月的萧邦",
+          "picUrl": "https://p3.music.126.net/J8AsjYfu2Ugr7Q4ub0Yv0Q==/43980465123047.jpg",
+          "pic_str": "43980465123047",
+          "pic": 43980465123047
+        },
+        "st": 8,
+        "cd": "",
+        "no": 1,
+        "t": 0,
+        "fee": 8,
+        "djId": 0,
+        "ftype": 0,
+        "rtype": 0,
+        "rurl": null,
+        "rtUrl": null,
+        "alia": [],
+        "pop": 100,
+        "rt": "600902000006889264",
+        "mst": 9,
+        "cp": 1007,
+        "mv": 504364,
+        "cf": "",
+        "dt": 226000,
+        "h": {
+          "br": 320000,
+          "fid": 7763651604816608,
+          "size": 9076115,
+          "vd": -1.64
+        },
+        "pst": 0,
+        "crbt": "e93f07bd4132712e9e7bd268da6ebd56",
+        "a": null,
+        "m": {
+          "br": 160000,
+          "fid": 7981354907480907,
+          "size": 4538124,
+          "vd": -1.2
+        },
+        "v": 78,
+        "l": {
+          "br": 96000,
+          "fid": 7965961744696344,
+          "size": 2722928,
+          "vd": -1.23
+        },
+        "name": "夜曲",
+        "id": 185904,
+        "privilege": {
+          "id": 185904,
+          "fee": 8,
+          "payed": 0,
+          "st": 0,
+          "pl": 128000,
+          "dl": 0,
+          "sp": 7,
+          "cp": 1,
+          "subp": 1,
+          "cs": false,
+          "maxbr": 999000,
+          "fl": 128000,
+          "toast": false,
+          "flag": 0
+        },
+        "eq": "pop",
+        "lyrics": [
+          "<b>夜曲</b> 纪念我死去的爱情",
+          "跟夜风一样的声音 心碎的很好听",
+          "手在键盘敲很轻 我给的思念很小心",
+          "你埋葬的地方叫幽冥",
+          "为你弹奏萧邦的夜曲 纪念我死去的爱情",
+          "而我为你隐姓埋名 在月光下弹琴",
+          "对你心跳的感应 还是如此温热亲近",
+          "怀念你那鲜红的唇印",
+          "那些断翅的蜻蜓 散落在这森林",
+          "而我的眼睛 没有丝毫同情",
+          "失去你 泪水混浊不清",
+          "失去你 我连笑容都有阴影",
+          "风在长满青苔的屋顶 嘲笑我的伤心",
+          "像一口没有水的枯井",
+          "我用凄美的字型 描绘后悔莫及的那爱情",
+          "为你弹奏萧邦的夜曲 纪念我死去的爱情",
+          "跟夜风一样的声音 心碎的很好听",
+          "手在键盘敲很轻 我给的思念很小心",
+          "你埋葬的地方叫幽冥",
+          "为你弹奏萧邦的夜曲 纪念我死去的爱情",
+          "而我为你隐姓埋名 在月光下弹琴",
+          "对你心跳的感应 还是如此温热亲近",
+          "怀念你那鲜红的唇印",
+          "一群嗜血的蚂蚁 被腐肉所吸引",
+          "我面无表情 看孤独的风景",
+          "失去你 爱恨开始分明",
+          "失去你 还有什么事好关心",
+          "当鸽子不再象征和平",
+          "我终于被提醒 广场上喂食的是秃鹰",
+          "我用漂亮的押韵 形容被掠夺一空的爱情"
+        ]
+      }
+    ],
+    // 专辑
+    "albums": [
+      {
+        "songs": [],
+        "paid": false,
+        "onSale": false,
+        "picUrl": "https://p3.music.126.net/q2aj9EvBKa3i8QoDWbVwYA==/6634453163551452.jpg",
+        "company": "벅스",
+        "artists": [
+          {
+            "img1v1Id": 18686200114669624,
+            "topicPerson": 0,
+            "trans": "",
+            "picUrl": "https://p4.music.126.net/6y-UleORITEDbvrOLV0Q8A==/5639395138885805.jpg",
+            "musicSize": 0,
+            "picId": 0,
+            "briefDesc": "",
+            "albumSize": 0,
+            "img1v1Url": "https://p3.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg",
+            "alias": [],
+            "name": "Ravie Nuage",
+            "id": 127568,
+            "img1v1Id_str": "18686200114669622"
+          }
+        ],
+        "copyrightId": 0,
+        "picId": 6634453163551452,
+        "briefDesc": "",
+        "artist": {
+          "img1v1Id": 18686200114669624,
+          "topicPerson": 0,
+          "trans": "하비누아주",
+          "picUrl": "https://p3.music.126.net/fN0tmQeJQIpsO9lbuvsgAg==/2489294325343570.jpg",
+          "musicSize": 30,
+          "picId": 2489294325343570,
+          "briefDesc": "",
+          "albumSize": 7,
+          "img1v1Url": "https://p3.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg",
+          "alias": [],
+          "name": "Ravie Nuage",
+          "id": 127568,
+          "transNames": [
+            "하비누아주"
+          ],
+          "img1v1Id_str": "18686200114669622"
+        },
+        "publishTime": 1449590400007,
+        "commentThreadId": "R_AL_3_3427527",
+        "status": 0,
+        "blurPicUrl": "https://p4.music.126.net/q2aj9EvBKa3i8QoDWbVwYA==/6634453163551452.jpg",
+        "companyId": 0,
+        "pic": 6634453163551452,
+        "tags": "",
+        "description": "",
+        "subType": "录音室版",
+        "alias": [
+          "夜曲"
+        ],
+        "name": "녹턴",
+        "id": 3427527,
+        "type": "EP/Single",
+        "size": 1
+      }
+    ],
+    // 歌手
+    "artists": [
+      // 与artists同级的还有一个叫做"artistCount"的参数
+      {
+        "id": 6452,
+        "name": "周杰伦",
+        "picUrl": "https://p3.music.126.net/SsvTcC_w498n0bjpkMT0BQ==/1364493968318319.jpg",
+        "alias": [
+          "Jay Chou"
+        ],
+        "albumSize": 31,
+        "picId": 1364493968318319,
+        "img1v1Url": "https://p4.music.126.net/EYPwwJRI0N29pmLw0O7ubQ==/6634453163643102.jpg",
+        "img1v1": 6634453163643102,
+        "mvSize": 374,
+        "followed": false,
+        "trans": null
+      }
+    ],
+    // 歌单
+    "playlists": [
+      {
+        "id": 171967885,
+        "name": "古典音樂史上最優美的夜曲与小夜曲",
+        "coverImgUrl": "https://p1.music.126.net/qQvBj4_NAvzwXptbNeU7Sw==/3297435382141104.jpg",
+        "creator": {
+          "nickname": "雪父",
+          "userId": 71937732,
+          "userType": 0,
+          "authStatus": 0
+        },
+        "subscribed": false,
+        "trackCount": 49,
+        "userId": 71937732,
+        "playCount": 2570708,
+        "bookCount": 89298,
+        "highQuality": true
+      }
+    ],
+    // 用户
+    "userprofiles": [
+      {
+        "backgroundUrl": "https://p1.music.126.net/Fw4XJHEq-Wil9EpcRRc0fQ==/1415071480502706.jpg",
+        "avatarImgIdStr": "109951162822042628",
+        "backgroundImgIdStr": "1415071480502706",
+        "description": "",
+        "userType": 0,
+        "userId": 131447294,
+        "nickname": "夜曲惊魂",
+        "avatarUrl": "https://p4.music.126.net/AAcOrjIy_i5TmNM1lthGTA==/109951162822042628.jpg",
+        "expertTags": null,
+        "remarkName": null,
+        "defaultAvatar": false,
+        "gender": 1,
+        "birthday": 439056000000,
+        "city": 110101,
+        "province": 110000,
+        "vipType": 0,
+        "backgroundImgId": 1415071480502706,
+        "avatarImgId": 109951162822042620,
+        "accountStatus": 0,
+        "authStatus": 0,
+        "followed": false,
+        "detailDescription": "",
+        "mutual": false,
+        "djStatus": 0,
+        "signature": "真没什么可介绍的",
+        "authority": 0,
+        "followeds": 127,
+        "follows": 18,
+        "eventCount": 0,
+        "playlistCount": 16,
+        "playlistBeSubscribedCount": 2
+      }
+    ],
+    // mv
+    "mvs": [
+      // 与mvs同级的还有一个mvCount的参数
+      {
+        "id": 504364,
+        "cover": "https://p3.music.126.net/6kTPU8NyrEp8Ip3vLLpG1g==/1364493935029418.jpg",
+        "name": "夜曲",
+        "playCount": 638904,
+        "briefDesc": "",
+        "desc": null,
+        "artistName": "周杰伦",
+        "artistId": 6452,
+        "duration": 234000,
+        "mark": 0,
+        "artists": [
+          {
+            "id": 6452,
+            "name": "周杰伦",
+            "alias": [
+              "Jay Chou",
+              "小公举",
+              "Jay"
+            ],
+            "transNames": null
+          }
+        ]
+      }
+    ],
+    // 主播电台
+    "djRadios": [
+      {
+        "dj": {
+          "userType": 0,
+          "accountStatus": 0,
+          "province": 110000,
+          "nickname": "DJRomaStone",
+          "userId": 80975517,
+          "vipType": 0,
+          "defaultAvatar": false,
+          "avatarUrl": "https://p3.music.126.net/QDnD7GW-NJI0ON7BIJbs1Q==/7937374442291345.jpg",
+          "gender": 1,
+          "birthday": 362764800000,
+          "city": 110101,
+          "remarkName": null,
+          "backgroundImgId": 2002210674180199,
+          "avatarImgId": 7937374442291345,
+          "expertTags": null,
+          "authStatus": 0,
+          "avatarImgIdStr": "7937374442291345",
+          "backgroundImgIdStr": "2002210674180199",
+          "detailDescription": "",
+          "description": "",
+          "followed": false,
+          "mutual": false,
+          "backgroundUrl": "https://p1.music.126.net/VTW4vsN08vwL3uSQqPyHqg==/2002210674180199.jpg",
+          "djStatus": 10,
+          "signature": "苦逼80后，玩过音乐，画过画，学过围棋，打过球，什么都会点，但什么都不精！日子天天过的不颓，但自我感觉也挺废的，一直努力让生活出点彩，可在这憋屈的帝都，我什么都不想干！更多精彩音乐资源请关注我的同名微信号！或公众号clubmusic521",
+          "authority": 0
+        },
+        "category": "创作|翻唱",
+        "buyed": false,
+        "price": 0,
+        "purchaseCount": 0,
+        "lastProgramName": "北京工体夜店单曲推荐︱Hiphop︱Funky︱Reggea︱R&B Tr00587",
+        "videos": null,
+        "finished": false,
+        "underShelf": false,
+        "createTime": 1437438076287,
+        "subCount": 671,
+        "picUrl": "https://p3.music.126.net/1ZAnweButLaZ1tnGHyaKIQ==/2946691232288382.jpg",
+        "programCount": 537,
+        "radioFeeType": 0,
+        "categoryId": 2001,
+        "desc": "我，一个苦逼80后，玩过音乐，画过画，学过围棋，打过球，什么都会点，但什么都不精！日子天天过的不颓，但自我感觉也挺废的，一直努力让生活出点彩，可在这憋屈的帝都，我什么都不想干！喜欢我音乐的可以加V信DJRomaStone和我交流！希望我的音乐可以给你带来快乐与力量！",
+        "lastProgramId": 799472566,
+        "lastProgramCreateTime": 1482897400079,
+        "name": "DJ夜曲︱Hiphop︱Funky︱Reggea︱R&B︱嘻哈曲风大类",
+        "id": 2360005,
+        "rcmdtext": null
+      }
+    ]
+  }
+}
+
