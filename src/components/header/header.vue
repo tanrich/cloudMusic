@@ -1,7 +1,19 @@
 <template>
   <div class="header">
     <div class="name">
-      <img src="./topbar.png" height="21">
+      <img src="./logo.png" height="21">
+    </div>
+    <div class="bar">
+      <span class="icon">
+        <router-link to="/mainPage">
+          <img src="./mainPage.png" alt="mainPage" width="21" height="21">
+        </router-link>
+      </span>
+      <span class="icon">
+        <router-link to="/myList">
+          <img src="./musicMyList.png" alt="musicMyList" width="21" height="21">
+        </router-link>
+      </span>
     </div>
     <div class="search">
       <img src="./serach.png" alt="search" width="21" height="21">
@@ -24,10 +36,19 @@
   background-color #4caf50
   padding 17px 16px
   .name
-    font-family Hiragino Sans GB
-    font-size 22px
-    font-weight 200
-    color #fff
+    position: absolute
+    left 16px
+    top 17px
+  .bar
+    width 100px
+    margin 0 auto
+    text-align center
+    font-size 0
+    .icon
+      display inline-block
+      margin-right 30px
+      &:last-child
+        margin-right 0
   .search
     position absolute
     right 16px

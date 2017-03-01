@@ -24,7 +24,7 @@ var app = express()
 
 var request = require('request')
 var router = express.Router()
-var proxy_url = 'https://api.imjad.cn/cloudmusic/?type=song&id=28977024&br=128000';
+var proxy_url = 'http://music.163.com/api/playlist/detail?id=616445224';
 
 var options = {
   headers: {"Connection": "close"},
@@ -35,8 +35,8 @@ var options = {
 var resData;
 function callback(error, response, data) {
   if (!error && response.statusCode == 200) {
-    console.log('------接口数据------', data);
     resData = JSON.stringify(data)
+    // console.log('------接口数据------', resData);
   }
 }
 
@@ -47,6 +47,7 @@ router.get('/getSong',function (req, res) {
 })
 
 app.use(router)
+
 
 var compiler = webpack(webpackConfig)
 
