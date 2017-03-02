@@ -14,7 +14,9 @@
         <router-link to="/mainPage/rank">排行版</router-link>
       </div>
     </div>
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 <script type="text/ecmascript-6">

@@ -8,3 +8,19 @@ border-2px-bottom($color)
     right 0
     content ''
     border-bottom 2px solid $color
+
+border-1px-bottom($color)
+  position relative
+  &::after
+    position absolute
+    width 100%
+    display block
+    bottom 0
+    right 0
+    content ''
+    border-bottom 1px solid $color
+
+border-none()
+  position: relative
+  &::after
+    display none

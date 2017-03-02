@@ -42,7 +42,7 @@ export default new Router({
       ]
     },
     {
-      path: 'myList',
+      path: '/myList',
       component: myList
     }
   ],

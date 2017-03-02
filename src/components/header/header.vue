@@ -16,7 +16,7 @@
       </span>
     </div>
     <div class="search">
-      <img src="./serach.png" alt="search" width="21" height="21">
+      <img src="./search.png" alt="search" width="21" height="21">
     </div>
   </div>
 </template>
