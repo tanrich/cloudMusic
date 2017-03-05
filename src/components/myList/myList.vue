@@ -26,15 +26,15 @@
       </div>
       <div class="list" @click="showSongList">
         <div class="list-avatar">
-          <img src="" alt="" width="50" height="50">
+          <img :src="songList.coverImgUrl" alt="" width="50" height="50">
         </div>
         <div class="list-content">
-          <div class="name">我喜欢的音乐</div>
+          <div class="name">demo</div>
           <div class="extra">52首</div>
         </div>
       </div>
     </div>
-    <songListView ref="view" name="view"></songListView>
+    <songListView ref="view" name="view" :songList="songList"></songListView>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -54,16 +54,16 @@
     created () {
       let that = this;
       API.getDefaultSongList().then(function (res) {
-        that._initData(res);
-        console.log(that.songList)
+        res = res.data;
+        if (res.code === 200) {
+          that.songList = res.result;
+          console.log(that.songList)
+        }
       })
     },
     methods: {
       showSongList () {
         this.$refs['view'].showView();
-      },
-      _initData (res) {
-        this.songList = res;
       }
     }
   }

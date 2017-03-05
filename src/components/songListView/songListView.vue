@@ -8,13 +8,16 @@
           </span>
           <span class="name">歌单</span>
         </div>
-        <div class="top-avatar">
-          <div class="avatar">
-            <img src="" alt="" width="125" height="125">
+        <div class="top-image">
+          <div class="image">
+            <img :src="songList.coverImgUrl" alt="" width="125" height="125">
           </div>
           <div class="content">
-            <div class="title">我喜欢的音乐</div>
-            <div class="name">心之所向便是阳</div>
+            <div class="title">demo</div>
+            <div class="info">
+              <img src="" width="25" height="25">
+              <span class="name">心之所向便是阳</span>
+            </div>
           </div>
         </div>
       </div>
@@ -26,15 +29,21 @@
     name: 'view',
     data () {
       return {
-        show: false
+        show: false,
+        creator: {},
+        tracks: []
       }
     },
+    props: ['songList'],
     methods: {
       showView () {
         this.show = true;
       },
       hideView () {
         this.show = false;
+      },
+      initData () {
+
       }
     }
   }
@@ -73,10 +82,10 @@
           color #fff
           line-height 20px
           margin-left 22px
-      .top-avatar
+      .top-image
         padding 20px 10px
         display flex
-        .avatar
+        .image
           display inline-block
           flex 0 0 125px
           width 125px

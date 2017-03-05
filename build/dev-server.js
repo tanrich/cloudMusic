@@ -20,30 +20,92 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 // https://github.com/chimurai/http-proxy-middleware
 var proxyTable = config.dev.proxyTable
 
-var app = express()
+var app = express();
 
-var request = require('request')
-var router = express.Router()
+/**
+ * cloudMusic
+ */
 
-var options = {
-  headers: {"Connection": "close"},
-  url: 'http://music.163.com/api/playlist/detail?id=616445224',
-  method: "GET",
-  json: true
-};
-var resData;
-function callback(error, res, data) {
-  if (!error && res.statusCode == 200) {
-    resData = JSON.stringify(data)
+
+
+
+(function () {
+  var request = require('request');
+  var router = express.Router();
+  var resStatus = false;
+  var baseURL = 'http://music.163.com/api';
+  var baseMp3URL = 'http://m2.music.126.net';
+  var resData;
+
+  // request请求options
+  var options = {
+    headers: {"Connection": "close"},
+    url: "",
+    method: "GET",
+    json: true
+  };
+
+  // request请求回调函数
+  function callback(error, res, data) {
+    if (!error && res.statusCode == 200) {
+      resData = data;
+      resStatus = true;
+    }
   }
-}
-request(options, callback);
-router.get('/defaultSongList', function (req, res) {
-  res.send(resData)
-  res.end()
-})
 
-app.use('/Server',router)
+  // 深度克隆
+  function clone(obj) {
+    let tmp;
+    if (obj instanceof Array) {
+      console.log('array');
+      tmp = [];
+      let len = obj.length;
+      for (let i = 0; i < len; i++) {
+        tmp[i] = clone(obj[i]);
+      }
+      return tmp;
+    } else if (obj instanceof Object) {
+      console.log('object');
+      tmp = {};
+      for (let k in obj) {
+        tmp[k] = clone(obj[k]);
+      }
+      return tmp;
+    } else {
+      return obj;
+    }
+  }
+
+  // 服务端返回数据
+  function sendData(req, res) {
+    var time = setInterval(function () {
+      // 默认情况下等待request请求数据完毕，服务端才开始返回
+      if (resStatus) {
+        clearInterval(time);
+        resStatus = false;
+        res.send(resData);
+        res.end();
+      }
+    },100)
+  }
+
+  // 请求默认歌单
+  router.get('/defaultSongList', function (req, res) {
+    var url = baseURL + '/playlist/detail?id=616445224';
+    var copyOptions = clone(options);
+    copyOptions.url = url;
+    request(copyOptions, callback);
+    sendData(req, res);
+  });
+
+  app.use('/Server', router)
+})();
+
+
+/**
+ * cloudMusic
+ */
+
 
 
 var compiler = webpack(webpackConfig)
