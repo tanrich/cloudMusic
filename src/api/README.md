@@ -12,9 +12,8 @@
 		data = res.result;
 		{
 			data.coverImgUrl 歌单封面图片
-			data.track.count 歌单包含歌曲数量
+			data.trackCount 歌单包含歌曲数量
 			data.name 歌单名称
-			data.trackCount 歌曲数量
 		}
 		
 		creator = data.creator;

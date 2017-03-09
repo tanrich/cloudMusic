@@ -1,40 +1,75 @@
 <template>
-  <transition name="view-show">
-    <div class="view" v-show="show">
-      <div class="top-container">
-        <div class="top-bar">
+  <div>
+    <transition name="view-show">
+      <div class="view" v-show="show">
+        <div class="top-container">
+          <div class="top-bar">
           <span class="back" @click="hideView">
-            <i class="icon-arrow_lift"></i>
+            <i class="iconfont icon-fanhui"></i>
           </span>
-          <span class="name">歌单</span>
-        </div>
-        <div class="top-image">
-          <div class="image">
-            <img :src="songList.coverImgUrl" alt="" width="125" height="125">
+            <span class="name">歌单</span>
           </div>
-          <div class="content">
-            <div class="title">demo</div>
-            <div class="info">
-              <img src="" width="25" height="25">
-              <span class="name">心之所向便是阳</span>
+          <div class="top-image">
+            <div class="image">
+              <img :src="defaultList.coverImgUrl" alt="" width="125" height="125">
+            </div>
+            <div class="content">
+              <h1 class="title">{{defaultList.name}}</h1>
+              <div class="info">
+              <span class="avatar">
+                <img :src="creator.avatarUrl" width="25" height="25">
+              </span>
+                <span class="name">心之所向便是阳</span>
+              </div>
+            </div>
+          </div>
+          <div class="bottom-tools">
+            <div class="tool-content">
+              <i class="iconfont icon-shoucang"></i>
+              <div class="name">收藏</div>
+            </div>
+            <div class="tool-content">
+              <i class="iconfont icon-pinglun"></i>
+              <div class="name">评论</div>
+            </div>
+            <div class="tool-content">
+              <i class="iconfont icon-share"></i>
+              <div class="name">分享</div>
+            </div>
+            <div class="tool-content">
+              <i class="iconfont icon-xiazai"></i>
+              <div class="name">下载</div>
             </div>
           </div>
         </div>
+        <div class="middle-container">
+          <listItem @showPlayView="_showPlayView"></listItem>
+        </div>
       </div>
-    </div>
-  </transition>
+    </transition>
+    <playView ref="playView" :songInfo="songInfo"></playView>
+  </div>
 </template>
 <script type="text/ecmascript-6">
+  import {mapState} from 'vuex'
+  import listItem from 'components/listItem/listItem'
+  import playView from 'components/playView/playView'
   export default {
     name: 'view',
     data () {
       return {
         show: false,
-        creator: {},
-        tracks: []
+        songInfo: {}
       }
     },
-    props: ['songList'],
+    components: {
+      listItem, playView
+    },
+    computed: {
+      ...mapState([
+        'defaultList', 'creator'
+      ])
+    },
     methods: {
       showView () {
         this.show = true;
@@ -42,14 +77,15 @@
       hideView () {
         this.show = false;
       },
-      initData () {
-
+      _showPlayView (value) {
+        this.songInfo = value;
+        this.$refs['playView'].showPlayView()
       }
     }
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-  @import "../../common/stylus/icon.css"
+  @import "../../common/stylus/iconfont.css"
   .view
     position: fixed
     width 100%
@@ -64,15 +100,14 @@
     &.view-show-enter-active, &.view-show-leave-active
       transition all .5s
     .top-container
-      height 246px
-      padding 20px 17px
+      padding 20px 17px 15px 17px
       background rgba(63, 62, 61, 1)
       box-sizing border-box
       .top-bar
         .back
           display inline-block
           vertical-align: top
-          .icon-arrow_lift
+          .icon-fanhui
             font-size 20px
             color #fff
         .name
@@ -83,7 +118,7 @@
           line-height 20px
           margin-left 22px
       .top-image
-        padding 20px 10px
+        padding 20px 10px 15px 10px
         display flex
         .image
           display inline-block
@@ -95,12 +130,41 @@
           padding-left 25px
           color #fff
           .title
-            font-size 16px
-            line-height 16px
+            font-size 18px
+            line-height 18px
             padding 10px 0
+          .info
+            padding 15px 0
+            .avatar
+              display inline-block
+              width 25px
+              height 25px
+              border-radius 50%
+              overflow: hidden
+            .name
+              display inline-block
+              font-size 12px
+              line-height 25px
+              color #dbdbda
+              vertical-align top
+      .bottom-tools
+        display flex
+        .tool-content
+          flex 1
+          font-size 14px
+          color #fff
+          text-align center
+          .iconfont
+            font-weight bold
           .name
-            font-size 14px
-            line-height 14px
-            padding 10px 0
-            color #dbdbda
+            margin-top 5px
+            font-weight lighter
+    .middle-container
+      position: fixed
+      width 100%
+      height 100%
+      top 252px
+      bottom 0
+      left 0
+      background rgba(242, 244, 245, .6)
 </style>

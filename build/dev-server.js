@@ -86,7 +86,7 @@ var app = express();
         res.send(resData);
         res.end();
       }
-    },100)
+    }, 100)
   }
 
   // 请求默认歌单

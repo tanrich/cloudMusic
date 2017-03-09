@@ -3,7 +3,7 @@
     <div class="my-wrapper">
       <div class="my-box my-singer">
         <span class="icon">
-          <img src="./singer.png" alt="singer" width="16" height="21">
+          <i class="iconfont icon-ttpodicon"></i>
         </span>
         <span class="text border-1px-bottom">
           <span class="name">我的歌手</span>
@@ -12,7 +12,7 @@
       </div>
       <div class="my-box my-radio">
         <span class="icon">
-          <img src="./radio.png" alt="radio" width="16" height="21">
+          <i class="iconfont icon-diantai"></i>
         </span>
         <span class="text border-1px-bottom">
           <span class="name">我的电台</span>
@@ -26,40 +26,47 @@
       </div>
       <div class="list" @click="showSongList">
         <div class="list-avatar">
-          <img :src="songList.coverImgUrl" alt="" width="50" height="50">
+          <img :src="defaultList.coverImgUrl" alt="" width="50" height="50">
         </div>
-        <div class="list-content">
-          <div class="name">demo</div>
-          <div class="extra">52首</div>
+        <div class="list-content border-1px-bottom">
+          <div class="name">{{defaultList.name}}</div>
+          <div class="extra">{{defaultList.trackCount}}首</div>
         </div>
       </div>
     </div>
-    <songListView ref="view" name="view" :songList="songList"></songListView>
+    <songListView ref="view" name="view"></songListView>
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import * as type from '@/store/mutation-types'
+  import store from '@/store'
+  import {mapState} from 'vuex'
   import songListView from 'components/songListView/songListView'
   import axios from 'axios'
   import API from 'API'
   export default {
     name: 'myList',
+    data () {
+      return {}
+    },
+    store,
     components: {
       songListView
     },
-    data () {
-      return {
-        songList: {}
-      }
-    },
     created () {
       let that = this;
-      API.getDefaultSongList().then(function (res) {
+      API.getDefaultSongList().then((res) => {
         res = res.data;
         if (res.code === 200) {
-          that.songList = res.result;
-          console.log(that.songList)
+          let data = res.result;
+          that.$store.commit(type.INIT_DEFAULT_LIST, data);
         }
       })
+    },
+    computed: {
+      ...mapState([
+        'defaultList'
+      ])
     },
     methods: {
       showSongList () {
@@ -70,8 +77,10 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/index.styl"
+  @import "../../common/stylus/iconfont.css"
   .myList
     .my-wrapper
+      background rgba(242, 244, 245, .6)
       .my-box
         font-size 0
         display flex
@@ -82,6 +91,11 @@
           height 21px
           padding 16px 17px
           vertical-align top
+          .icon-ttpodicon, .icon-diantai
+            display inline-block
+            font-size 21px
+            font-weight bold
+            color #5dae52
         .text
           flex 1
           padding 16px 0
@@ -105,6 +119,7 @@
     .music-wrapper
       .title
         background #e6e8e9
+        opacity .8
         h1
           padding 0 10px
           font-size 14px
@@ -112,6 +127,10 @@
           color #757575
       .list
         display flex
+        position: fixed
+        width 100%
+        height 100%
+        background rgba(242, 244, 245, .6)
         .list-avatar
           display inline-block
           flex 0 0 50px
