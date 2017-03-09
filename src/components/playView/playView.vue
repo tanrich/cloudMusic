@@ -1,7 +1,6 @@
 <template>
   <transition name="playView">
     <div class="playView" v-show="playViewShow">
-      <img :src="songInfo.blurPicUrl" class="bg-pic">
       <div class="header">
         <div class="back" @click="hidePlayView">
           <i class="iconfont icon-fanhui"></i>
@@ -14,7 +13,13 @@
           <i class="iconfont icon-share"></i>
         </div>
       </div>
-      <div class="album"></div>
+      <div class="album">
+        <div class="disk" :class="{active:playStatus}">
+          <div class="pic-wrapper">
+            <img :src="songInfo.album.blurPicUrl" width="185" height="185">
+          </div>
+        </div>
+      </div>
       <div class="tools-bar">
         <div class="content">
           <i class="iconfont icon-shoucang"></i>
@@ -191,11 +196,6 @@
       transition all .5s
     &.playView-enter, &.playView-leave-active
       transform translate3d(100%, 0, 0)
-    .bg-pic
-      position: absolute
-      width 100%
-      height 100%
-      z-index -1
     .header
       display: flex
       padding 20px 17px
@@ -232,6 +232,38 @@
           color #fff
     .album
       height 400px
+      position relative
+      .disk
+        position absolute
+        width 275px
+        height 275px
+        top 0
+        right 0
+        bottom 0
+        left 0
+        margin auto
+        background url("./disk.png") no-repeat
+        background-size 100% 100%
+        animation rotate 25s infinite linear
+        animation-play-state paused
+        @keyframes rotate {
+          to {
+            transform: rotate(1turn)
+          }
+        }
+        &.active
+          animation-play-state running 
+        .pic-wrapper
+          position absolute
+          top 0
+          right 0
+          bottom 0
+          left 0
+          width 185px
+          height 185px
+          margin auto
+          border-radius 50%
+          overflow hidden
     .tools-bar
       display flex
       padding 15px 17px
@@ -291,6 +323,8 @@
           color #fff
           vertical-align top
           text-align center
+        .pre
+          transform rotate(180deg)
         .pre, .next
           margin-top 7px
           .icon-xiayishou
