@@ -16,7 +16,7 @@
       <div class="album">
         <div class="disk" :class="{active:playStatus}">
           <div class="pic-wrapper">
-            <img :src="songInfo.album.blurPicUrl" width="185" height="185">
+            <img :src="songInfo.album.blurPicUrl" v-if="songInfo.album" width="185" height="185">
           </div>
         </div>
       </div>
@@ -51,9 +51,10 @@
             >
           </span>
           <span class="duration">{{duration | handleTime}}</span>
+          <!--http://m2.music.126.net/HtgbPCMSEkVMzlQLoRw8dg==/8991806091995315.mp3-->
           <audio ref="audio"
                  id="audio"
-                 src="http://m2.music.126.net/HtgbPCMSEkVMzlQLoRw8dg==/8991806091995315.mp3"
+                 src=""
                  @loadedmetadata="initTime($event)"
                  @timeupdate="startCountTime($event)"
                  controls hidden
@@ -74,20 +75,20 @@
       </div>
     </div>
   </transition>
+
 </template>
 <script type="text/ecmascript-6">
+  import API from 'API'
   import * as type from '@/store/mutation-types'
-  import {mapState} from 'vuex'
   export default {
     name: 'playView',
     data () {
       return {
-        playViewShow: false
+        playViewShow: false,
+        musicQuality: 'hMusic'
       }
     },
-    props: [
-      'songInfo'
-    ],
+    props: ['songInfo'],
     filters: {
       // 对于时间进行格式化
       handleTime (value) {
@@ -100,6 +101,20 @@
       }
     },
     computed: {
+      // 提取歌曲资源
+      initMusicSource () {
+        return {
+          hMusic: {
+            dfsId: this.songInfo.hMusic.dfsId
+          },
+          mMusic: {
+            dfsId: this.songInfo.mMusic.dfsId
+          },
+          lMusic: {
+            dfsId: this.songInfo.lMusic.dfsId
+          }
+        };
+      },
       // 获取播放状态
       playStatus () {
         return this.$store.state.player.playStatus;
@@ -124,6 +139,16 @@
       }
     },
     methods: {
+      // 获取歌曲资源
+      getMusic () {
+        API.getMusicSource(this.initMusicSource)
+          .then((res) => {
+            res = res.data;
+            if (res.state === 0) {
+              let data = res.data;
+            }
+          })
+      },
       // 改变播放状态
       changePlayStatus (newValue) {
         this.$store.commit(type.CHANGE_PLAYSTATUS, newValue);
@@ -140,8 +165,13 @@
       setEm (newEm) {
         this.$store.commit(type.SET_EM, newEm);
       },
+      // 音乐界面展示并获取音乐资源
       showPlayView () {
         this.playViewShow = true;
+        // 等待songInfo数据更新
+        this.$nextTick(() => {
+          this.getMusic();
+        });
       },
       hidePlayView () {
         this.playViewShow = false;
@@ -185,13 +215,13 @@
   .playView
     position fixed
     width 100%
-    height 100%
     top 0
     left 0
     bottom 0
     background #000
     transform translate3d(0, 0, 0)
     z-index 9999
+    overflow hidden
     &.playView-enter-active, &.playView-leave-active
       transition all .5s
     &.playView-enter, &.playView-leave-active
@@ -245,14 +275,12 @@
         background url("./disk.png") no-repeat
         background-size 100% 100%
         animation rotate 25s infinite linear
-        animation-play-state paused
-        @keyframes rotate {
-          to {
-            transform: rotate(1turn)
-          }
-        }
+        animation-play-state paused;
+        @keyframes rotate
+          to
+            transform rotate(1turn)
         &.active
-          animation-play-state running 
+          animation-play-state running
         .pic-wrapper
           position absolute
           top 0

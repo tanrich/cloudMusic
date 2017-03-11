@@ -6,5 +6,7 @@ const request = axios.create({
 });
 export default {
   // 获取默认歌单
-  getDefaultSongList: () => request.get('/defaultSongList')
+  getDefaultSongList: () => request.get('/defaultSongList'),
+  // 获取歌曲资源
+  getMusicSource: (params) => request.get('/musicSource', {params})
 }

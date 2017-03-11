@@ -36,7 +36,7 @@ var app = express();
   var baseURL = 'http://music.163.com/api';
   var baseMp3URL = 'http://m2.music.126.net';
   var resData;
-
+  var md5 = require('./md5');
   // request请求options
   var options = {
     headers: {"Connection": "close"},
@@ -57,7 +57,6 @@ var app = express();
   function clone(obj) {
     let tmp;
     if (obj instanceof Array) {
-      console.log('array');
       tmp = [];
       let len = obj.length;
       for (let i = 0; i < len; i++) {
@@ -65,7 +64,6 @@ var app = express();
       }
       return tmp;
     } else if (obj instanceof Object) {
-      console.log('object');
       tmp = {};
       for (let k in obj) {
         tmp[k] = clone(obj[k]);
@@ -98,7 +96,68 @@ var app = express();
     sendData(req, res);
   });
 
+  /**
+   * 向网易云请求音乐资源
+   * @param result 返回的结果函数
+   * @param Music 传入的dfsId码(类型Number)
+   * @param name 传入的音质名称(hMusic,mMusic,lMusic)
+   * @param readyNum 已响应资源数量
+   * 例子如下
+   */
+  function getMusic(result, Music, name) {
+    let dfsId = JSON.parse(Music).dfsId.toString();
+    let md5dfsId = md5(dfsId);
+    let url = baseMp3URL + '/' + md5dfsId + '/' + dfsId + '.mp3';
+    let copyOptions = clone(options);
+    copyOptions.url = url;
+    request(copyOptions, function (error, res, data) {
+      if (!error && res.statusCode == 200) {
+        result.push({
+          [name]: url,
+          status: true
+        })
+      } else {
+        result.push({
+          [name]: url,
+          status: false
+        })
+      }
+    });
+  }
+
+  // 请求歌曲资源
+  router.get('/musicSource', function (req, res) {
+    var data = req.query,
+      hMusic = data.hMusic,
+      mMusic = data.mMusic,
+      lMusic = data.lMusic,
+      result = [],
+      sendNum = 0;
+    if (hMusic) {
+      sendNum++;
+      getMusic(result, hMusic, 'hMusic');
+    }
+    if (mMusic) {
+      sendNum++;
+      getMusic(result, mMusic, 'mMusic');
+    }
+    if (lMusic) {
+      sendNum++;
+      getMusic(result, lMusic, 'lMusic');
+    }
+    // 设置延迟执行函数，等待网易api数据全部返回
+    let wait = setInterval(() => {
+      // 当发送请求数===结果返回数时返回result
+      if (sendNum === result.length) {
+        clearInterval(wait);
+        res.send(result);
+        res.end();
+      }
+    }, 100);
+  });
+
   app.use('/Server', router)
+
 })();
 
 

@@ -1,5 +1,6 @@
 import * as type from '../mutation-types'
 const state = {
+  startCountTime: null,
   playStatus: false,
   currentTime: 0,
   duration: 0,
@@ -17,6 +18,9 @@ const mutations = {
   },
   [type.CHANGE_PLAYSTATUS] (state, newValue) {
     state.playStatus = newValue;
+  },
+  [type.SET_STARTCOUNTTIME] (state, newValue) {
+    state.startCountTime = newValue;
   }
 };
 export default {
