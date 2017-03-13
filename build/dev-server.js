@@ -101,27 +101,14 @@ var app = express();
    * @param result 返回的结果函数
    * @param Music 传入的dfsId码(类型Number)
    * @param name 传入的音质名称(hMusic,mMusic,lMusic)
-   * @param readyNum 已响应资源数量
    * 例子如下
    */
   function getMusic(result, Music, name) {
     let dfsId = JSON.parse(Music).dfsId.toString();
     let md5dfsId = md5(dfsId);
     let url = baseMp3URL + '/' + md5dfsId + '/' + dfsId + '.mp3';
-    let copyOptions = clone(options);
-    copyOptions.url = url;
-    request(copyOptions, function (error, res, data) {
-      if (!error && res.statusCode == 200) {
-        result.push({
-          [name]: url,
-          status: true
-        })
-      } else {
-        result.push({
-          [name]: url,
-          status: false
-        })
-      }
+    result.push({
+      [name]: url
     });
   }
 

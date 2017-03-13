@@ -47,18 +47,19 @@
               min="0"
               :max="duration"
               v-model="currentTime"
-              @change="test($event)"
             >
           </span>
           <span class="duration">{{duration | handleTime}}</span>
           <!--http://m2.music.126.net/HtgbPCMSEkVMzlQLoRw8dg==/8991806091995315.mp3-->
           <audio ref="audio"
                  id="audio"
-                 src=""
+                 :src="MusicSource"
                  @loadedmetadata="initTime($event)"
                  @timeupdate="startCountTime($event)"
+                 @error="autoSwitch"
                  controls hidden
-          ></audio>
+          >
+          </audio>
         </div>
         <div class="button">
           <div class="pre">
@@ -78,14 +79,15 @@
 
 </template>
 <script type="text/ecmascript-6">
+  import axios from 'axios'
   import API from 'API'
   import * as type from '@/store/mutation-types'
+  import {mapState, mapMutations} from 'vuex'
   export default {
     name: 'playView',
     data () {
       return {
-        playViewShow: false,
-        musicQuality: 'hMusic'
+        playViewShow: false
       }
     },
     props: ['songInfo'],
@@ -101,7 +103,26 @@
       }
     },
     computed: {
-      // 提取歌曲资源
+      ...mapState({
+        player: (state) => state.player,
+        // 获取播放状态
+        playStatus: (state) => state.player.playStatus,
+        // 获取歌曲时间长度
+        duration: (state) => state.player.duration,
+        // 获取歌曲元素
+        em: (state) => state.player.em,
+        // 获取音质类型(0,1,2对应低,中,高)
+        musicQuality: (state) => state.player.musicQuality,
+        // 获取高音质url
+        hMusicSource: (state) => state.player.hMusicSource,
+        // 获取中音质url
+        mMusicSource: (state) => state.player.mMusicSource,
+        // 获取低音质url
+        lMusicSource: (state) => state.player.lMusicSource,
+        // 获取最终渲染url
+        MusicSource: (state) => state.player.MusicSource
+      }),
+      // 提取歌曲资源为对象，准备发送至后台解码
       initMusicSource () {
         return {
           hMusic: {
@@ -115,18 +136,6 @@
           }
         };
       },
-      // 获取播放状态
-      playStatus () {
-        return this.$store.state.player.playStatus;
-      },
-      // 获取歌曲时间长度
-      duration () {
-        return this.$store.state.player.duration;
-      },
-      // 获取歌曲元素
-      em () {
-        return this.$store.state.player.em;
-      },
       // 获取&&改变播放进度
       currentTime: {
         get () {
@@ -139,15 +148,39 @@
       }
     },
     methods: {
-      // 获取歌曲资源
+      // 向后台获取解码歌曲资源
       getMusic () {
         API.getMusicSource(this.initMusicSource)
           .then((res) => {
             res = res.data;
-            if (res.state === 0) {
-              let data = res.data;
-            }
+            res.forEach((value) => {
+              if (value.lMusic) {
+                this.setAllMusic(type.SET_LMUSIC, value.lMusic)
+                return;
+              }
+              if (value.mMusic) {
+                this.setAllMusic(type.SET_MMUSIC, value.mMusic);
+                return;
+              }
+              if (value.hMusic) {
+                this.setAllMusic(type.SET_HMUSIC, value.hMusic);
+                return;
+              }
+            });
+            // 设置默认渲染url为低音质
+            this.setAllMusic(type.SET_MUSIC, this.lMusicSource);
           })
+          .catch((err) => {
+            console.log(err);
+          })
+      },
+      // 设置音质类型
+      setMusicQuality (newValue) {
+        this.$store.commit(type.SET_MUSICQUALITY, newValue)
+      },
+      // 设置高、中、低三音质url及最终渲染url
+      setAllMusic (name, newValue) {
+        this.$store.commit(name, newValue)
       },
       // 改变播放状态
       changePlayStatus (newValue) {
@@ -168,6 +201,7 @@
       // 音乐界面展示并获取音乐资源
       showPlayView () {
         this.playViewShow = true;
+        // this.$store.commit(type.RESET_PLAYER)
         // 等待songInfo数据更新
         this.$nextTick(() => {
           this.getMusic();
@@ -178,6 +212,7 @@
       },
       // 当指定的音频/视频的元数据已加载时，会发生 loadedmetadata 事件，触发initTime()
       initTime (event) {
+        console.log('loadedmetadata');
         if (this.em === '') {
           this.setEm(event.target);
           // 获取音乐时间长度
@@ -188,9 +223,9 @@
       // 暂停&&播放
       togglePlay () {
         if (this.playStatus) {
-          this.$refs['audio'].pause();
+          this.em.pause();
         } else {
-          this.$refs['audio'].play();
+          this.em.play();
         }
         this.changePlayStatus(!this.playStatus);
       },
@@ -199,14 +234,24 @@
         let newValue = Math.floor(event.target.currentTime * 2) / 2;
         this.changeCurrentTime(newValue);
       },
-      // 进度条填充颜色
-      test (event) {
-        let nowValue = event.target.value;
-        let max = event.target.max;
-        let ratio = nowValue / max;
-        console.log(ratio * 100)
-        console.log(this.$refs['range'])
-        this.$refs['range'].style.background = 'linear-gradient(to right, #059CFA, white ' + ratio + '%, white)'
+      // 歌曲音质自动切换避免404
+      autoSwitch () {
+        if (this.playViewShow === false) {
+          return;
+        }
+        switch (this.musicQuality) {
+          case 0:
+            this.setAllMusic(type.SET_MUSIC, this.mMusicSource);
+            this.setMusicQuality(1);
+            break;
+          case 1:
+            this.setAllMusic(type.SET_MUSIC, this.hMusicSource);
+            this.setMusicQuality(2);
+            break;
+          case 2:
+            console.log('抱歉没有可用资源');
+            break;
+        }
       }
     }
   }
