@@ -164,6 +164,7 @@
               }
               if (value.hMusic) {
                 this.setAllMusic(type.SET_HMUSIC, value.hMusic);
+                console.log(this.hMusicSource)
                 return;
               }
             });
@@ -241,14 +242,17 @@
         }
         switch (this.musicQuality) {
           case 0:
+            console.log('尝试加载中音质');
             this.setAllMusic(type.SET_MUSIC, this.mMusicSource);
             this.setMusicQuality(1);
             break;
           case 1:
+            console.log('尝试加载高音质');
             this.setAllMusic(type.SET_MUSIC, this.hMusicSource);
             this.setMusicQuality(2);
             break;
           case 2:
+            console.log(this.hMusicSource)
             console.log('抱歉没有可用资源');
             break;
         }

@@ -37,7 +37,7 @@ const mutations = {
     state.mMusicSource = newValue;
   },
   [type.SET_HMUSIC] (state, newValue) {
-    state.HMusicSource = newValue;
+    state.hMusicSource = newValue;
   },
   [type.SET_MUSICQUALITY] (state, newValue) {
     state.musicQuality = newValue;
