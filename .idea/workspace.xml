@@ -38,10 +38,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="songListView.vue" pinned="false" current-in-tab="true">
+      <file leaf-file-name="songListView.vue" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/songListView/songListView.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2312">
+            <state relative-caret-position="480">
               <caret line="60" column="20" lean-forward="false" selection-start-line="60" selection-start-column="20" selection-end-line="60" selection-end-column="20" />
               <folding>
                 <element signature="n#div#0;n#div#0;n#transition#0;n#div#0;n#template#0;n#!!top" expanded="false" />
@@ -55,22 +55,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="playView.vue" pinned="false" current-in-tab="false">
+      <file leaf-file-name="playView.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/playView/playView.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="166" column="45" lean-forward="false" selection-start-line="166" selection-start-column="45" selection-end-line="166" selection-end-column="45" />
+            <state relative-caret-position="450">
+              <caret line="181" column="26" lean-forward="false" selection-start-line="181" selection-start-column="26" selection-end-line="181" selection-end-column="26" />
               <folding>
                 <element signature="e#2606#2631#0" expanded="true" />
                 <element signature="e#2902#3234#0" expanded="false" />
                 <element signature="e#3991#4264#0" expanded="false" />
-                <element signature="e#7002#7122#0" expanded="false" />
-                <element signature="e#8189#8914#0" expanded="false" />
-                <element signature="e#9455#9663#0" expanded="false" />
-                <element signature="e#9685#9886#0" expanded="false" />
-                <element signature="e#9763#9886#0" expanded="false" />
-                <element signature="e#10432#10970#0" expanded="false" />
-                <marker date="1489457346000" expanded="true" signature="4425:4458" ph="..." />
+                <element signature="e#6990#7110#0" expanded="false" />
+                <element signature="e#8134#8859#0" expanded="false" />
+                <element signature="e#9400#9608#0" expanded="false" />
+                <element signature="e#9630#9831#0" expanded="false" />
+                <element signature="e#9708#9831#0" expanded="false" />
+                <element signature="e#10377#10915#0" expanded="false" />
+                <marker date="1489457600000" expanded="true" signature="4425:4458" ph="..." />
               </folding>
             </state>
           </provider>
@@ -228,8 +228,8 @@
         <option value="$PROJECT_DIR$/build/dev-server.js" />
         <option value="$PROJECT_DIR$/src/store/mutation-types.js" />
         <option value="$PROJECT_DIR$/server.js" />
-        <option value="$PROJECT_DIR$/src/components/playView/playView.vue" />
         <option value="$PROJECT_DIR$/src/store/modules/player.js" />
+        <option value="$PROJECT_DIR$/src/components/playView/playView.vue" />
       </list>
     </option>
   </component>
@@ -390,12 +390,12 @@
       <workItem from="1488855329189" duration="8471000" />
       <workItem from="1488934571195" duration="12367000" />
       <workItem from="1489024939697" duration="15298000" />
-      <workItem from="1489065120103" duration="46535000" />
+      <workItem from="1489065120103" duration="46659000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="139796000" />
+    <option name="totallyTimeSpent" value="139920000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -473,13 +473,13 @@
             <element signature="e#2606#2631#0" expanded="true" />
             <element signature="e#2902#3234#0" expanded="false" />
             <element signature="e#3991#4264#0" expanded="false" />
-            <element signature="e#7002#7122#0" expanded="false" />
-            <element signature="e#8189#8914#0" expanded="false" />
-            <element signature="e#9455#9663#0" expanded="false" />
-            <element signature="e#9685#9886#0" expanded="false" />
-            <element signature="e#9763#9886#0" expanded="false" />
-            <element signature="e#10432#10970#0" expanded="false" />
-            <marker date="1489457346000" expanded="true" signature="4425:4458" ph="..." />
+            <element signature="e#6990#7110#0" expanded="false" />
+            <element signature="e#8134#8859#0" expanded="false" />
+            <element signature="e#9400#9608#0" expanded="false" />
+            <element signature="e#9630#9831#0" expanded="false" />
+            <element signature="e#9708#9831#0" expanded="false" />
+            <element signature="e#10377#10915#0" expanded="false" />
+            <marker date="1489457600000" expanded="true" signature="4425:4458" ph="..." />
           </folding>
         </state>
       </provider>
@@ -570,13 +570,13 @@
             <element signature="e#2606#2631#0" expanded="true" />
             <element signature="e#2902#3234#0" expanded="false" />
             <element signature="e#3991#4264#0" expanded="false" />
-            <element signature="e#7002#7122#0" expanded="false" />
-            <element signature="e#8189#8914#0" expanded="false" />
-            <element signature="e#9455#9663#0" expanded="false" />
-            <element signature="e#9685#9886#0" expanded="false" />
-            <element signature="e#9763#9886#0" expanded="false" />
-            <element signature="e#10432#10970#0" expanded="false" />
-            <marker date="1489457346000" expanded="true" signature="4425:4458" ph="..." />
+            <element signature="e#6990#7110#0" expanded="false" />
+            <element signature="e#8134#8859#0" expanded="false" />
+            <element signature="e#9400#9608#0" expanded="false" />
+            <element signature="e#9630#9831#0" expanded="false" />
+            <element signature="e#9708#9831#0" expanded="false" />
+            <element signature="e#10377#10915#0" expanded="false" />
+            <marker date="1489457600000" expanded="true" signature="4425:4458" ph="..." />
           </folding>
         </state>
       </provider>
@@ -686,13 +686,13 @@
             <element signature="e#2606#2631#0" expanded="true" />
             <element signature="e#2902#3234#0" expanded="false" />
             <element signature="e#3991#4264#0" expanded="false" />
-            <element signature="e#7002#7122#0" expanded="false" />
-            <element signature="e#8189#8914#0" expanded="false" />
-            <element signature="e#9455#9663#0" expanded="false" />
-            <element signature="e#9685#9886#0" expanded="false" />
-            <element signature="e#9763#9886#0" expanded="false" />
-            <element signature="e#10432#10970#0" expanded="false" />
-            <marker date="1489457346000" expanded="true" signature="4425:4458" ph="..." />
+            <element signature="e#6990#7110#0" expanded="false" />
+            <element signature="e#8134#8859#0" expanded="false" />
+            <element signature="e#9400#9608#0" expanded="false" />
+            <element signature="e#9630#9831#0" expanded="false" />
+            <element signature="e#9708#9831#0" expanded="false" />
+            <element signature="e#10377#10915#0" expanded="false" />
+            <marker date="1489457600000" expanded="true" signature="4425:4458" ph="..." />
           </folding>
         </state>
       </provider>
@@ -893,25 +893,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/playView/playView.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="166" column="45" lean-forward="false" selection-start-line="166" selection-start-column="45" selection-end-line="166" selection-end-column="45" />
-          <folding>
-            <element signature="e#2606#2631#0" expanded="true" />
-            <element signature="e#2902#3234#0" expanded="false" />
-            <element signature="e#3991#4264#0" expanded="false" />
-            <element signature="e#7002#7122#0" expanded="false" />
-            <element signature="e#8189#8914#0" expanded="false" />
-            <element signature="e#9455#9663#0" expanded="false" />
-            <element signature="e#9685#9886#0" expanded="false" />
-            <element signature="e#9763#9886#0" expanded="false" />
-            <element signature="e#10432#10970#0" expanded="false" />
-            <marker date="1489457346000" expanded="true" signature="4425:4458" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/defaultList.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="313">
@@ -973,7 +954,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/songListView/songListView.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2312">
+        <state relative-caret-position="480">
           <caret line="60" column="20" lean-forward="false" selection-start-line="60" selection-start-column="20" selection-end-line="60" selection-end-column="20" />
           <folding>
             <element signature="n#div#0;n#div#0;n#transition#0;n#div#0;n#template#0;n#!!top" expanded="false" />
@@ -982,6 +963,25 @@
             <element signature="n#div#0;n#div#1;n#div#0;n#div#0;n#transition#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="n#div#1;n#div#1;n#div#0;n#div#0;n#transition#0;n#div#0;n#template#0;n#!!top" expanded="false" />
             <element signature="e#1798#1827#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/playView/playView.vue">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="181" column="26" lean-forward="false" selection-start-line="181" selection-start-column="26" selection-end-line="181" selection-end-column="26" />
+          <folding>
+            <element signature="e#2606#2631#0" expanded="true" />
+            <element signature="e#2902#3234#0" expanded="false" />
+            <element signature="e#3991#4264#0" expanded="false" />
+            <element signature="e#6990#7110#0" expanded="false" />
+            <element signature="e#8134#8859#0" expanded="false" />
+            <element signature="e#9400#9608#0" expanded="false" />
+            <element signature="e#9630#9831#0" expanded="false" />
+            <element signature="e#9708#9831#0" expanded="false" />
+            <element signature="e#10377#10915#0" expanded="false" />
+            <marker date="1489457600000" expanded="true" signature="4425:4458" ph="..." />
           </folding>
         </state>
       </provider>

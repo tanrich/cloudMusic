@@ -164,12 +164,12 @@
               }
               if (value.hMusic) {
                 this.setAllMusic(type.SET_HMUSIC, value.hMusic);
-                console.log(this.hMusicSource)
                 return;
               }
             });
             // 设置默认渲染url为低音质
             this.setAllMusic(type.SET_MUSIC, this.lMusicSource);
+            console.log('尝试加载低音质')
           })
           .catch((err) => {
             console.log(err);
@@ -252,7 +252,6 @@
             this.setMusicQuality(2);
             break;
           case 2:
-            console.log(this.hMusicSource)
             console.log('抱歉没有可用资源');
             break;
         }
