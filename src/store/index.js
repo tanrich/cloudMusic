@@ -5,11 +5,16 @@ import player from './modules/player'
 Vue.use(Vuex);
 
 const state = {
+  // 默认歌单
   defaultList: {},
+  // 歌单创建者
   creator: {},
+  // 歌曲集合
   tracks: [],
-  artists: [],
-  album: {}
+  // 歌曲在集合中序号
+  songPosition: 0,
+  // 歌曲信息
+  songInfo: {}
 };
 const getter = {};
 const mutations = {
@@ -27,6 +32,12 @@ const mutations = {
     data.tracks.forEach((value) => {
       state.tracks.push(value);
     })
+  },
+  [type.SET_SONGPOSITION] (state, newValue) {
+    state.songPosition = newValue;
+  },
+  [type.SET_SONGINFO] (state, newValue) {
+    state.songInfo = newValue;
   }
 };
 const actions = {};

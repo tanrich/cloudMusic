@@ -14,18 +14,25 @@
         </div>
       </div>
       <div class="album">
+        <div class="pin">
+          <div class="pic-wrapper" :class="{active:playStatus}">
+            <img src="./pin.png" width="100">
+          </div>
+        </div>
         <div class="disk" :class="{active:playStatus}">
           <div class="pic-wrapper">
             <img :src="songInfo.album.blurPicUrl" v-if="songInfo.album" width="185" height="185">
           </div>
         </div>
+        <div class="tips" :class="{active:tipsStatus}">sorry,暂无资源可用</div>
       </div>
       <div class="tools-bar">
         <div class="content">
-          <i class="iconfont icon-shoucang"></i>
+          <i class="iconfont icon-shoucang" :class="{active:collectStatus}" @click="collect"></i>
         </div>
         <div class="content">
-          <i class="iconfont icon-xiazai"></i>
+          <i class="iconfont icon-xiazai" @click="download"></i>
+          <a :href="MusicSource" title="download" ref="download" download hidden></a>
         </div>
         <div class="content">
           <i class="iconfont icon-pinglun
@@ -50,13 +57,14 @@
             >
           </span>
           <span class="duration">{{duration | handleTime}}</span>
-          <!--http://m2.music.126.net/HtgbPCMSEkVMzlQLoRw8dg==/8991806091995315.mp3-->
           <audio ref="audio"
                  id="audio"
                  :src="MusicSource"
                  @loadedmetadata="initTime($event)"
                  @timeupdate="startCountTime($event)"
                  @error="autoSwitch"
+                 @canplay="setCanPlay"
+                 @ended="musicEnd"
                  controls hidden
           >
           </audio>
@@ -87,7 +95,9 @@
     name: 'playView',
     data () {
       return {
-        playViewShow: false
+        playViewShow: false,
+        tipsStatus: false,
+        collectStatus: false
       }
     },
     props: ['songInfo'],
@@ -120,7 +130,13 @@
         // 获取低音质url
         lMusicSource: (state) => state.player.lMusicSource,
         // 获取最终渲染url
-        MusicSource: (state) => state.player.MusicSource
+        MusicSource: (state) => state.player.MusicSource,
+        // 获取资源是否可以播放
+        canPlay: (state) => state.player.canPlay,
+        // 获得歌曲在集合中的位置
+        songPosition: (state) => state.songPosition,
+        // 获取歌曲集合
+        tracks: (state) => state.tracks
       }),
       // 提取歌曲资源为对象，准备发送至后台解码
       initMusicSource () {
@@ -142,12 +158,37 @@
           return this.$store.state.player.currentTime;
         },
         set (newValue) {
-          this.changeCurrentTime(newValue);
+          this.setCurrentTime(newValue);
           this.$store.state.player.em.currentTime = newValue;
         }
       }
     },
     methods: {
+      /**
+       * collect功能未实现，后期修改
+       */
+      collect () {
+        this.collectStatus = !this.collectStatus;
+      },
+      // 设置歌曲是否可以播放(如果资源可以播放则会触发canplay事件执行setCanPlay函数)
+      setCanPlay () {
+        this.$store.commit(type.SET_CANPLAY, true);
+      },
+      // 音乐播放结束
+      musicEnd () {
+        this.resetPlayer();
+        this.setSongPosition(this.songPosition + 1);
+        this.setSongInfo(this.tracks[this.songPosition]);
+        this.$nextTick(() => {
+          if (this.canPlay) {
+            this.changePlayStatus(true);
+          }
+        })
+      },
+      // 下载音乐
+      download () {
+        this.$refs['download'].click();
+      },
       // 向后台获取解码歌曲资源
       getMusic () {
         API.getMusicSource(this.initMusicSource)
@@ -155,7 +196,7 @@
             res = res.data;
             res.forEach((value) => {
               if (value.lMusic) {
-                this.setAllMusic(type.SET_LMUSIC, value.lMusic)
+                this.setAllMusic(type.SET_LMUSIC, value.lMusic);
                 return;
               }
               if (value.mMusic) {
@@ -175,6 +216,14 @@
             console.log(err);
           })
       },
+      // 设置歌曲信息，为跳转音乐做准备
+      setSongInfo (newValue) {
+        this.$store.commit(type.SET_SONGINFO, newValue);
+      },
+      // 设置歌曲在集合中的位置
+      setSongPosition (newValue) {
+        this.$store.commit(type.SET_SONGPOSITION, newValue);
+      },
       // 设置音质类型
       setMusicQuality (newValue) {
         this.$store.commit(type.SET_MUSICQUALITY, newValue)
@@ -188,8 +237,8 @@
         this.$store.commit(type.CHANGE_PLAYSTATUS, newValue);
       },
       // 播放进度时间的改变
-      changeCurrentTime (newValue) {
-        this.$store.commit(type.CHANGE_CURRENTTIME, newValue);
+      setCurrentTime (newValue) {
+        this.$store.commit(type.SET_CURRENTTIME, newValue);
       },
       // 设置歌曲时间长度
       setDuration (newValue) {
@@ -202,14 +251,19 @@
       // 音乐界面展示并获取音乐资源
       showPlayView () {
         this.playViewShow = true;
-        // this.$store.commit(type.RESET_PLAYER)
+        this.resetPlayer();
         // 等待songInfo数据更新
         this.$nextTick(() => {
           this.getMusic();
         });
       },
+      // 隐藏音乐界面
       hidePlayView () {
         this.playViewShow = false;
+      },
+      // 重置player数据
+      resetPlayer () {
+        this.$store.commit(type.RESET_PLAYER);
       },
       // 当指定的音频/视频的元数据已加载时，会发生 loadedmetadata 事件，触发initTime()
       initTime (event) {
@@ -223,38 +277,54 @@
       },
       // 暂停&&播放
       togglePlay () {
-        if (this.playStatus) {
-          this.em.pause();
+        if (this.canPlay) {
+          if (this.playStatus) {
+            this.em.pause();
+          } else if (!this.playStatus) {
+            this.em.play();
+          }
+          this.changePlayStatus(!this.playStatus);
         } else {
-          this.em.play();
+          console.log('资源还在加载中，请稍后……');
         }
-        this.changePlayStatus(!this.playStatus);
       },
       // 音乐播放时改变其播放位置时运行脚本
       startCountTime (event) {
-        let newValue = Math.floor(event.target.currentTime * 2) / 2;
-        this.changeCurrentTime(newValue);
+        let newValue = Math.round(event.target.currentTime);
+        // let newValue = Math.floor(event.target.currentTime * 2) / 2;
+        this.setCurrentTime(newValue);
       },
       // 歌曲音质自动切换避免404
       autoSwitch () {
-        if (this.playViewShow === false) {
-          return;
-        }
-        switch (this.musicQuality) {
-          case 0:
-            console.log('尝试加载中音质');
-            this.setAllMusic(type.SET_MUSIC, this.mMusicSource);
-            this.setMusicQuality(1);
-            break;
-          case 1:
-            console.log('尝试加载高音质');
-            this.setAllMusic(type.SET_MUSIC, this.hMusicSource);
-            this.setMusicQuality(2);
-            break;
-          case 2:
-            console.log('抱歉没有可用资源');
-            break;
-        }
+        this.$nextTick(() => {
+          /**
+           * 这里有一个bug
+           * 若不添加!this.lMusicSource这个限制条件，会跳过中音质加载
+           * 不明原因，待解决
+           */
+          if (!this.playViewShow || !this.lMusicSource) {
+            return;
+          }
+          switch (this.musicQuality) {
+            case 0:
+              console.log('尝试加载中音质');
+              this.setAllMusic(type.SET_MUSIC, this.mMusicSource);
+              this.setMusicQuality(1);
+              break;
+            case 1:
+              console.log('尝试加载高音质');
+              this.setAllMusic(type.SET_MUSIC, this.hMusicSource);
+              this.setMusicQuality(2);
+              break;
+            case 2:
+              console.log('抱歉没有可用资源');
+              this.tipsStatus = true;
+              setTimeout(() => {
+                this.tipsStatus = false;
+              }, 2000);
+              break;
+          }
+        })
       }
     }
   }
@@ -311,6 +381,20 @@
     .album
       height 400px
       position relative
+      overflow hidden
+      .pin
+        position absolute
+        display inline-block
+        top -18px
+        left 50%
+        margin-left -16px
+        z-index 99
+        .pic-wrapper
+          transform-origin 18px 18px
+          transform rotate(-30deg)
+          transition all .5s
+          &.active
+            transform rotate(-2deg)
       .disk
         position absolute
         width 275px
@@ -340,6 +424,20 @@
           margin auto
           border-radius 50%
           overflow hidden
+      .tips
+        position absolute
+        font-size 12px
+        color #fff
+        bottom 10px
+        left 50%
+        margin-left -59px
+        padding 3px 8px 4px 8px
+        border 1px solid #fff
+        border-radius 5px
+        opacity 0
+        transition all 1s
+        &.active
+          opacity 1
     .tools-bar
       display flex
       padding 15px 17px
@@ -351,6 +449,9 @@
           font-size 20px
           font-weight bold
           color #fff
+        .icon-shoucang
+          &.active
+            color red
     .play-bar
       padding 0 17px
       .process

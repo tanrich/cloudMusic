@@ -1,10 +1,10 @@
 <template>
   <div>
-    <transition name="view-show">
-      <div class="view" v-show="show">
+    <transition name="detail-show">
+      <div class="detail" v-show="show">
         <div class="top-container">
           <div class="top-bar">
-          <span class="back" @click="hideView">
+          <span class="back" @click="hideDetail">
             <i class="iconfont icon-fanhui"></i>
           </span>
             <span class="name">歌单</span>
@@ -43,7 +43,7 @@
           </div>
         </div>
         <div class="middle-container">
-          <listItem @showPlayView="_showPlayView"></listItem>
+          <listItem @showPlayView="_showPlayView" ref="listItem"></listItem>
         </div>
       </div>
     </transition>
@@ -55,11 +55,10 @@
   import listItem from 'components/listItem/listItem'
   import playView from 'components/playView/playView'
   export default {
-    name: 'view',
+    name: 'detail',
     data () {
       return {
-        show: false,
-        songInfo: {}
+        show: false
       }
     },
     components: {
@@ -67,26 +66,31 @@
     },
     computed: {
       ...mapState([
-        'defaultList', 'creator'
+        'defaultList',
+        'creator',
+        'songInfo'
       ])
     },
     methods: {
-      showView () {
+      showDetail () {
         this.show = true;
+        // better-scroll严重依赖DOM获取高度，等待数据更新，重新获取高度
+        this.$nextTick(() => {
+          this.$refs.listItem.initScroll();
+        })
       },
-      hideView () {
+      hideDetail () {
         this.show = false;
       },
-      _showPlayView (value) {
-        this.songInfo = value;
-        this.$refs['playView'].showPlayView()
+      _showPlayView () {
+        this.$refs['playView'].showPlayView();
       }
     }
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/iconfont.css"
-  .view
+  .detail
     position: fixed
     width 100%
     top 0
@@ -94,10 +98,11 @@
     bottom 50px
     background #fff
     transform translate3d(0, 0, 0)
-    &.view-show-enter, &.view-show-leave-active
+    overflow hidden
+    &.detail-show-enter, &.detail-show-leave-active
       opacity 0
       transform translate3d(100%, 0, 0)
-    &.view-show-enter-active, &.view-show-leave-active
+    &.detail-show-enter-active, &.detail-show-leave-active
       transition all .5s
     .top-container
       padding 20px 17px 15px 17px
@@ -162,7 +167,6 @@
     .middle-container
       position: fixed
       width 100%
-      height 100%
       top 252px
       bottom 0
       left 0

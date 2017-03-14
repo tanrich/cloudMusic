@@ -5,7 +5,7 @@ import songList from 'components/songList/songList'
 import radio from 'components/radio/radio'
 import rank from 'components/rank/rank'
 import mainPage from 'components/mainPage/mainPage'
-import myList from 'components/myList/myList'
+import mySongList from 'components/mySongList/mySongList'
 
 Vue.use(Router);
 
@@ -42,8 +42,8 @@ export default new Router({
       ]
     },
     {
-      path: '/myList',
-      component: myList
+      path: '/mySongList',
+      component: mySongList
     }
   ],
   linkActiveClass: 'active'

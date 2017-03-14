@@ -1,5 +1,5 @@
 <template>
-  <div class="myList">
+  <div class="mySongList">
     <div class="my-wrapper">
       <div class="my-box my-singer">
         <span class="icon">
@@ -34,24 +34,24 @@
         </div>
       </div>
     </div>
-    <songListView ref="view" name="view"></songListView>
+    <songListDetail ref="detail" name="detail"></songListDetail>
   </div>
 </template>
 <script type="text/ecmascript-6">
   import * as type from '@/store/mutation-types'
   import store from '@/store'
   import {mapState} from 'vuex'
-  import songListView from 'components/songListView/songListView'
+  import songListDetail from 'components/songListDetail/songListDetail'
   import axios from 'axios'
   import API from 'API'
   export default {
-    name: 'myList',
+    name: 'mySongList',
     data () {
       return {}
     },
     store,
     components: {
-      songListView
+      songListDetail
     },
     created () {
       let that = this;
@@ -70,7 +70,7 @@
     },
     methods: {
       showSongList () {
-        this.$refs['view'].showView();
+        this.$refs['detail'].showDetail();
       }
     }
   }
@@ -78,7 +78,7 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/index.styl"
   @import "../../common/stylus/iconfont.css"
-  .myList
+  .mySongList
     .my-wrapper
       background rgba(242, 244, 245, .6)
       .my-box

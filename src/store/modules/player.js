@@ -9,10 +9,11 @@ const state = {
   hMusicSource: '',
   mMusicSource: '',
   lMusicSource: '',
-  MusicSource: ''
+  MusicSource: '',
+  canPlay: false
 };
 const mutations = {
-  [type.CHANGE_CURRENTTIME] (state, newValue) {
+  [type.SET_CURRENTTIME] (state, newValue) {
     state.currentTime = newValue;
   },
   [type.SET_DURATION] (state, newValue) {
@@ -42,6 +43,9 @@ const mutations = {
   [type.SET_MUSICQUALITY] (state, newValue) {
     state.musicQuality = newValue;
   },
+  [type.SET_CANPLAY] (state, newValue) {
+    state.canPlay = newValue;
+  },
   [type.RESET_PLAYER] (state) {
     state.startCountTime = null;
     state.playStatus = false;
@@ -53,6 +57,7 @@ const mutations = {
     state.mMusicSource = '';
     state.lMusicSource = '';
     state.MusicSource = '';
+    state.canPlay = false;
   }
 };
 export default {

@@ -143,6 +143,11 @@ var app = express();
     }, 100);
   });
 
+  // 下载歌曲
+  router.get('/downLoad', function (req, res) {
+    var data = req.query;
+  });
+
   app.use('/Server', router)
 
 })();

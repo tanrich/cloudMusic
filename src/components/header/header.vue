@@ -10,7 +10,7 @@
         </router-link>
       </span>
       <span class="icon">
-        <router-link to="/myList">
+        <router-link to="/mySongList">
           <i class="iconfont icon-music2"></i>
         </router-link>
       </span>
