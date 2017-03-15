@@ -47,7 +47,7 @@
         </div>
       </div>
     </transition>
-    <playView ref="playView" :songInfo="songInfo"></playView>
+    <playView ref="playView"></playView>
   </div>
 </template>
 <script type="text/ecmascript-6">

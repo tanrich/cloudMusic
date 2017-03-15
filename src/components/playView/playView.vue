@@ -24,7 +24,7 @@
             <img :src="songInfo.album.blurPicUrl" v-if="songInfo.album" width="185" height="185">
           </div>
         </div>
-        <div class="tips" :class="{active:tipsStatus}">sorry,暂无资源可用</div>
+        <div class="tips" :class="{active:tipsStatus}">{{tipsInfo}}</div>
       </div>
       <div class="tools-bar">
         <div class="content">
@@ -97,10 +97,10 @@
       return {
         playViewShow: false,
         tipsStatus: false,
+        tipsInfo: '',
         collectStatus: false
       }
     },
-    props: ['songInfo'],
     filters: {
       // 对于时间进行格式化
       handleTime (value) {
@@ -136,7 +136,9 @@
         // 获得歌曲在集合中的位置
         songPosition: (state) => state.songPosition,
         // 获取歌曲集合
-        tracks: (state) => state.tracks
+        tracks: (state) => state.tracks,
+        // 获取歌曲信息
+        songInfo: (state) => state.songInfo
       }),
       // 提取歌曲资源为对象，准备发送至后台解码
       initMusicSource () {
@@ -170,20 +172,27 @@
       collect () {
         this.collectStatus = !this.collectStatus;
       },
-      // 设置歌曲是否可以播放(如果资源可以播放则会触发canplay事件执行setCanPlay函数)
+      // 设置歌曲是否可以播放(如果资源可以播放&&拖动音轨 会触发canplay事件执行setCanPlay函数)
       setCanPlay () {
+        console.log('可以播放')
         this.$store.commit(type.SET_CANPLAY, true);
+        // 歌曲可播放时自动开始播放 && 拖动音轨改为播放
+        this.em.play();
+        this.changePlayStatus(true);
       },
       // 音乐播放结束
       musicEnd () {
-        this.resetPlayer();
+        // 歌曲位置+1，准备播放下一首歌
         this.setSongPosition(this.songPosition + 1);
         this.setSongInfo(this.tracks[this.songPosition]);
-        this.$nextTick(() => {
-          if (this.canPlay) {
-            this.changePlayStatus(true);
+        this.showPlayView();
+        setTimeout(() => {
+          console.log('开始检测音乐资源');
+          if (this.musicQuality === 2 && !this.canPlay) {
+            console.log('切换下一首中');
+            this.musicEnd();
           }
-        })
+        }, 1500)
       },
       // 下载音乐
       download () {
@@ -267,7 +276,7 @@
       },
       // 当指定的音频/视频的元数据已加载时，会发生 loadedmetadata 事件，触发initTime()
       initTime (event) {
-        console.log('loadedmetadata');
+        console.log('正在缓冲数据');
         if (this.em === '') {
           this.setEm(event.target);
           // 获取音乐时间长度
@@ -285,7 +294,12 @@
           }
           this.changePlayStatus(!this.playStatus);
         } else {
-          console.log('资源还在加载中，请稍后……');
+          console.log('资源加载中,请稍后');
+          this.tipsInfo = '资源加载中,请稍后';
+          this.tipsStatus = true;
+          setTimeout(() => {
+            this.tipsStatus = false;
+          }, 2000)
         }
       },
       // 音乐播放时改变其播放位置时运行脚本
@@ -305,6 +319,7 @@
           if (!this.playViewShow || !this.lMusicSource) {
             return;
           }
+          console.time('a')
           switch (this.musicQuality) {
             case 0:
               console.log('尝试加载中音质');
@@ -317,13 +332,15 @@
               this.setMusicQuality(2);
               break;
             case 2:
-              console.log('抱歉没有可用资源');
+              console.log('抱歉无资源,准备切换下一首');
+              this.tipsInfo = '抱歉无资源,准备切换下一首';
               this.tipsStatus = true;
               setTimeout(() => {
                 this.tipsStatus = false;
               }, 2000);
               break;
           }
+          console.timeEnd('a')
         })
       }
     }
@@ -434,6 +451,7 @@
         padding 3px 8px 4px 8px
         border 1px solid #fff
         border-radius 5px
+        text-align center
         opacity 0
         transition all 1s
         &.active
