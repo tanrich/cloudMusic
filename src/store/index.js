@@ -19,23 +19,30 @@ const state = {
 const getter = {};
 const mutations = {
   [type.INIT_DEFAULT_LIST] (state, data) {
+    // 歌单默认信息
     state.defaultList = {
       coverImgUrl: data.coverImgUrl,
       trackCount: data.trackCount,
       name: data.name
     };
+    // 歌单创建者信息
     state.creator = {
       avatarUrl: data.creator.avatarUrl,
       nickname: data.creator.nickname,
       signature: data.creator.signature
     };
+    // 歌单中提取所有歌曲音轨
     data.tracks.forEach((value) => {
       state.tracks.push(value);
-    })
+    });
+    // 设置默认歌曲信息为firstSong
+    state.songInfo = state.tracks[state.songPosition]
   },
+  // 设置歌曲位置
   [type.SET_SONGPOSITION] (state, newValue) {
     state.songPosition = newValue;
   },
+  // 设置歌曲信息
   [type.SET_SONGINFO] (state, newValue) {
     state.songInfo = newValue;
   }

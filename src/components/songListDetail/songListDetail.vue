@@ -43,7 +43,7 @@
           </div>
         </div>
         <div class="middle-container">
-          <listItem @showPlayView="_showPlayView" ref="listItem"></listItem>
+          <listItem @mainStart="_mainStart" ref="listItem"></listItem>
         </div>
       </div>
     </transition>
@@ -82,8 +82,8 @@
       hideDetail () {
         this.show = false;
       },
-      _showPlayView () {
-        this.$refs['playView'].showPlayView();
+      _mainStart () {
+        this.$refs['playView'].mainStart();
       }
     }
   }

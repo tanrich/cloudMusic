@@ -10,7 +10,7 @@
 <script type="text/ecmascript-6">
   import Header from 'components/header/header'
   import mainPage from 'components/mainPage/mainPage'
-  import play from 'components/player/player'
+  import buttonPlay from 'components/bottomPlayer/bottomPlayer'
   import axios from 'axios'
   import store from '@/store'
   import * as type from '@/store/mutation-types'
@@ -23,7 +23,7 @@
     components: {
       'v-header': Header,
       'v-mainPage': mainPage,
-      'v-play': play
+      'v-play': buttonPlay
     }
   }
 </script>
