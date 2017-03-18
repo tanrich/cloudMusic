@@ -1,97 +1,104 @@
 <template>
-  <transition name="playView">
-    <div class="playView" v-show="playViewShow">
-      <div class="header">
-        <div class="back" @click="hidePlayView">
-          <i class="iconfont icon-fanhui"></i>
-        </div>
-        <div class="content">
-          <div class="title">{{songInfo.name}}</div>
-          <div class="name" v-for="item in songInfo.artists">{{item.name}}</div>
-        </div>
-        <div class="share">
-          <i class="iconfont icon-share"></i>
-        </div>
-      </div>
-      <div class="album">
-        <div class="pin">
-          <div class="pic-wrapper" :class="{active:playStatus}">
-            <img src="./pin.png" width="100">
+  <div>
+    <transition name="playView">
+      <div class="playView" v-show="playViewShow">
+        <!--头部和打碟-->
+        <div class="playView-up">
+          <div class="header">
+            <div class="back" @click="hidePlayView">
+              <i class="iconfont icon-fanhui"></i>
+            </div>
+            <div class="content">
+              <div class="title">{{songInfo.name}}</div>
+              <div class="name" v-for="item in songInfo.artists">{{item.name}}</div>
+            </div>
+            <div class="share">
+              <i class="iconfont icon-share"></i>
+            </div>
+          </div>
+          <div class="album">
+            <div class="pin">
+              <div class="pic-wrapper" :class="{active:playStatus}">
+                <img src="./pin.png" width="100" class="img-pin">
+              </div>
+            </div>
+            <div class="disk" :class="{active:playStatus}">
+              <div class="pic-wrapper">
+                <img :src="songInfo.album.blurPicUrl" v-if="songInfo.album" width="185" height="185" class="img-album">
+              </div>
+            </div>
+            <div class="tips" :class="{active:tipsStatus}">{{tipsInfo}}</div>
           </div>
         </div>
-        <div class="disk" :class="{active:playStatus}">
-          <div class="pic-wrapper">
-            <img :src="songInfo.album.blurPicUrl" v-if="songInfo.album" width="185" height="185">
+        <!--进度条、工具栏、控制按钮-->
+        <div class="playView-down">
+          <div class="tools-bar">
+            <div class="content">
+              <i class="iconfont icon-shoucang" :class="{active:collectStatus}" @click="collect"></i>
+            </div>
+            <div class="content">
+              <i class="iconfont icon-xiazai" @click="download"></i>
+              <a :href="MusicSource" title="download" ref="download" download hidden></a>
+            </div>
+            <div class="content">
+              <i class="iconfont icon-pinglun" @click="_showSongComments"></i>
+            </div>
+            <div class="content">
+              <i class="iconfont icon-jinlingyingcaiwangtubiao42"></i>
+            </div>
           </div>
-        </div>
-        <div class="tips" :class="{active:tipsStatus}">{{tipsInfo}}</div>
-      </div>
-      <div class="tools-bar">
-        <div class="content">
-          <i class="iconfont icon-shoucang" :class="{active:collectStatus}" @click="collect"></i>
-        </div>
-        <div class="content">
-          <i class="iconfont icon-xiazai" @click="download"></i>
-          <a :href="MusicSource" title="download" ref="download" download hidden></a>
-        </div>
-        <div class="content">
-          <i class="iconfont icon-pinglun
-电台
-"></i>
-        </div>
-        <div class="content">
-          <i class="iconfont icon-jinlingyingcaiwangtubiao42"></i>
-        </div>
-      </div>
-      <div class="play-bar">
-        <div class="process">
-          <span class="currentTime">{{currentTime | handleTime}}</span>
-          <span class="range">
+          <div class="play-bar">
+            <div class="process">
+              <span class="currentTime">{{currentTime | handleTime}}</span>
+              <span class="range">
             <input
               ref="range"
               type="range"
               step="1"
               min="0"
               :max="duration"
-              @input="test($event)"
               v-model="currentTime"
             >
           </span>
-          <span class="duration">{{duration | handleTime}}</span>
-          <audio ref="audio"
-                 id="audio"
-                 :src="MusicSource"
-                 @loadedmetadata="initTime($event)"
-                 @timeupdate="startCountTime($event)"
-                 @error="autoSwitch"
-                 @canplay="setCanPlay"
-                 @ended="nextSong"
-                 controls hidden
-          >
-          </audio>
+              <span class="duration">{{duration | handleTime}}</span>
+              <audio ref="audio"
+                     id="audio"
+                     :src="MusicSource"
+                     @loadedmetadata="initTime($event)"
+                     @timeupdate="startCountTime($event)"
+                     @error="autoSwitch"
+                     @canplay="setCanPlay"
+                     @ended="nextSong"
+                     controls hidden
+              >
+              </audio>
+            </div>
+            <div class="button">
+              <div class="pre">
+                <i class="iconfont icon-xiayishou" @click="preSong"></i>
+              </div>
+              <div class="go">
+                <i class="iconfont icon-bofang" @click="togglePlay" v-show="!playStatus"></i>
+                <i class="iconfont icon-bofang1" @click="togglePlay" v-show="playStatus"></i>
+              </div>
+              <div class="next">
+                <i class="iconfont icon-xiayishou" @click="nextSong"></i>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="button">
-          <div class="pre">
-            <i class="iconfont icon-xiayishou" @click="preSong"></i>
-          </div>
-          <div class="go">
-            <i class="iconfont icon-bofang" @click="togglePlay" v-show="!playStatus"></i>
-            <i class="iconfont icon-bofang1" @click="togglePlay" v-show="playStatus"></i>
-          </div>
-          <div class="next">
-            <i class="iconfont icon-xiayishou" @click="nextSong"></i>
-          </div>
-        </div>
+        <!--sticky footer布局-->
       </div>
-    </div>
-  </transition>
-
+    </transition>
+    <songComments ref="songComments"></songComments>
+  </div>
 </template>
 <script type="text/ecmascript-6">
   import axios from 'axios'
   import API from 'API'
   import * as type from '@/store/mutation-types'
   import {mapState, mapMutations} from 'vuex'
+  import songComments from 'components/songComments/songComments'
   export default {
     name: 'playView',
     data () {
@@ -100,6 +107,9 @@
         tipsInfo: '',
         collectStatus: false
       }
+    },
+    components: {
+      songComments
     },
     filters: {
       // 对于时间进行格式化
@@ -168,7 +178,9 @@
       }
     },
     methods: {
-      test (event) {
+      // 展示评论
+      _showSongComments () {
+        this.$refs['songComments'].showSongComments()
       },
       // 播放器开始工作入口
       mainStart () {
@@ -324,7 +336,7 @@
           this.tipsStatus = true;
           setTimeout(() => {
             this.tipsStatus = false;
-          }, 2000)
+          }, 2000);
         }
       },
       // 音乐播放时改变其播放位置时运行脚本
@@ -336,7 +348,7 @@
       // 歌曲音质自动切换避免404
       autoSwitch () {
         this.$nextTick(() => {
-          if (!this.lMusicSource && !this.mMusicSource && !this.hMusicSource) {
+          if (!this.lMusicSource) {
             return;
           }
           switch (this.musicQuality) {
@@ -375,186 +387,231 @@
   .playView
     position fixed
     width 100%
+    height 100%
     top 0
     left 0
     bottom 0
     background #000
     transform translate3d(0, 0, 0)
-    z-index 9999
+    z-index 100
     overflow hidden
     &.playView-enter-active, &.playView-leave-active
       transition all .5s
     &.playView-enter, &.playView-leave-active
       transform translate3d(100%, 0, 0)
-    .header
-      display: flex
-      padding 20px 17px
-      font-size 0
-      .back
-        flex 0 0 20px
-        vertical-align top
-        margin-top 5px
-        .icon-fanhui
-          display inline-block
-          font-size 20px
-          font-weight bold
-          color #fff
-      .content
-        flex 1
+    .playView-up
+      height 100%
+      min-height 100%
+      padding-bottom 185px
+      box-sizing border-box
+      display flex
+      flex-direction column
+      .header
+        display flex
+        padding 20px 17px
         font-size 0
-        vertical-align top
-        padding-left 20px
-        .title
-          font-size 16px
-          color #fff
-        .name
-          font-size 12px
-          color #a8a7a7
+        .back
+          flex 0 0 20px
+          vertical-align top
           margin-top 5px
-      .share
-        flex 0 0 20px
-        vertical-align top
-        margin-top 5px
-        .icon-share
-          display inline-block
-          font-size 20px
-          font-weight bold
-          color #fff
-    .album
-      height 400px
-      position relative
-      overflow hidden
-      .pin
-        position absolute
-        display inline-block
-        top -18px
-        left 50%
-        margin-left -16px
-        z-index 99
-        .pic-wrapper
-          transform-origin 18px 18px
-          transform rotate(-30deg)
-          transition all .5s
-          &.active
-            transform rotate(-2deg)
-      .disk
-        position absolute
-        width 275px
-        height 275px
-        top 0
-        right 0
-        bottom 0
-        left 0
-        margin auto
-        background url("./disk.png") no-repeat
-        background-size 100% 100%
-        animation rotate 25s infinite linear
-        animation-play-state paused;
-        @keyframes rotate
-          to
-            transform rotate(1turn)
-        &.active
-          animation-play-state running
-        .pic-wrapper
+          .icon-fanhui
+            display inline-block
+            font-size 20px
+            font-weight bold
+            color #fff
+        .content
+          flex 1
+          font-size 0
+          vertical-align top
+          padding-left 20px
+          .title
+            font-size 16px
+            color #fff
+          .name
+            font-size 12px
+            color #a8a7a7
+            margin-top 5px
+        .share
+          flex 0 0 20px
+          vertical-align top
+          margin-top 5px
+          .icon-share
+            display inline-block
+            font-size 20px
+            font-weight bold
+            color #fff
+
+      .album
+        position relative
+        overflow hidden
+        flex 1
+        .pin
           position absolute
+          display inline-block
+          top -18px
+          left 50%
+          margin-left -16px
+          z-index 99
+          .pic-wrapper
+            width 100px
+            transform-origin 18px 18px
+            transform rotate(-30deg)
+            transition all .5s
+            &.active
+              transform rotate(-2deg)
+        .disk
+          position absolute
+          width 275px
+          height 275px
           top 0
           right 0
           bottom 0
           left 0
-          width 185px
-          height 185px
           margin auto
-          border-radius 50%
-          overflow hidden
-      .tips
-        position absolute
-        font-size 12px
-        color #fff
-        bottom 10px
-        left 50%
-        margin-left -59px
-        padding 3px 8px 4px 8px
-        border 1px solid #fff
-        border-radius 5px
-        text-align center
-        opacity 0
-        transition all 1s
-        &.active
-          opacity 1
-    .tools-bar
-      display flex
-      padding 15px 17px
-      font-size 0
-      .content
-        flex 1
-        text-align center
-        .iconfont
-          font-size 20px
-          font-weight bold
-          color #fff
-        .icon-shoucang
+          background url("./disk.png") no-repeat
+          background-size 100% 100%
+          animation rotate 25s infinite linear
+          animation-play-state paused;
+          @keyframes rotate
+            to
+              transform rotate(1turn)
           &.active
-            color red
-    .play-bar
-      padding 0 17px
-      .process
-        display flex
-        font-size 0
-        color #fff
-        margin 15px 0
-        .currentTime, .duration
-          flex 0 0 35px
-          display inline-block
+            animation-play-state running
+          .pic-wrapper
+            position absolute
+            top 0
+            right 0
+            bottom 0
+            left 0
+            width 183px
+            height 183px
+            margin auto
+            border-radius 50%
+            overflow hidden
+        .tips
+          position absolute
           font-size 12px
-          line-height 22px
-          text-align center
-          vertical-align top
-        .range
-          flex 1
-          display inline-block
-          vertical-align top
-          padding 10px 5px
-          box-sizing border-box
-          overflow hidden
-          input[type=range]
-            -webkit-appearance none
-            width 100%
-            height 2px
-            border-radius: 10px
-            box-sizing border-box
-            background linear-gradient(to right, white 0, white 100%)
-            cursor pointer
-            &::-webkit-slider-runnable-track
-              height 2px
-              border-radius 10px
-            &::-webkit-slider-thumb
-              -webkit-appearance: none
-              width 16px
-              height 16px
-              border-radius 50%
-              background red
-              margin-top -7px
-            &:focus
-              outline none
-      .button
-        display flex
-        padding 10px 0
-        .pre, .go, .next
-          flex 1
           color #fff
-          vertical-align top
+          bottom 10px
+          left 50%
+          margin-left -59px
+          padding 3px 8px 4px 8px
+          border 1px solid #fff
+          border-radius 5px
           text-align center
-        .pre
-          transform rotate(180deg)
-        .pre, .next
-          margin-top 7px
-          .icon-xiayishou
+          opacity 0
+          transition all 1s
+          &.active
+            opacity 1
+        @media only screen and (max-width 320px)
+          pin
+            .pic-wrapper
+              width 70px
+              .img-pin
+                width inherit
+
+          .disk
+            width 230px
+            height 230px
+            .pic-wrapper
+              width 154px
+              height 154px
+              .img-album
+                width inherit
+                height inherit
+        @media only screen and (max-width 360px)
+          .pin
+            .pic-wrapper
+              width 96px
+              .img-pin
+                width inherit
+
+          .disk
+            width 264px
+            height 264px
+            .pic-wrapper
+              width 174px
+              height 174px
+              .img-album
+                width inherit
+                height inherit
+    .playView-down
+      position: relative
+      margin-top -185px
+      .tools-bar
+        display flex
+        padding 15px 17px
+        font-size 0
+        .content
+          flex 1
+          text-align center
+          .iconfont
+            font-size 20px
+            font-weight bold
+            color #fff
+          .icon-shoucang
+            &.active
+              color red
+      .play-bar
+        padding 0 17px
+        .process
+          display flex
+          font-size 0
+          color #fff
+          margin 15px 0
+          .currentTime, .duration
+            flex 0 0 35px
             display inline-block
-            font-size 42px
-            line-height 42px
-        .go
-          .icon-bofang, .icon-bofang1
+            font-size 12px
+            line-height 22px
+            text-align center
+            vertical-align top
+          .range
+            flex 1
             display inline-block
-            font-size 55px
-            line-height 55px
+            vertical-align top
+            padding 10px 5px
+            box-sizing border-box
+            overflow hidden
+            input[type=range]
+              -webkit-appearance none
+              width 100%
+              height 2px
+              border-radius: 10px
+              box-sizing border-box
+              background linear-gradient(to right, white 0, white 100%)
+              cursor pointer
+              &::-webkit-slider-runnable-track
+                height 2px
+                border-radius 10px
+              &::-webkit-slider-thumb
+                -webkit-appearance: none
+                width 16px
+                height 16px
+                border-radius 50%
+                background red
+                margin-top -7px
+              &:focus
+                outline none
+        .button
+          display flex
+          padding 10px 0
+          .pre, .go, .next
+            flex 1
+            color #fff
+            vertical-align top
+            text-align center
+          .pre
+            transform rotate(180deg)
+          .pre, .next
+            margin-top 7px
+            .icon-xiayishou
+              display inline-block
+              font-size 42px
+              line-height 42px
+          .go
+            .icon-bofang, .icon-bofang1
+              display inline-block
+              font-size 55px
+              line-height 55px
 </style>

@@ -42,7 +42,7 @@ const mutations = {
   [type.SET_SONGPOSITION] (state, newValue) {
     state.songPosition = newValue;
   },
-  // 设置歌曲信息
+  // 设置歌曲默认信息
   [type.SET_SONGINFO] (state, newValue) {
     state.songInfo = newValue;
   }

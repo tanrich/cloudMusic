@@ -1,0 +1,493 @@
+{
+  "isMusician": false,
+  "userId": -1,
+  "topComments": [],
+  "moreHot": false,
+  "hotComments": [
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/1R2HBEzc4JKCNcQNW0Ct6g==/1364493947703384.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 62867909,
+        "userType": 0,
+        "nickname": "南极不季寞",
+        "expertTags": null,
+        "vipType": 0
+      },
+      "beReplied": [],
+      "time": 1442706023562,
+      "liked": false,
+      "likedCount": 1741,
+      "commentId": 36863528,
+      "content": "90后听这种歌的还有多少"
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/ndkA-HYNb9nMWV7pZrlihg==/18793952255385991.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 47660616,
+        "userType": 0,
+        "nickname": "永远会永远",
+        "expertTags": null,
+        "vipType": 0
+      },
+      "beReplied": [],
+      "time": 1452700955809,
+      "liked": false,
+      "likedCount": 349,
+      "commentId": 61594164,
+      "content": "没有人和我一样想到三毛吗？"
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/rGuxG5mH8OWow0srqw6ZvQ==/7934075908364356.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 42512355,
+        "userType": 0,
+        "nickname": "憨厚鲨",
+        "expertTags": null,
+        "vipType": 0
+      },
+      "beReplied": [],
+      "time": 1438840206068,
+      "liked": false,
+      "likedCount": 295,
+      "commentId": 29793585,
+      "content": "小恩恩一直是叔的梦中情人唦，[色][色]当年看雨季的mv，男主抱着小恩恩又摇又晃，叔都想钻到电视里去，把他活活掐死"
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/eRoRGsNTqqt5jgVVDaPjcg==/7857110092720428.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 3522470,
+        "userType": 0,
+        "nickname": "冷死鱼",
+        "expertTags": null,
+        "vipType": 0
+      },
+      "beReplied": [],
+      "time": 1440207236942,
+      "liked": false,
+      "likedCount": 218,
+      "commentId": 32296450,
+      "content": "罗大佑说以前和现在乐音区别在于以前的更人文一点，我俗一点觉得以前更有人情味一点"
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/3rieI0_iM1gs5hApqVpjMg==/109951162863946383.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 60991258,
+        "userType": 0,
+        "nickname": "云喜云喜",
+        "expertTags": null,
+        "vipType": 0
+      },
+      "beReplied": [],
+      "time": 1443167794583,
+      "liked": false,
+      "likedCount": 170,
+      "commentId": 37634650,
+      "content": "张爱玲说宁愿天天下雨，以为你下雨不来，而你却说，雨季不再来。"
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/PQJx3XSNP2JfKjieJF9TYw==/2895014116684688.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 45463825,
+        "userType": 0,
+        "nickname": "传说中的琦琦",
+        "expertTags": null,
+        "vipType": 11
+      },
+      "beReplied": [
+        {
+          "user": {
+            "locationInfo": null,
+            "avatarUrl": "http://p1.music.126.net/1R2HBEzc4JKCNcQNW0Ct6g==/1364493947703384.jpg",
+            "authStatus": 0,
+            "remarkName": null,
+            "userId": 62867909,
+            "userType": 0,
+            "nickname": "南极不季寞",
+            "expertTags": null,
+            "vipType": 0
+          },
+          "content": "90后听这种歌的还有多少",
+          "status": 0
+        }
+      ],
+      "time": 1443203108960,
+      "liked": false,
+      "likedCount": 125,
+      "commentId": 37806145,
+      "content": "90后喜欢老歌的一定会听这首吧，很有感觉，多久听都不会过时，特别喜欢黎瑞恩的声音"
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/Fq6z6_yYwf2zo8cY8yyGpw==/7856010580688446.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 3182708,
+        "userType": 0,
+        "nickname": "wildlife1998",
+        "expertTags": null,
+        "vipType": 0
+      },
+      "beReplied": [],
+      "time": 1450100503389,
+      "liked": false,
+      "likedCount": 122,
+      "commentId": 53738624,
+      "content": "还以为是陈慧娴的声音，感觉太像了。"
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/g3-foKH6BfoNowi42l5Nhg==/18645518185604082.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 417068530,
+        "userType": 0,
+        "nickname": "撸老歌的小姐姐",
+        "expertTags": null,
+        "vipType": 0
+      },
+      "beReplied": [],
+      "time": 1487763633747,
+      "liked": false,
+      "likedCount": 28,
+      "commentId": 315279937,
+      "content": "把讲到黄凯芹的都赞了一遍。[爱心]"
+    }
+  ],
+  "code": 200,
+  "comments": [
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/TtvYRPJ4lboq9UmXiJ_sRg==/3434874327871123.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 286730391,
+        "userType": 0,
+        "nickname": "Volar-damndamn",
+        "expertTags": null,
+        "vipType": 0
+      },
+      "beReplied": [],
+      "time": 1489810531818,
+      "liked": false,
+      "likedCount": 1,
+      "commentId": 333140752,
+      "content": "推荐黄凯芹的晚秋，也是甚有味道",
+      "isRemoveHotComment": false
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/brSDJqulzYMxo2D8qASSlQ==/19140298416358733.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 326387342,
+        "userType": 0,
+        "nickname": "有心人sos",
+        "expertTags": null,
+        "vipType": 0
+      },
+      "beReplied": [
+        {
+          "user": {
+            "locationInfo": null,
+            "avatarUrl": "http://p1.music.126.net/fR1WHUQpYhNJSP_QmQAJfg==/18553159208931752.jpg",
+            "authStatus": 0,
+            "remarkName": null,
+            "userId": 129578704,
+            "userType": 0,
+            "nickname": "车干-轩",
+            "expertTags": null,
+            "vipType": 0
+          },
+          "content": "日推有这上年代的歌。90后的我多牛逼",
+          "status": 0
+        }
+      ],
+      "time": 1489806719617,
+      "liked": false,
+      "likedCount": 2,
+      "commentId": 333104352,
+      "content": "那00年的我呢[呆]",
+      "isRemoveHotComment": false
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/qc8iuxalQJKUCzviqGQ21Q==/1380986607198119.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 252096766,
+        "userType": 0,
+        "nickname": "扶墙先生丶",
+        "expertTags": null,
+        "vipType": 0
+      },
+      "beReplied": [
+        {
+          "user": {
+            "locationInfo": null,
+            "avatarUrl": "http://p1.music.126.net/1R2HBEzc4JKCNcQNW0Ct6g==/1364493947703384.jpg",
+            "authStatus": 0,
+            "remarkName": null,
+            "userId": 62867909,
+            "userType": 0,
+            "nickname": "南极不季寞",
+            "expertTags": null,
+            "vipType": 0
+          },
+          "content": "90后听这种歌的还有多少",
+          "status": 0
+        }
+      ],
+      "time": 1489800270130,
+      "liked": false,
+      "likedCount": 0,
+      "commentId": 333035153,
+      "content": "多的是，90后最大的也27了。",
+      "isRemoveHotComment": false
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/OVAwKml_qUIxXha7s_nh_g==/1404076352953556.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 73180306,
+        "userType": 0,
+        "nickname": "人来人往_任我行",
+        "expertTags": null,
+        "vipType": 0
+      },
+      "beReplied": [],
+      "time": 1489794005728,
+      "liked": false,
+      "likedCount": 0,
+      "commentId": 332973867,
+      "content": "从小听到大的粤语歌之一",
+      "isRemoveHotComment": false
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/fR1WHUQpYhNJSP_QmQAJfg==/18553159208931752.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 129578704,
+        "userType": 0,
+        "nickname": "车干-轩",
+        "expertTags": null,
+        "vipType": 0
+      },
+      "beReplied": [],
+      "time": 1489793267406,
+      "liked": false,
+      "likedCount": 0,
+      "commentId": 332976523,
+      "content": "日推有这上年代的歌。90后的我多牛逼",
+      "isRemoveHotComment": false
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/XANIuhnY_7hLm2GDlZbJ0A==/18829136627427128.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 252790061,
+        "userType": 0,
+        "nickname": "慧卡卡",
+        "expertTags": null,
+        "vipType": 0
+      },
+      "beReplied": [
+        {
+          "user": {
+            "locationInfo": null,
+            "avatarUrl": "http://p1.music.126.net/BH4ZA5fTIG9L5EQuiugTBQ==/1411772942196453.jpg",
+            "authStatus": 0,
+            "remarkName": null,
+            "userId": 88707113,
+            "userType": 0,
+            "nickname": "YukkeiD",
+            "expertTags": null,
+            "vipType": 10
+          },
+          "content": "诶… 我刚刚po了一个链接 好像被吞了",
+          "status": 0
+        }
+      ],
+      "time": 1489764522283,
+      "liked": false,
+      "likedCount": 0,
+      "commentId": 332817844,
+      "content": "我手快按掉了然后就找不到了[流泪]",
+      "isRemoveHotComment": false
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/BH4ZA5fTIG9L5EQuiugTBQ==/1411772942196453.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 88707113,
+        "userType": 0,
+        "nickname": "YukkeiD",
+        "expertTags": null,
+        "vipType": 10
+      },
+      "beReplied": [
+        {
+          "user": {
+            "locationInfo": null,
+            "avatarUrl": "http://p1.music.126.net/XANIuhnY_7hLm2GDlZbJ0A==/18829136627427128.jpg",
+            "authStatus": 0,
+            "remarkName": null,
+            "userId": 252790061,
+            "userType": 0,
+            "nickname": "慧卡卡",
+            "expertTags": null,
+            "vipType": 0
+          },
+          "content": "你是不是发了？",
+          "status": 0
+        }
+      ],
+      "time": 1489764444051,
+      "liked": false,
+      "likedCount": 0,
+      "commentId": 332827307,
+      "content": "诶… 我刚刚po了一个链接 好像被吞了",
+      "isRemoveHotComment": false
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/XANIuhnY_7hLm2GDlZbJ0A==/18829136627427128.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 252790061,
+        "userType": 0,
+        "nickname": "慧卡卡",
+        "expertTags": null,
+        "vipType": 0
+      },
+      "beReplied": [
+        {
+          "user": {
+            "locationInfo": null,
+            "avatarUrl": "http://p1.music.126.net/BH4ZA5fTIG9L5EQuiugTBQ==/1411772942196453.jpg",
+            "authStatus": 0,
+            "remarkName": null,
+            "userId": 88707113,
+            "userType": 0,
+            "nickname": "YukkeiD",
+            "expertTags": null,
+            "vipType": 10
+          },
+          "content": "嗯嗯我找找看哦～",
+          "status": 0
+        }
+      ],
+      "time": 1489764353129,
+      "liked": false,
+      "likedCount": 0,
+      "commentId": 332810944,
+      "content": "你是不是发了？",
+      "isRemoveHotComment": false
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/BH4ZA5fTIG9L5EQuiugTBQ==/1411772942196453.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 88707113,
+        "userType": 0,
+        "nickname": "YukkeiD",
+        "expertTags": null,
+        "vipType": 10
+      },
+      "beReplied": [
+        {
+          "user": {
+            "locationInfo": null,
+            "avatarUrl": "http://p1.music.126.net/XANIuhnY_7hLm2GDlZbJ0A==/18829136627427128.jpg",
+            "authStatus": 0,
+            "remarkName": null,
+            "userId": 252790061,
+            "userType": 0,
+            "nickname": "慧卡卡",
+            "expertTags": null,
+            "vipType": 0
+          },
+          "content": "啊啊啊啊啊，哪里看到的呀，我也想看[呲牙]",
+          "status": 0
+        }
+      ],
+      "time": 1489760865691,
+      "liked": false,
+      "likedCount": 0,
+      "commentId": 332761269,
+      "content": "嗯嗯我找找看哦～",
+      "isRemoveHotComment": false
+    },
+    {
+      "user": {
+        "locationInfo": null,
+        "avatarUrl": "http://p1.music.126.net/XANIuhnY_7hLm2GDlZbJ0A==/18829136627427128.jpg",
+        "authStatus": 0,
+        "remarkName": null,
+        "userId": 252790061,
+        "userType": 0,
+        "nickname": "慧卡卡",
+        "expertTags": null,
+        "vipType": 0
+      },
+      "beReplied": [
+        {
+          "user": {
+            "locationInfo": null,
+            "avatarUrl": "http://p1.music.126.net/BH4ZA5fTIG9L5EQuiugTBQ==/1411772942196453.jpg",
+            "authStatus": 0,
+            "remarkName": null,
+            "userId": 88707113,
+            "userType": 0,
+            "nickname": "YukkeiD",
+            "expertTags": null,
+            "vipType": 10
+          },
+          "content": "嗯嗯 好像是今年年初她和yy还有eason在k房唱歌的视频 她唱了这首歌",
+          "status": 0
+        }
+      ],
+      "time": 1489760424060,
+      "liked": false,
+      "likedCount": 0,
+      "commentId": 332739889,
+      "content": "啊啊啊啊啊，哪里看到的呀，我也想看[呲牙]",
+      "isRemoveHotComment": false
+    }
+  ],
+  "total": 1171,
+  "more": true
+}

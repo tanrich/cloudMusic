@@ -80,7 +80,7 @@
     height 50px
     left 0
     bottom 0
-    z-index 999
+    z-index 98
     background rgba(255, 255, 255, 1)
     padding 5px 8px
     box-sizing border-box

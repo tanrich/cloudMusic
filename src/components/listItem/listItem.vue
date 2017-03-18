@@ -1,7 +1,7 @@
 <template>
   <div class="listItem" ref="listItem">
     <ul v-show="defaultList.trackCount">
-      <li v-for="(item,index) in tracks" class="item" @click="mainStart(item,index)">
+      <li v-for="(item,index) in tracks" class="item" @click="mainStart($event,item,index)">
         <div class="num">{{index+1}}</div>
         <div class="content border-1px-bottom">
           <h1 class="name">{{item.name}}</h1>
@@ -50,7 +50,11 @@
         this.$store.commit(type.SET_SONGPOSITION, newValue);
       },
       // 开始播放音乐
-      mainStart (songInfo, songPosition) {
+      mainStart (event, songInfo, songPosition) {
+        // 网页版因为不存在preventDefault,所以阻止移动端的派发事件
+        if (!event._constructed) {
+          return false
+        }
         this.initSongInfo(songInfo);
         this.initSongPosition(songPosition);
         this.$emit('mainStart');
