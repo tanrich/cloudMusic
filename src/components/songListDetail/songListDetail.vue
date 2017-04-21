@@ -11,7 +11,7 @@
           </div>
           <div class="top-image">
             <div class="image">
-              <img :src="defaultList.coverImgUrl" alt="" width="125" height="125">
+              <img :src="defaultList.coverImgUrl" alt="" width="110" height="110">
             </div>
             <div class="content">
               <h1 class="title">{{defaultList.name}}</h1>
@@ -54,6 +54,8 @@
   import {mapState} from 'vuex'
   import listItem from 'components/listItem/listItem'
   import playView from 'components/playView/playView'
+  import * as type from '@/store/mutation-types'
+  import API from 'API'
   export default {
     name: 'detail',
     data () {
@@ -68,22 +70,46 @@
       ...mapState([
         'defaultList',
         'creator',
-        'songInfo'
+        'songInfo',
+        'songListMenu'
       ])
     },
+    created () {
+    },
     methods: {
-      showDetail () {
+      showDetail (index) {
         this.show = true;
-        // better-scroll严重依赖DOM获取高度，等待数据更新，重新获取高度
-        this.$nextTick(() => {
-          this.$refs.listItem.initScroll();
-        })
+        // 若两次点击歌单相同，则不发送ajax
+        if (this.defaultList.id === this.songListMenu[index].id) {
+          return;
+        }
+        this.initSongList(this.songListMenu[index].id);
       },
       hideDetail () {
         this.show = false;
       },
       _mainStart () {
         this.$refs['playView'].mainStart();
+      },
+      initSongList (id) {
+        let that = this;
+        API.getDefaultSongList({id})
+          .then((res) => {
+            res = res.data;
+            if (res.code === 200) {
+              let data = res.result;
+              that.$store.commit(type.INIT_DEFAULT_LIST, data);
+            }
+          })
+          .then(() => {
+            // better-scroll严重依赖DOM获取高度，等待数据更新，重新获取高度
+            this.$nextTick(() => {
+              this.$refs.listItem.initScroll();
+            })
+          })
+          .catch(err => {
+            console.log(err)
+          })
       }
     }
   }
@@ -167,7 +193,7 @@
     .middle-container
       position: fixed
       width 100%
-      top 252px
+      top 238px
       bottom 0
       left 0
       background rgba(242, 244, 245, .6)

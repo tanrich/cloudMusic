@@ -31,6 +31,7 @@ var app = express();
 
 (function () {
   let request = require('request');
+  let request_promise = require('request-promise');
   let router = express.Router();
   let resStatus = false;
   let baseURL = 'http://music.163.com/api';
@@ -38,21 +39,23 @@ var app = express();
   let baseCommentsURL = 'http://music.163.com/api/v1/resource/comments';
   let resData;
   let md5 = require('./md5');
+
+  let headers = {
+    'Accept': '*/*',
+    'Accept-Encoding': 'gzip,deflate,sdch',
+    'Accept-Language': 'zh-CN,en-US;q=0.7,en;q=0.3',
+    'Connection': 'keep-alive',
+    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    'Host': 'music.163.com',
+    'Referer': 'http://music.163.com/',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36'
+  };
   // request请求options
   let options = {
-    headers: {"Connection": "close"},
     url: "",
     method: "GET",
     json: true
   };
-
-  // request请求回调函数
-  function callback(error, res, data) {
-    if (!error && res.statusCode == 200) {
-      resData = data;
-      resStatus = true;
-    }
-  }
 
   // 深度克隆
   function clone(obj) {
@@ -75,29 +78,33 @@ var app = express();
     }
   }
 
-  // 服务端返回数据
-  function sendData(req, res) {
-    let time = setInterval(function () {
-      // 默认情况下等待request请求数据完毕，服务端才开始返回
-      if (resStatus) {
-        clearInterval(time);
-        resStatus = false;
-        res.send(resData);
-        res.end();
-      }
-    }, 100)
-  }
+
+  /**
+   * 请求user歌单列表
+   * 示例: http://music.163.com/api/user/playlist/?offset=0&limit=10&uid=79094369
+   */
+  router.get('/songListMenu', function (req, res) {
+    let url = baseURL + '/user/playlist/?offset=0&limit=100&uid=79094369';
+    let copyOptions = Object.assign({}, options, {url: url});
+    request_promise(copyOptions).then(function (data) {
+      res.send(data)
+    }).catch(function (err) {
+      console.log(err);
+    })
+  });
 
   /**
    * 请求默认歌单
    * 示例：http://music.163.com/api/playlist/detail?id=616445224
    */
   router.get('/defaultSongList', function (req, res) {
-    let url = baseURL + '/playlist/detail?id=616445224';
-    let copyOptions = clone(options);
-    copyOptions.url = url;
-    request(copyOptions, callback);
-    sendData(req, res);
+    let url = baseURL + '/playlist/detail?id=' + req.query.id;
+    let copyOptions = Object.assign({}, options, {url: url});
+    request_promise(copyOptions).then(function (data) {
+      res.send(data)
+    }).catch(function (err) {
+      console.log(err);
+    })
   });
 
   /**
@@ -108,11 +115,13 @@ var app = express();
     req = req.query;
     let string = '/R_SO_4_' + req.musicId;
     let offset = req.offset;
-    let url = baseCommentsURL + string + '/?rid=' + string + 'offset=' + offset + '&total=false&limit=10';
-    let copyOptions = clone(options);
-    copyOptions.url = url;
-    request(copyOptions, callback);
-    sendData(req, res);
+    let url = baseCommentsURL + string + '/?rid=' + string + '&offset=' + offset + '&total=false&limit=10';
+    let copyOptions = Object.assign({}, options, {url: url});
+    request_promise(copyOptions).then(function (data) {
+      res.send(data)
+    }).catch(function (err) {
+      console.log(err);
+    })
   });
 
   /**
@@ -159,7 +168,7 @@ var app = express();
         res.send(result);
         res.end();
       }
-    }, 100);
+    }, 10);
   });
 
 

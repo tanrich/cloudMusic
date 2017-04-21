@@ -5,6 +5,8 @@ import player from './modules/player'
 Vue.use(Vuex);
 
 const state = {
+  // user歌单集合
+  songListMenu: [],
   // 默认歌单
   defaultList: {},
   // 歌单创建者
@@ -18,21 +20,27 @@ const state = {
 };
 const getter = {};
 const mutations = {
-  [type.INIT_DEFAULT_LIST] (state, data) {
-    // 歌单默认信息
+  // 歌单集合
+  [type.INIT_SONGLISTMENU] (state, newValue) {
+    state.songListMenu = newValue;
+  },
+  // 歌单默认信息
+  [type.INIT_DEFAULT_LIST] (state, newValue) {
+    state.tracks = [];
     state.defaultList = {
-      coverImgUrl: data.coverImgUrl,
-      trackCount: data.trackCount,
-      name: data.name
+      coverImgUrl: newValue.coverImgUrl,
+      trackCount: newValue.trackCount,
+      name: newValue.name,
+      id: newValue.id
     };
     // 歌单创建者信息
     state.creator = {
-      avatarUrl: data.creator.avatarUrl,
-      nickname: data.creator.nickname,
-      signature: data.creator.signature
+      avatarUrl: newValue.creator.avatarUrl,
+      nickname: newValue.creator.nickname,
+      signature: newValue.creator.signature
     };
     // 歌单中提取所有歌曲音轨
-    data.tracks.forEach((value) => {
+    newValue.tracks.forEach((value) => {
       state.tracks.push(value);
     });
     // 设置默认歌曲信息为firstSong

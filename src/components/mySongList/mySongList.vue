@@ -22,16 +22,20 @@
     </div>
     <div class="music-wrapper">
       <div class="title">
-        <h1>创建的歌单(1)</h1>
+        <h1>创建的歌单({{songListMenu.length}})</h1>
       </div>
-      <div class="list" @click="showSongList">
-        <div class="list-avatar">
-          <img :src="defaultList.coverImgUrl" alt="" width="50" height="50">
-        </div>
-        <div class="list-content border-1px-bottom">
-          <div class="name">{{defaultList.name}}</div>
-          <div class="extra">{{defaultList.trackCount}}首</div>
-        </div>
+      <div ref="menu" class="menu">
+        <ul class="list-menu">
+          <li class="list" @click="showSongList(index)" v-for="(item,index) in songListMenu">
+            <div class="list-avatar">
+              <img :src="item.coverImgUrl" alt="" width="50" height="50">
+            </div>
+            <div class="list-content border-1px-bottom">
+              <div class="name">{{item.name}}</div>
+              <div class="extra">{{item.trackCount}}首</div>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
     <songListDetail ref="detail" name="detail"></songListDetail>
@@ -39,38 +43,47 @@
 </template>
 <script type="text/ecmascript-6">
   import * as type from '@/store/mutation-types'
-  import store from '@/store'
   import {mapState} from 'vuex'
   import songListDetail from 'components/songListDetail/songListDetail'
-  import axios from 'axios'
   import API from 'API'
+  import BScroll from 'better-scroll'
   export default {
     name: 'mySongList',
     data () {
       return {}
     },
-    store,
     components: {
       songListDetail
     },
     created () {
       let that = this;
-      API.getDefaultSongList().then((res) => {
+      API.getSongListMenu().then((res) => {
         res = res.data;
         if (res.code === 200) {
-          let data = res.result;
-          that.$store.commit(type.INIT_DEFAULT_LIST, data);
+          that.$store.commit(type.INIT_SONGLISTMENU, res.playlist);
+          that.$nextTick(() => {
+            that.initScroll();
+          })
         }
       })
     },
     computed: {
       ...mapState([
-        'defaultList'
+        'songListMenu'
       ])
     },
     methods: {
-      showSongList () {
-        this.$refs['detail'].showDetail();
+      initScroll () {
+        if (!this.menu) {
+          this.menu = new BScroll(this.$refs['menu'], {
+            click: true
+          })
+        } else {
+          this.menu.refresh();
+        }
+      },
+      showSongList (index) {
+        this.$refs['detail'].showDetail(index);
       }
     }
   }
@@ -79,6 +92,7 @@
   @import "../../common/stylus/index.styl"
   @import "../../common/stylus/iconfont.css"
   .mySongList
+    position relative
     .my-wrapper
       background rgba(242, 244, 245, .6)
       .my-box
@@ -117,6 +131,7 @@
         .text
           border-none()
     .music-wrapper
+      position relative
       .title
         background #e6e8e9
         opacity .8
@@ -125,29 +140,34 @@
           font-size 14px
           line-height 29px
           color #757575
-      .list
-        display flex
-        position: fixed
-        width 100%
-        height 100%
+      .menu
+        position fixed
+        top 190px
+        right 0
+        left 0
+        bottom 50px
         background rgba(242, 244, 245, .6)
-        .list-avatar
-          display inline-block
-          flex 0 0 50px
-          width 50px
-          padding 10px 15px
-        .list-content
-          display inline-block
-          flex 1
-          height 50px
-          padding 10px 0
-          vertical-align top
-          border-1px-bottom(#dadcdd)
-          .name
-            font-size 16px
-            line-height 25px
-          .extra
-            color #999999
-            font-size 12px
-            line-height 25px
+        overflow hidden
+      .list-menu
+        .list
+          display flex
+          .list-avatar
+            display inline-block
+            flex 0 0 50px
+            width 50px
+            padding 10px 15px
+          .list-content
+            display inline-block
+            flex 1
+            height 50px
+            padding 10px 0
+            vertical-align top
+            border-1px-bottom(#dadcdd)
+            .name
+              font-size 16px
+              line-height 25px
+            .extra
+              color #999999
+              font-size 12px
+              line-height 25px
 </style>
