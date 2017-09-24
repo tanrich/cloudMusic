@@ -10,7 +10,7 @@
             </div>
             <div class="content">
               <div class="title">{{songInfo.name}}</div>
-              <div class="name" v-for="item in songInfo.artists">{{item.name}}</div>
+              <div class="name" v-for="item in songInfo.ar">{{item.name}}</div>
             </div>
             <div class="share">
               <i class="iconfont icon-share"></i>
@@ -24,7 +24,7 @@
             </div>
             <div class="disk" :class="{active:playStatus}">
               <div class="pic-wrapper">
-                <img :src="songInfo.album.blurPicUrl" v-if="songInfo.album" width="185" height="185" class="img-album">
+                <img :src="songInfo.al.picUrl" v-if="songInfo.al" width="185" height="185" class="img-album">
               </div>
             </div>
             <div class="tips" :class="{active:tipsStatus}">{{tipsInfo}}</div>
@@ -75,7 +75,7 @@
             </div>
             <div class="button">
               <div class="pre">
-                <i class="iconfont icon-xiayishou" @click="preSong"></i>
+                <i class="iconfont icon-shangyishou" @click="preSong"></i>
               </div>
               <div class="go">
                 <i class="iconfont icon-bofang" @click="togglePlay" v-show="!playStatus"></i>
@@ -242,26 +242,16 @@
       },
       // 向后台获取解码歌曲资源
       getMusic () {
-        API.getMusicSource(this.initMusicSource)
+        API.getMusicSource({id: this.songInfo.id})
           .then((res) => {
+            debugger;
             res = res.data;
-            res.forEach((value) => {
-              if (value.lMusic) {
-                this.setAllMusic(type.SET_LMUSIC, value.lMusic);
-                return;
-              }
-              if (value.mMusic) {
-                this.setAllMusic(type.SET_MMUSIC, value.mMusic);
-                return;
-              }
-              if (value.hMusic) {
-                this.setAllMusic(type.SET_HMUSIC, value.hMusic);
-                return;
-              }
-            });
-            // 设置默认渲染url为低音质
-            this.setAllMusic(type.SET_MUSIC, this.lMusicSource);
-            console.log('尝试加载低音质')
+            if (res.code === 200) {
+              let data = res.data[0];
+              // 设置默认渲染url为低音质
+              this.setAllMusic(type.SET_MUSIC, data.url);
+              console.log('尝试加载低音质')
+            }
           })
           .catch((err) => {
             console.log(err);
@@ -384,6 +374,7 @@
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+  font = 100
   .playView
     position fixed
     width 100%
@@ -402,42 +393,42 @@
     .playView-up
       height 100%
       min-height 100%
-      padding-bottom 185px
+      padding-bottom (185/font)rem
       box-sizing border-box
       display flex
       flex-direction column
       .header
         display flex
-        padding 20px 17px
+        padding (20/font)rem (17/font)rem
         font-size 0
         .back
-          flex 0 0 20px
+          flex 0 0 (20/font)rem
           vertical-align top
-          margin-top 5px
+          margin-top (5/font)rem
           .icon-fanhui
             display inline-block
-            font-size 20px
+            font-size (20/font)rem
             font-weight bold
             color #fff
         .content
           flex 1
           font-size 0
           vertical-align top
-          padding-left 20px
+          padding-left (20/font)rem
           .title
-            font-size 16px
+            font-size (16/font)rem
             color #fff
           .name
-            font-size 12px
+            font-size (12/font)rem
             color #a8a7a7
-            margin-top 5px
+            margin-top (5/font)rem
         .share
-          flex 0 0 20px
+          flex 0 0 (20/font)rem
           vertical-align top
-          margin-top 5px
+          margin-top (5/font)rem
           .icon-share
             display inline-block
-            font-size 20px
+            font-size (20/font)rem
             font-weight bold
             color #fff
 
@@ -448,21 +439,21 @@
         .pin
           position absolute
           display inline-block
-          top -18px
+          top (-18/font)rem
           left 50%
-          margin-left -16px
+          margin-left (-16/font)rem
           z-index 99
           .pic-wrapper
-            width 100px
-            transform-origin 18px 18px
+            width (100/font)rem
+            transform-origin (18/font)rem (18/font)rem
             transform rotate(-30deg)
             transition all .5s
             &.active
               transform rotate(-2deg)
         .disk
           position absolute
-          width 275px
-          height 275px
+          width (275/font)rem
+          height (275/font)rem
           top 0
           right 0
           bottom 0
@@ -483,21 +474,21 @@
             right 0
             bottom 0
             left 0
-            width 183px
-            height 183px
+            width (183/font)rem
+            height (183/font)rem
             margin auto
             border-radius 50%
             overflow hidden
         .tips
           position absolute
-          font-size 12px
+          font-size (12/font)rem
           color #fff
-          bottom 10px
+          bottom (10/font)rem
           left 50%
-          margin-left -59px
-          padding 3px 8px 4px 8px
-          border 1px solid #fff
-          border-radius 5px
+          margin-left (-59/font)rem
+          padding (3/font)rem (8/font)rem (4/font)rem (8/font)rem
+          border (1/font)rem solid #fff
+          border-radius (5/font)rem
           text-align center
           opacity 0
           transition all 1s
@@ -506,112 +497,117 @@
         @media only screen and (max-width 320px)
           pin
             .pic-wrapper
-              width 70px
+              width (70/font)rem
               .img-pin
                 width inherit
 
           .disk
-            width 230px
-            height 230px
+            width (230/font)rem
+            height (230/font)rem
             .pic-wrapper
-              width 154px
-              height 154px
+              width (154/font)rem
+              height (154/font)rem
               .img-album
                 width inherit
                 height inherit
         @media only screen and (max-width 360px)
           .pin
             .pic-wrapper
-              width 96px
+              width (96/font)rem
               .img-pin
                 width inherit
 
           .disk
-            width 264px
-            height 264px
+            width (264/font)rem
+            height (264/font)rem
             .pic-wrapper
-              width 174px
-              height 174px
+              width (174/font)rem
+              height (174/font)rem
               .img-album
                 width inherit
                 height inherit
     .playView-down
       position: relative
-      margin-top -185px
+      margin-top (-185/font)rem
       .tools-bar
         display flex
-        padding 15px 17px
+        padding (15/font)rem (17/font)rem
         font-size 0
         .content
           flex 1
           text-align center
           .iconfont
-            font-size 20px
+            font-size (20/font)rem
             font-weight bold
             color #fff
           .icon-shoucang
             &.active
               color red
       .play-bar
-        padding 0 17px
+        padding 0 (17/font)rem
         .process
           display flex
           font-size 0
           color #fff
-          margin 15px 0
+          margin (15/font)rem 0
           .currentTime, .duration
-            flex 0 0 35px
+            flex 0 0 (35/font)rem
             display inline-block
-            font-size 12px
-            line-height 22px
+            font-size (12/font)rem
+            line-height (22/font)rem
             text-align center
             vertical-align top
           .range
             flex 1
             display inline-block
             vertical-align top
-            padding 10px 5px
+            padding (10/font)rem (5/font)rem
             box-sizing border-box
             overflow hidden
             input[type=range]
               -webkit-appearance none
               width 100%
-              height 2px
-              border-radius: 10px
+              height (2/font)rem
+              border-radius: (10/font)rem
               box-sizing border-box
               background linear-gradient(to right, white 0, white 100%)
               cursor pointer
               &::-webkit-slider-runnable-track
-                height 2px
-                border-radius 10px
+                height (2/font)rem
+                border-radius (10/font)rem
               &::-webkit-slider-thumb
                 -webkit-appearance: none
-                width 16px
-                height 16px
+                width (16/font)rem
+                height (16/font)rem
                 border-radius 50%
                 background red
-                margin-top -7px
+                margin-top (-7/font)rem
               &:focus
                 outline none
         .button
           display flex
-          padding 10px 0
+          padding (10/font)rem 0
           .pre, .go, .next
+            display block
             flex 1
             color #fff
             vertical-align top
             text-align center
-          .pre
-            transform rotate(180deg)
-          .pre, .next
-            margin-top 7px
+          .next
+            margin-top (7/font)rem
             .icon-xiayishou
-              display inline-block
-              font-size 42px
-              line-height 42px
+              display block
+              font-size (42/font)rem
+              line-height (42/font)rem
+          .pre
+            margin-top (7/font)rem
+            .icon-shangyishou
+              display block
+              font-size (42/font)rem
+              line-height (42/font)rem
           .go
             .icon-bofang, .icon-bofang1
-              display inline-block
-              font-size 55px
-              line-height 55px
+              display block
+              font-size (55/font)rem
+              line-height (55/font)rem
 </style>

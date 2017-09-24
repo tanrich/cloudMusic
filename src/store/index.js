@@ -30,6 +30,7 @@ const mutations = {
     state.defaultList = {
       coverImgUrl: newValue.coverImgUrl,
       trackCount: newValue.trackCount,
+      playCount: newValue.playCount,
       name: newValue.name,
       id: newValue.id
     };

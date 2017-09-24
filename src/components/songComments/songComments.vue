@@ -13,11 +13,11 @@
         <div ref="content-height">
           <div class="song">
             <div class="avatar">
-              <img :src="songInfo.album.blurPicUrl" v-if="songInfo.album" width="71" height="71">
+              <img :src="songInfo.al.picUrl" v-if="songInfo.al" width="71" height="71">
             </div>
             <div class="content">
               <div class="title">{{songInfo.name}}</div>
-              <div class="name" v-show="songInfo.artists" v-for="item in songInfo.artists">{{item.name}}</div>
+              <div class="name" v-show="songInfo.ar" v-for="item in songInfo.ar">{{item.name}}</div>
             </div>
           </div>
           <div class="comments" v-if="songComments">
@@ -26,7 +26,7 @@
               <ul v-if="hotComments">
                 <li class="list" v-for="item in hotComments">
                   <div class="avatar">
-                    <img :src="item.user.avatarUrl" width="32" height="32">
+                    <img v-lazy="item.user.avatarUrl" width="32" height="32">
                   </div>
                   <div class="content border-1px-bottom">
                     <div class="name">{{item.user.nickname}}</div>
@@ -45,7 +45,7 @@
               <ul v-if="newComments">
                 <li class="list" v-for="item in newComments">
                   <div class="avatar">
-                    <img :src="item.user.avatarUrl" width="32" height="32">
+                    <img v-lazy="item.user.avatarUrl" width="32" height="32">
                   </div>
                   <div class="content border-1px-bottom">
                     <div class="name">{{item.user.nickname}}</div>
@@ -61,7 +61,7 @@
             </div>
             <div class="loading" v-show="resWait">
               正在加载中……
-              <!--<img src="./loading1.gif" alt="" width="100%" height="200px">-->
+              <!--<img src="./loading1.gif" alt="" width="100%" height="200/font)rem">-->
             </div>
           </div>
         </div>
@@ -75,16 +75,16 @@
         </div>
       </div>
     </div>
-    </div>
   </transition>
 </template>
 <script type="text/ecmascript-6">
   import {mapState} from 'vuex'
   import API from 'API'
   import BScroll from 'better-scroll'
+
   export default {
     name: 'songComments',
-    data () {
+    data() {
       return {
         // 歌曲信息是否有差异
         songInfoDiffer: false,
@@ -102,9 +102,21 @@
       }
     },
     filters: {
-      dateFormat (value) {
+      dateFormat(value) {
+        let now = new Date();
         let date = new Date(value);
-        return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDay() + 1}日`
+        if (now.getFullYear() > date.getFullYear()) {
+          return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+        } else {
+          if (now.getMonth() === date.getMonth() && now.getDate() === date.getDate()) {
+            let hours, seconds;
+            hours = date.getHours().toString().length === 1 ? '0' + date.getHours() : date.getHours();
+            seconds = date.getMinutes().toString().length === 1 ? '0' + date.getMinutes() : date.getMinutes();
+            return `${hours}:${seconds}`;
+          } else {
+            return `${date.getMonth() + 1}月${date.getDate()}日`;
+          }
+        }
       }
     },
     computed: {
@@ -114,14 +126,14 @@
     },
     methods: {
       // 检测对象是否为空
-      isEmptyObject (obj) {
+      isEmptyObject(obj) {
         for (let key in obj) {
           return false;
         }
         return true;
       },
       // 初始化滚动轴
-      initScroll () {
+      initScroll() {
         if (!this.cmScroll) {
           this.cmScroll = new BScroll(this.$refs['content-wrapper'], {
             // 探针作用，希望能够实时获取scroll的位置
@@ -154,11 +166,11 @@
         })
       },
       // 隐藏评论界面
-      _hideSongComments () {
+      _hideSongComments() {
         this.songCommentsShow = false;
       },
       // 展示评论界面
-      showSongComments () {
+      showSongComments() {
         this.songCommentsShow = true;
         // 如果评论为空||歌曲信息改变 会触发get请求
         if (this.isEmptyObject(this.songInfoDiffer) || this.songInfoDiffer) {
@@ -166,10 +178,10 @@
         }
       },
       // 获取歌曲评论
-      getMusicComments () {
+      getMusicComments() {
         // offset为评论偏移量
         API.getMusicComments({
-          musicId: this.songInfo.id,
+          id: this.songInfo.id,
           offset: this.offset
         })
           .then((res) => {
@@ -191,14 +203,14 @@
           })
       },
       // 点赞
-      clickAgree (event) {
+      clickAgree(event) {
         if (!event._constructed) {
           return;
         }
         this.agree = !this.agree;
       },
       // 重置评论
-      reset () {
+      reset() {
         this.songComments = {};
         this.hotComments = [];
         this.newComments = [];
@@ -211,7 +223,7 @@
     },
     watch: {
       // 歌曲信息改变
-      songInfo (newValue, oldValue) {
+      songInfo(newValue, oldValue) {
         if (newValue !== oldValue) {
           this.songInfoDiffer = true;
           this.reset();
@@ -223,6 +235,7 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/iconfont.css"
   @import "../../common/stylus/index.styl"
+  font = 100
   .songComments
     position fixed
     width 100%
@@ -240,73 +253,73 @@
     .header
       display flex
       width 100%
-      padding 20px 17px
+      padding (20/font)rem (17/font)rem
       font-size 0
       background #5dae52
       z-index 220
       .back
-        flex 0 0 20px
+        flex 0 0 (20/font)rem
         vertical-align top
         .icon-fanhui
           display inline-block
-          font-size 20px
+          font-size (20/font)rem
           font-weight bold
           color #fff
       .content
         flex 1
         vertical-align top
-        padding-left 20px
+        padding-left (20/font)rem
         .title
-          font-size 20px
+          font-size (20/font)rem
           color #fff
     .content-wrapper
       position absolute
       width 100%
-      top 60px
+      top (60/font)rem
       left 0
-      bottom 50px
+      bottom (50/font)rem
       overflow hidden
       z-index 210
       .song
         display flex
-        padding 10px
+        padding (10/font)rem
         font-size 0
         z-index 220
         .avatar
           display inline-block
-          flex 0 0 71px
-          width 71px
+          flex 0 0 (71/font)rem
+          width (71/font)rem
         .content
           display inline-block
           flex 1
-          padding-left 10px
+          padding-left (10/font)rem
           .title
-            font-size 16px
-            line-height 16px
-            margin-top 15px
+            font-size (16/font)rem
+            line-height (16/font)rem
+            margin-top (15/font)rem
             color #333
           .name
-            font-size 14px
-            line-height 16px
-            margin-top 10px
+            font-size (14/font)rem
+            line-height (16/font)rem
+            margin-top (10/font)rem
             color #666666
       .comments-wrapper
         .title
-          padding 6px 10px
-          height 26px
-          font-size 14px
+          padding (6/font)rem (10/font)rem
+          height (26/font)rem
+          font-size (14/font)rem
           background #e6e8e9
           opacity .8
           color #999999
           box-sizing border-box
         .list
-          padding-left 10px
-          padding-top 11px
+          padding-left (10/font)rem
+          padding-top (11/font)rem
           display flex
           .avatar
-            flex 0 0 32px
-            width 32px
-            height 32px
+            flex 0 0 (32/font)rem
+            width (32/font)rem
+            height (32/font)rem
             vertical-align top
             border-radius 50%
             overflow hidden
@@ -314,40 +327,40 @@
             flex 1
             position relative
             vertical-align top
-            margin-left 10px
-            padding-bottom 11px
+            margin-left (10/font)rem
+            padding-bottom (11/font)rem
             border-1px-bottom(#dadcdd)
             .name
-              margin-top 3px
-              font-size 12px
-              line-height 12px
+              margin-top (3/font)rem
+              font-size (12/font)rem
+              line-height (12/font)rem
               color #666666
             .time
-              margin-top 6px
-              font-size 10px
-              line-height 10px
+              margin-top (6/font)rem
+              font-size (10/font)rem
+              line-height (10/font)rem
               color #999999
             .text
-              margin-top 8px
-              padding-right 10px
-              font-size 14px
-              line-height 20px
+              margin-top (8/font)rem
+              padding-right (10/font)rem
+              font-size (14/font)rem
+              line-height (20/font)rem
             .agree
               position absolute
-              right 10px
-              top 9px
+              right (10/font)rem
+              top (9/font)rem
               font-size 0
               .count
                 display inline-block
                 vertical-align top
-                font-size 12px
-                line-height 14px
+                font-size (12/font)rem
+                line-height (14/font)rem
                 color #999999
-                margin-right 2px
+                margin-right (2/font)rem
               .icon-down
                 display inline-block
                 vertical-align top
-                font-size 15px
+                font-size (15/font)rem
                 font-weight bold
                 color #999999
                 &.active
@@ -361,19 +374,19 @@
                   100%
                     transform scale(1)
       .loading
-        height 20px
-        line-height 20px
-        padding 10px 0
+        height (20/font)rem
+        line-height (20/font)rem
+        padding (10/font)rem 0
         text-align center
     .push-comments
       position fixed
       display flex
       width 100%
-      height 50px
+      height (50/font)rem
       left 0
       bottom 0
       background #fff
-      padding 10px
+      padding (10/font)rem
       box-sizing border-box
       .text
         display inline-block
@@ -383,22 +396,22 @@
           height 100%
           outline none
           box-sizing border-box
-          border-bottom 1px solid #e6e6e6
+          border-bottom (1/font)rem solid #e6e6e6
           &::-webkit-input-placeholder
             color #e6e6e6
           &::-moz-placeholder
             color #e6e6e6
       .send
         display inline-block
-        flex 0 0 40px
-        width 50px
-        margin-left 10px
+        flex 0 0 (40/font)rem
+        width (50/font)rem
+        margin-left (10/font)rem
         button[type=button]
           padding 0
           width 100%
           height 100%
-          border 1px solid #e6e6e6
-          border-radius 3px
+          border (1/font)rem solid #e6e6e6
+          border-radius (3/font)rem
           background #fff
           color #999999
 </style>

@@ -30,46 +30,47 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/iconfont.css"
+  font = 100
   .header
-    height 56px
+    height (56/font)rem
     box-sizing border-box
     position relative
     background-color #4caf50
-    padding 17px 16px
+    padding (17/font)rem (16/font)rem
     .name
       position: absolute
-      left 16px
-      top 17px
+      left (16/font)rem
+      top (17/font)rem
       .icon-wangyi
         display inline-block
-        font-size 16px
-        line-height 22px
+        font-size (16/font)rem
+        line-height (22/font)rem
         color #fff
     .bar
-      width 100px
+      width (100/font)rem
       margin 0 auto
       text-align center
       font-size 0
       .icon
         display inline-block
-        margin-right 30px
+        margin-right (30/font)rem
         .icon-music2, .icon-music3
           display inline-block
-          font-size 20px
+          font-size (20/font)rem
           color #fff
-          line-height 22px
+          line-height (22/font)rem
         .icon-music2
           font-weight bold
         &:last-child
           margin-right 0
     .search
       position absolute
-      right 16px
-      top 17px
+      right (16/font)rem
+      top (17/font)rem
       .icon-icons01
         display inline-block
-        font-size 20px
+        font-size (20/font)rem
         color #fff
-        line-height 22px
+        line-height (22/font)rem
         font-weight bold
 </style>

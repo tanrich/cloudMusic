@@ -46,7 +46,8 @@ npm run build --report
 4. pc端浏览器`<audio>`表现一致，有资源自动加载。移动端浏览器表现怪异，或自动加载，或不自动加载。chrome（2个版本），UC，小米浏览器均表现不一致。目前以pc为主，后期修复这个bug 3.17
 5. <span style='text-decoration:line-through'>nodejs后端跨域请求可以放在前端用nginx反向代理，应该会提高性能，后期修改。3.23
 6. 评论加载后返回进入，滚动条位置无法复原，后期修改。3.23
-7. 后台request用request-promise改写，加载性能大增，提高约100%左右 4.21
+7. <span style='text-decoration:line-through'>后台request用request-promise改写，加载性能大增，提高约100%左右 4.21
+8. 第一次加载歌单歌曲详细列表时有明显卡顿，原因是动画，请求，渲染在同时进行，后期进行异步优化。4.22
 
 ## LISENCE
 [MIT](https://opensource.org/licenses/MIT)

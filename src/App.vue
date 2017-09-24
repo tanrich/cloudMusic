@@ -29,4 +29,7 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
   @import "common/stylus/index.styl"
+  #app
+    font-family "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    -webkit-font-smoothing antialiased
 </style>

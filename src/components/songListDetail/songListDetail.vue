@@ -2,48 +2,56 @@
   <div>
     <transition name="detail-show">
       <div class="detail" v-show="show">
-        <div class="top-container">
-          <div class="top-bar">
-          <span class="back" @click="hideDetail">
-            <i class="iconfont icon-fanhui"></i>
-          </span>
-            <span class="name">歌单</span>
-          </div>
-          <div class="top-image">
-            <div class="image">
-              <img :src="defaultList.coverImgUrl" alt="" width="110" height="110">
-            </div>
-            <div class="content">
-              <h1 class="title">{{defaultList.name}}</h1>
-              <div class="info">
+        <div class="bar">
+            <span class="back" @click="hideDetail">
+              <i class="iconfont icon-fanhui"></i>
+            </span>
+          <span class="name">歌单</span>
+        </div>
+        <div ref="container" class="container">
+          <div>
+            <div class="top-container">
+              <div class="top-image">
+                <div class="image">
+                  <span class="earing">
+                    <i class="iconfont icon-icon14"></i>
+                    <span>{{defaultList.playCount}}</span>
+                  </span>
+                  <img :src="defaultList.coverImgUrl" alt="" width="110" height="110">
+                </div>
+                <div class="content">
+                  <h1 class="title">{{defaultList.name}}</h1>
+                  <div class="info">
               <span class="avatar">
                 <img :src="creator.avatarUrl" width="25" height="25">
               </span>
-                <span class="name">心之所向便是阳</span>
+                    <span class="name">{{creator.nickname}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="bottom-tools">
+                <div class="tool-content">
+                  <i class="iconfont icon-shoucang"></i>
+                  <div class="name">收藏</div>
+                </div>
+                <div class="tool-content">
+                  <i class="iconfont icon-pinglun"></i>
+                  <div class="name">评论</div>
+                </div>
+                <div class="tool-content">
+                  <i class="iconfont icon-share"></i>
+                  <div class="name">分享</div>
+                </div>
+                <div class="tool-content">
+                  <i class="iconfont icon-xiazai"></i>
+                  <div class="name">下载</div>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="bottom-tools">
-            <div class="tool-content">
-              <i class="iconfont icon-shoucang"></i>
-              <div class="name">收藏</div>
-            </div>
-            <div class="tool-content">
-              <i class="iconfont icon-pinglun"></i>
-              <div class="name">评论</div>
-            </div>
-            <div class="tool-content">
-              <i class="iconfont icon-share"></i>
-              <div class="name">分享</div>
-            </div>
-            <div class="tool-content">
-              <i class="iconfont icon-xiazai"></i>
-              <div class="name">下载</div>
+            <div class="middle-container">
+              <listItem @mainStart="_mainStart" ref="listItem"></listItem>
             </div>
           </div>
-        </div>
-        <div class="middle-container">
-          <listItem @mainStart="_mainStart" ref="listItem"></listItem>
         </div>
       </div>
     </transition>
@@ -56,6 +64,7 @@
   import playView from 'components/playView/playView'
   import * as type from '@/store/mutation-types'
   import API from 'API'
+  import BScroll from 'better-scroll'
   export default {
     name: 'detail',
     data () {
@@ -77,6 +86,15 @@
     created () {
     },
     methods: {
+      initContainerScroll () {
+        if (!this.container) {
+          this.container = new BScroll(this.$refs['container'], {
+            click: true
+          })
+        } else {
+          this.container.refresh();
+        }
+      },
       showDetail (index) {
         this.show = true;
         // 若两次点击歌单相同，则不发送ajax
@@ -97,15 +115,16 @@
           .then((res) => {
             res = res.data;
             if (res.code === 200) {
-              let data = res.result;
+              let data = res.playlist;
               that.$store.commit(type.INIT_DEFAULT_LIST, data);
             }
           })
           .then(() => {
-            // better-scroll严重依赖DOM获取高度，等待数据更新，重新获取高度
+//             better-scroll严重依赖DOM获取高度，等待数据更新，重新获取高度
             this.$nextTick(() => {
-              this.$refs.listItem.initScroll();
-            })
+              that.initContainerScroll();
+              // this.$refs.listItem.initScroll();
+            });
           })
           .catch(err => {
             console.log(err)
@@ -116,85 +135,104 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/iconfont.css"
+  font = 100
   .detail
     position: fixed
     width 100%
     top 0
     left 0
-    bottom 50px
+    bottom (50/font)rem
     background #fff
     transform translate3d(0, 0, 0)
     overflow hidden
+    font-size 0
     &.detail-show-enter, &.detail-show-leave-active
       opacity 0
       transform translate3d(100%, 0, 0)
     &.detail-show-enter-active, &.detail-show-leave-active
       transition all .5s
+    .bar
+      position fixed
+      top 0
+      width 100%
+      padding (20/font)rem (17/font)rem
+      box-sizing border-box
+      background #3f3e3d
+      z-index 2
+      .back
+        display inline-block
+        vertical-align: top
+        .icon-fanhui
+          display block
+          vertical-align top
+          font-size (20/font)rem
+          color #fff
+      .name
+        vertical-align: top
+        display inline-block
+        font-size (20/font)rem
+        color #fff
+        line-height (20/font)rem
+        margin-left (22/font)rem
+    .container
+      width 100%
+      height 100%
     .top-container
-      padding 20px 17px 15px 17px
+      padding (40/font)rem (17/font)rem (13/font)rem (17/font)rem
       background rgba(63, 62, 61, 1)
       box-sizing border-box
-      .top-bar
-        .back
-          display inline-block
-          vertical-align: top
-          .icon-fanhui
-            font-size 20px
-            color #fff
-        .name
-          vertical-align: top
-          display inline-block
-          font-size 20px
-          color #fff
-          line-height 20px
-          margin-left 22px
       .top-image
-        padding 20px 10px 15px 10px
+        padding (20/font)rem (10/font)rem (20/font)rem (10/font)rem
         display flex
         .image
+          position relative
           display inline-block
-          flex 0 0 125px
-          width 125px
+          flex 0 0 (110/font)rem
+          width (110/font)rem
+          .earing
+            position absolute
+            right (4/font)rem
+            top (4/font)rem
+            color #fff
+            font-size (12/font)rem
+            .icon-icon14
+              font-size (12/font)rem
+          img
+            display block
         .content
           display inline-block
           flex 1
-          padding-left 25px
+          padding-left (25/font)rem
           color #fff
           .title
-            font-size 18px
-            line-height 18px
-            padding 10px 0
+            font-size (18/font)rem
+            line-height (18/font)rem
+            padding (10/font)rem 0
           .info
-            padding 15px 0
+            padding (15/font)rem 0
             .avatar
               display inline-block
-              width 25px
-              height 25px
+              width (25/font)rem
+              height (25/font)rem
               border-radius 50%
               overflow: hidden
             .name
               display inline-block
-              font-size 12px
-              line-height 25px
+              font-size (12/font)rem
+              line-height (25/font)rem
               color #dbdbda
               vertical-align top
+              margin-left (6/font)rem
       .bottom-tools
         display flex
         .tool-content
           flex 1
-          font-size 14px
+          font-size (12/font)rem
           color #fff
           text-align center
           .iconfont
             font-weight bold
           .name
-            margin-top 5px
+            margin-top (3/font)rem
             font-weight lighter
-    .middle-container
-      position: fixed
-      width 100%
-      top 238px
-      bottom 0
-      left 0
-      background rgba(242, 244, 245, .6)
 </style>

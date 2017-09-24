@@ -28,6 +28,7 @@
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+  font = 100
   .mainPage
     .tab
       display flex
@@ -37,9 +38,9 @@
         a
           display block
           width 100%
-          padding 13px 0
+          padding (13/font)rem 0
           color #666666
-          font-size 14px
+          font-size (14/font)rem
           font-weight 200
           &.active
             border-2px-bottom(#4caf50)

@@ -6,7 +6,7 @@
       </div>
       <div class="info">
         <div class="title">{{songInfo.name}}</div>
-        <div class="name" v-if="songInfo.artists" v-for="item in songInfo.artists">{{item.name}}</div>
+        <div class="name" v-if="songInfo.ar" v-for="item in songInfo.ar">{{item.name}}</div>
       </div>
     </div>
     <div class="bar">
@@ -74,15 +74,16 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/iconfont.css"
+  font = 100
   .play
     position fixed
     width 100%
-    height 50px
+    height (50/font)rem
     left 0
     bottom 0
     z-index 98
     background rgba(255, 255, 255, 1)
-    padding 5px 8px
+    padding (5/font)rem (8/font)rem
     box-sizing border-box
     display flex
     .detail
@@ -93,48 +94,48 @@
       .info
         display inline-block
         vertical-align top
-        margin-left 8px
+        margin-left (8/font)rem
         .title
-          font-size 14px
-          line-height 24px
+          font-size (14/font)rem
+          line-height (24/font)rem
           color #333333
         .name
-          font-size 12px
-          line-height 12px
+          font-size (12/font)rem
+          line-height (12/font)rem
           color #888888
     .bar
-      flex 0 0 105px
-      width 105px
+      flex 0 0 (105/font)rem
+      width (105/font)rem
       color #4caf50
       font-size 0
       .pre, .next
         display inline-block
         vertical-align top
-        padding 5px
-        margin-top 8px
+        padding (5/font)rem
+        margin-top (8/font)rem
         transform rotate(180deg)
         .icon-nextvideo-copy
-          font-size 18px
+          font-size (18/font)rem
           font-weight bold
       .next
         transform rotate(0deg)
       .go
         display inline-block
         vertical-align top
-        padding 5px
-        margin 2px 5px 0 5px
+        padding (5/font)rem
+        margin (2/font)rem (5/font)rem 0 (5/font)rem
         .icon-bofang, .icon-bofang1
-          font-size 26px
+          font-size (26/font)rem
     .range
       -webkit-appearance none
       position: absolute
       width 100%
-      height 2px
+      height (2/font)rem
       bottom 0
       left 0
       background linear-gradient(to right, #fff 0, #fff 100%)
       &::-webkit-slider-runnable-track
-        height 2px
+        height (2/font)rem
       &::-webkit-slider-runnable-thumb
         -webkit-appearance: none
 </style>

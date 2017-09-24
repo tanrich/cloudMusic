@@ -26,9 +26,9 @@
       </div>
       <div ref="menu" class="menu">
         <ul class="list-menu">
-          <li class="list" @click="showSongList(index)" v-for="(item,index) in songListMenu">
+          <li class="list" @click="showSongList(index)" v-for="(item,index) in songListMenu" :key="index">
             <div class="list-avatar">
-              <img :src="item.coverImgUrl" alt="" width="50" height="50">
+              <img v-lazy="item.coverImgUrl" alt="" width="50" height="50">
             </div>
             <div class="list-content border-1px-bottom">
               <div class="name">{{item.name}}</div>
@@ -91,6 +91,7 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "../../common/stylus/index.styl"
   @import "../../common/stylus/iconfont.css"
+  font = 100
   .mySongList
     position relative
     .my-wrapper
@@ -100,32 +101,32 @@
         display flex
         .icon
           display inline-block
-          flex 0 0 16px
-          width 16px
-          height 21px
-          padding 16px 17px
+          flex 0 0 (16/font)rem
+          width (16/font)rem
+          height (21/font)rem
+          padding (16/font)rem (17/font)rem
           vertical-align top
           .icon-ttpodicon, .icon-diantai
             display inline-block
-            font-size 21px
+            font-size (21/font)rem
             font-weight bold
             color #5dae52
         .text
           flex 1
-          padding 16px 0
+          padding (16/font)rem 0
           display inline-block
           border-1px-bottom(#dadcdd)
           .name
             display inline-block
-            font-size 16px
-            line-height 21px
+            font-size (16/font)rem
+            line-height (21/font)rem
             vertical-align top
           .count
             display inline-block
-            font-size 14px
-            line-height 21px
+            font-size (14/font)rem
+            line-height (21/font)rem
             color #999999
-            margin-left 7px
+            margin-left (7/font)rem
             vertical-align: top
       .my-radio
         .text
@@ -136,16 +137,16 @@
         background #e6e8e9
         opacity .8
         h1
-          padding 0 10px
-          font-size 14px
-          line-height 29px
+          padding 0 (10/font)rem
+          font-size (14/font)rem
+          line-height (29/font)rem
           color #757575
       .menu
         position fixed
-        top 190px
+        top (190/font)rem
         right 0
         left 0
-        bottom 50px
+        bottom (50/font)rem
         background rgba(242, 244, 245, .6)
         overflow hidden
       .list-menu
@@ -153,21 +154,24 @@
           display flex
           .list-avatar
             display inline-block
-            flex 0 0 50px
-            width 50px
-            padding 10px 15px
+            flex 0 0 (50/font)rem
+            width (50/font)rem
+            padding (10/font)rem (15/font)rem
+            img
+              display block
+              vertical-align top
           .list-content
             display inline-block
             flex 1
-            height 50px
-            padding 10px 0
+            height (50/font)rem
+            padding (10/font)rem 0
             vertical-align top
             border-1px-bottom(#dadcdd)
             .name
-              font-size 16px
-              line-height 25px
+              font-size (16/font)rem
+              line-height (25/font)rem
             .extra
               color #999999
-              font-size 12px
-              line-height 25px
+              font-size (12/font)rem
+              line-height (25/font)rem
 </style>
