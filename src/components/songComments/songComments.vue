@@ -289,6 +289,8 @@
           display inline-block
           flex 0 0 (71/font)rem
           width (71/font)rem
+          img
+            display block
         .content
           display inline-block
           flex 1
@@ -323,6 +325,8 @@
             vertical-align top
             border-radius 50%
             overflow hidden
+            img
+              display block
           .content
             flex 1
             position relative
@@ -378,6 +382,7 @@
         line-height (20/font)rem
         padding (10/font)rem 0
         text-align center
+        font-size (14/font)rem
     .push-comments
       position fixed
       display flex
@@ -392,11 +397,13 @@
         display inline-block
         flex 1
         input[type=text]
+          display block
           width 100%
           height 100%
           outline none
           box-sizing border-box
           border-bottom (1/font)rem solid #e6e6e6
+          font-size (16/font)rem
           &::-webkit-input-placeholder
             color #e6e6e6
           &::-moz-placeholder
@@ -407,6 +414,7 @@
         width (50/font)rem
         margin-left (10/font)rem
         button[type=button]
+          display block
           padding 0
           width 100%
           height 100%

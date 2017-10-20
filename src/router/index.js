@@ -6,6 +6,7 @@ import radio from 'components/radio/radio'
 import rank from 'components/rank/rank'
 import mainPage from 'components/mainPage/mainPage'
 import mySongList from 'components/mySongList/mySongList'
+import rankDetail from 'components/rankDetail/rankDetail'
 
 Vue.use(Router);
 
@@ -21,7 +22,7 @@ export default new Router({
       children: [
         {
           path: '',
-          component: songList
+          component: recommend
         },
         {
           path: 'recommend',

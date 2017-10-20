@@ -56,7 +56,7 @@
         }
         this.initSongInfo(songInfo);
         this.initSongPosition(songPosition);
-        this.$emit('mainStart');
+        this.$store.commit(type.CHANGE_MAINSTART);
       }
     }
   }

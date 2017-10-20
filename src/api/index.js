@@ -17,7 +17,12 @@ const request = axios.create({
 
 export default {
   getSongListMenu: () => request.get('/user/playlist?uid=79094369'),
+  // 获取默认歌单
   getDefaultSongList: (params) => request.get('/playlist/detail', {params}),
+  // 获取歌曲资源
   getMusicSource: (params) => request.get('/music/url', {params}),
-  getMusicComments: (params) => request.get('/comment/music', {params})
+  // 获取歌曲资源
+  getMusicComments: (params) => request.get('/comment/music', {params}),
+  // 获取歌曲评论
+  getRank: (params) => request.get('/top/list', {params})
 }

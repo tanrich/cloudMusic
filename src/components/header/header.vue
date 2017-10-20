@@ -42,7 +42,7 @@
       left (16/font)rem
       top (17/font)rem
       .icon-wangyi
-        display inline-block
+        display block
         font-size (16/font)rem
         line-height (22/font)rem
         color #fff
@@ -68,7 +68,7 @@
       right (16/font)rem
       top (17/font)rem
       .icon-icons01
-        display inline-block
+        display block
         font-size (20/font)rem
         color #fff
         line-height (22/font)rem

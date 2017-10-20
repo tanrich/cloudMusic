@@ -3,9 +3,9 @@
     <transition name="detail-show">
       <div class="detail" v-show="show">
         <div class="bar">
-            <span class="back" @click="hideDetail">
-              <i class="iconfont icon-fanhui"></i>
-            </span>
+          <span class="back" @click="hideDetail">
+            <i class="iconfont icon-fanhui"></i>
+          </span>
           <span class="name">歌单</span>
         </div>
         <div ref="container" class="container">
@@ -29,24 +29,7 @@
                   </div>
                 </div>
               </div>
-              <div class="bottom-tools">
-                <div class="tool-content">
-                  <i class="iconfont icon-shoucang"></i>
-                  <div class="name">收藏</div>
-                </div>
-                <div class="tool-content">
-                  <i class="iconfont icon-pinglun"></i>
-                  <div class="name">评论</div>
-                </div>
-                <div class="tool-content">
-                  <i class="iconfont icon-share"></i>
-                  <div class="name">分享</div>
-                </div>
-                <div class="tool-content">
-                  <i class="iconfont icon-xiazai"></i>
-                  <div class="name">下载</div>
-                </div>
-              </div>
+              <songListDetailToolBar></songListDetailToolBar>
             </div>
             <div class="middle-container">
               <listItem @mainStart="_mainStart" ref="listItem"></listItem>
@@ -55,13 +38,12 @@
         </div>
       </div>
     </transition>
-    <playView ref="playView"></playView>
   </div>
 </template>
 <script type="text/ecmascript-6">
   import {mapState} from 'vuex'
   import listItem from 'components/listItem/listItem'
-  import playView from 'components/playView/playView'
+  import songListDetailToolBar from 'components/songListDetailToolBar/songListDetailToolBar'
   import * as type from '@/store/mutation-types'
   import API from 'API'
   import BScroll from 'better-scroll'
@@ -73,7 +55,7 @@
       }
     },
     components: {
-      listItem, playView
+      listItem, songListDetailToolBar
     },
     computed: {
       ...mapState([

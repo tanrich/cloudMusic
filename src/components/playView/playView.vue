@@ -5,7 +5,7 @@
         <!--头部和打碟-->
         <div class="playView-up">
           <div class="header">
-            <div class="back" @click="hidePlayView">
+            <div class="back" @click.stop="hidePlayView">
               <i class="iconfont icon-fanhui"></i>
             </div>
             <div class="content">
@@ -125,6 +125,8 @@
     computed: {
       ...mapState({
         player: (state) => state.player,
+        // 触发开始函数
+        mainStartCount: (state) => state.player.mainStartCount,
         // 获取界面展示||隐藏状态
         playViewShow: (state) => state.player.playViewShow,
         // 获取播放状态
@@ -244,7 +246,6 @@
       getMusic () {
         API.getMusicSource({id: this.songInfo.id})
           .then((res) => {
-            debugger;
             res = res.data;
             if (res.code === 200) {
               let data = res.data[0];
@@ -369,6 +370,10 @@
       currentTime (value) {
         let ratio = (value / this.duration) * 100;
         this.$refs['range'].style.background = `linear-gradient(to right, #059CFA, #059CFA ${ratio}%, white 0, white 100%)`
+      },
+      // 发生改变就会触发开始播放
+      mainStartCount (value) {
+        this.mainStart();
       }
     }
   }

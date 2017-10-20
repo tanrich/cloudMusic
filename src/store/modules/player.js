@@ -11,9 +11,13 @@ const state = {
   mMusicSource: '',
   lMusicSource: '',
   MusicSource: '',
-  canPlay: false
+  canPlay: false,
+  mainStartCount: 0
 };
 const mutations = {
+  [type.CHANGE_MAINSTART] (state, newValue) {
+    state.mainStartCount = state.mainStartCount + 1;
+  },
   [type.SET_PLAYVIEWSHOW] (state, newValue) {
     state.playViewShow = newValue;
   },

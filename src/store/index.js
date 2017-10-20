@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import * as type from './mutation-types'
 import player from './modules/player'
+import rank from './modules/rank'
 Vue.use(Vuex);
 
 const state = {
@@ -63,6 +64,7 @@ export default new Vuex.Store({
   mutations,
   actions,
   modules: {
-    player
+    player,
+    rank
   }
 })

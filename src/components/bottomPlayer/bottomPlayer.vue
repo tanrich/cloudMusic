@@ -1,5 +1,6 @@
 <template>
-  <div class="play" @click="setPlayViewShow">
+  <div class="play" @click.stop="setPlayViewShow">
+    <playView ref="playView"></playView>
     <div class="detail">
       <div class="avatar">
         <img :src="defaultList.coverImgUrl" width="40" height="40">
@@ -11,14 +12,14 @@
     </div>
     <div class="bar">
       <div class="pre">
-        <i class="iconfont icon-nextvideo-copy"></i>
+        <i class="iconfont icon-shangyishou"></i>
       </div>
       <div class="go">
         <i class="iconfont icon-bofang" @click.stop="togglePLay" v-show="!playStatus"></i>
         <i class="iconfont icon-bofang1" @click.stop="togglePLay" v-show="playStatus"></i>
       </div>
       <div class="next">
-        <i class="iconfont icon-nextvideo-copy"></i>
+        <i class="iconfont icon-xiayishou"></i>
       </div>
     </div>
     <input class="range" type="range" ref="range" min="0" :max="duration" step="1">
@@ -28,12 +29,17 @@
   import store from '@/store'
   import {mapState} from 'vuex'
   import * as type from '@/store/mutation-types'
+  import playView from 'components/playView/playView'
+
   export default {
     name: 'play',
     data () {
       return {}
     },
     store,
+    components: {
+      playView
+    },
     computed: {
       ...mapState([
         'defaultList',
@@ -113,8 +119,7 @@
         vertical-align top
         padding (5/font)rem
         margin-top (8/font)rem
-        transform rotate(180deg)
-        .icon-nextvideo-copy
+        .icon-xiayishou, .icon-shangyishou
           font-size (18/font)rem
           font-weight bold
       .next
