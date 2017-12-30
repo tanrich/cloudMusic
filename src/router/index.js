@@ -1,12 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import recommend from 'components/recommend/recommend'
-import songList from 'components/songList/songList'
-import radio from 'components/radio/radio'
-import rank from 'components/rank/rank'
+import recommend from 'components/mainPage/recommend/recommend'
+import songList from 'components/mainPage/songList/songList'
+import radio from 'components/mainPage/radio/radio'
+import rank from 'components/mainPage/rank/rank'
 import mainPage from 'components/mainPage/mainPage'
 import mySongList from 'components/mySongList/mySongList'
-import rankDetail from 'components/rankDetail/rankDetail'
 
 Vue.use(Router);
 

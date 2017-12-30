@@ -2,6 +2,7 @@
   <div class="rank-block">
     <div class="rank-item">
       <div class="pic">
+        <span class="tips">每天更新</span>
         <img :src="data.coverImgUrl" alt="">
       </div>
       <div class="content">
@@ -30,6 +31,7 @@
       padding-left (30/font)rem
       display flex
       .pic
+        position relative
         flex 0 0 (240/font)rem
         width (240/font)rem
         height (240/font)rem
@@ -39,6 +41,13 @@
           vertical-align top
           width inherit
           height inherit
+      .tips
+        position absolute
+        top (43/font)rem
+        right 0
+        color #fff
+        font-size (12/font)rem
+        transform scale(0.8)
       .content
         display flex
         flex 1
@@ -46,7 +55,7 @@
         padding (30/font)rem
         padding-left 0
         align-items center
-        border-bottom 1px solid #d6d6d6
+        border-bottom 1px solid rgb(242, 244, 245)
         box-sizing border-box
         color #666
         ul

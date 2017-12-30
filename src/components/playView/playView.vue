@@ -2,6 +2,8 @@
   <div>
     <transition name="playView">
       <div class="playView" v-show="playViewShow">
+        <!--背景图片-->
+        <div class="playView-bg" v-if="songInfo.al" :style="`background:url('${songInfo.al.picUrl}') no-repeat center/cover`"></div>
         <!--头部和打碟-->
         <div class="playView-up">
           <div class="header">
@@ -395,6 +397,22 @@
       transition all .5s
     &.playView-enter, &.playView-leave-active
       transform translate3d(100%, 0, 0)
+    .playView-bg
+      position absolute
+      z-index -1
+      top -10px
+      left -10px
+      right -10px
+      bottom -10px
+      filter: blur(5px)
+      &::after
+        content: ''
+        position: absolute
+        top -10px
+        left -10px
+        right -10px
+        bottom -10px
+        background-color rgba(0, 0, 0, .8)
     .playView-up
       height 100%
       min-height 100%

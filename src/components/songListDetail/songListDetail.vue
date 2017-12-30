@@ -1,44 +1,43 @@
 <template>
-  <div>
-    <transition name="detail-show">
-      <div class="detail" v-show="show">
-        <div class="bar">
-          <span class="back" @click="hideDetail">
-            <i class="iconfont icon-fanhui"></i>
-          </span>
-          <span class="name">歌单</span>
-        </div>
-        <div ref="container" class="container">
-          <div>
-            <div class="top-container">
-              <div class="top-image">
-                <div class="image">
+  <transition name="detail-show">
+    <div class="detail" v-show="show">
+      <div class="bar" :style="`background: url(${defaultList.coverImgUrl}) no-repeat top left/ 1000%`">
+        <span class="back" @click="hideDetail">
+          <i class="iconfont icon-fanhui"></i>
+        </span>
+        <span class="name">歌单</span>
+      </div>
+      <div ref="container" class="container">
+        <div>
+          <div class="top-container">
+            <div class="top-container-bg" :style="`background: url(${defaultList.coverImgUrl}) no-repeat top left/ 100%`"></div>
+            <div class="top-image">
+              <div class="image">
                   <span class="earing">
                     <i class="iconfont icon-icon14"></i>
                     <span>{{defaultList.playCount}}</span>
                   </span>
-                  <img :src="defaultList.coverImgUrl" alt="" width="110" height="110">
-                </div>
-                <div class="content">
-                  <h1 class="title">{{defaultList.name}}</h1>
-                  <div class="info">
+                <img :src="defaultList.coverImgUrl" alt="" width="110" height="110">
+              </div>
+              <div class="content">
+                <h1 class="title">{{defaultList.name}}</h1>
+                <div class="info">
               <span class="avatar">
                 <img :src="creator.avatarUrl" width="25" height="25">
               </span>
-                    <span class="name">{{creator.nickname}}</span>
-                  </div>
+                  <span class="name">{{creator.nickname}}</span>
                 </div>
               </div>
-              <songListDetailToolBar></songListDetailToolBar>
             </div>
-            <div class="middle-container">
-              <listItem @mainStart="_mainStart" ref="listItem"></listItem>
-            </div>
+            <songListDetailToolBar />
+          </div>
+          <div class="middle-container">
+            <listItem @mainStart="_mainStart" ref="listItem" />
           </div>
         </div>
       </div>
-    </transition>
-  </div>
+    </div>
+  </transition>
 </template>
 <script type="text/ecmascript-6">
   import {mapState} from 'vuex'
@@ -47,6 +46,8 @@
   import * as type from '@/store/mutation-types'
   import API from 'API'
   import BScroll from 'better-scroll'
+  import { setItem, getItem } from 'common/js/localStorage'
+
   export default {
     name: 'detail',
     data () {
@@ -65,8 +66,6 @@
         'songListMenu'
       ])
     },
-    created () {
-    },
     methods: {
       initContainerScroll () {
         if (!this.container) {
@@ -79,11 +78,12 @@
       },
       showDetail (index) {
         this.show = true;
+        const id = this.songListMenu[index].id;
         // 若两次点击歌单相同，则不发送ajax
-        if (this.defaultList.id === this.songListMenu[index].id) {
+        if (this.defaultList.id === id) {
           return;
         }
-        this.initSongList(this.songListMenu[index].id);
+        this.initSongList(id);
       },
       hideDetail () {
         this.show = false;
@@ -92,25 +92,30 @@
         this.$refs['playView'].mainStart();
       },
       initSongList (id) {
-        let that = this;
+        const storage = getItem(`${type.INIT_DEFAULT_LIST}_${id}`);
+        if (storage) {
+          this.$store.commit(type.INIT_DEFAULT_LIST, storage);
+          this.$nextTick(() => {
+            this.initContainerScroll();
+          });
+        }
         API.getDefaultSongList({id})
-          .then((res) => {
+          .then(res => {
             res = res.data;
             if (res.code === 200) {
-              let data = res.playlist;
-              that.$store.commit(type.INIT_DEFAULT_LIST, data);
+              this.$store.commit(type.INIT_DEFAULT_LIST, res.playlist);
+              setItem(`${type.INIT_DEFAULT_LIST}_${id}`, res.playlist);
             }
           })
           .then(() => {
-//             better-scroll严重依赖DOM获取高度，等待数据更新，重新获取高度
+            // better-scroll严重依赖DOM获取高度，等待数据更新，重新获取高度
             this.$nextTick(() => {
-              that.initContainerScroll();
-              // this.$refs.listItem.initScroll();
+              this.initContainerScroll();
             });
           })
           .catch(err => {
             console.log(err)
-          })
+          });
       }
     }
   }
@@ -128,6 +133,15 @@
     transform translate3d(0, 0, 0)
     overflow hidden
     font-size 0
+    &::after
+      content ''
+      position absolute
+      top 0
+      right 0
+      bottom 0
+      left 0
+      z-index -1
+      background-color rgba(242,244,245,0.6)
     &.detail-show-enter, &.detail-show-leave-active
       opacity 0
       transform translate3d(100%, 0, 0)
@@ -139,8 +153,16 @@
       width 100%
       padding (20/font)rem (17/font)rem
       box-sizing border-box
-      background #3f3e3d
       z-index 2
+      &::after
+        content ''
+        z-index -1
+        position absolute
+        top 0
+        right 0
+        bottom 0
+        left 0
+        background rgba(0, 0, 0, .6)
       .back
         display inline-block
         vertical-align: top
@@ -160,9 +182,27 @@
       width 100%
       height 100%
     .top-container
+      position relative
       padding (40/font)rem (17/font)rem (13/font)rem (17/font)rem
-      background rgba(63, 62, 61, 1)
       box-sizing border-box
+      overflow hidden
+      .top-container-bg
+        z-index -2
+        position absolute
+        top -10px
+        right -10px
+        bottom -10px
+        left -10px
+        filter blur(5px)
+        &::after
+          content ''
+          z-index -1
+          position absolute
+          top 0
+          right 0
+          bottom 0
+          left 0
+          background rgba(0, 0, 0, .6)
       .top-image
         padding (20/font)rem (10/font)rem (20/font)rem (10/font)rem
         display flex

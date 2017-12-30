@@ -30,6 +30,6 @@
 <style lang="stylus" rel="stylesheet/stylus">
   @import "common/stylus/index.styl"
   #app
-    font-family "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
     -webkit-font-smoothing antialiased
 </style>

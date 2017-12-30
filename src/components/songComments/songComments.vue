@@ -255,7 +255,7 @@
       width 100%
       padding (20/font)rem (17/font)rem
       font-size 0
-      background #5dae52
+      background #029688
       z-index 220
       .back
         flex 0 0 (20/font)rem

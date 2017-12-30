@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 let baseURL = '/Server';
-baseURL = 'http://localhost:3000';
+baseURL = `${window.location.protocol}//${window.location.hostname}:3000`;
 const request = axios.create({
   baseURL: baseURL
 });
@@ -16,6 +16,7 @@ const request = axios.create({
 // }
 
 export default {
+  // 79094369 1324447822
   getSongListMenu: () => request.get('/user/playlist?uid=79094369'),
   // 获取默认歌单
   getDefaultSongList: (params) => request.get('/playlist/detail', {params}),

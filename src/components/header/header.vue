@@ -35,7 +35,7 @@
     height (56/font)rem
     box-sizing border-box
     position relative
-    background-color #4caf50
+    background-color #029688
     padding (17/font)rem (16/font)rem
     .name
       position: absolute

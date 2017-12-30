@@ -65,7 +65,6 @@
   @import "../../common/stylus/index.styl"
   font = 100
   .listItem
-    background rgba(242, 244, 245, .6)
     overflow hidden
     font-size 0
     .item

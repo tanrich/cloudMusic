@@ -7,7 +7,9 @@
       </div>
       <div class="info">
         <div class="title">{{songInfo.name}}</div>
-        <div class="name" v-if="songInfo.ar" v-for="item in songInfo.ar">{{item.name}}</div>
+        <div class="name" v-if="songInfo.ar">
+          <span v-for="item in songInfo.ar">{{item.name}}</span>
+        </div>
       </div>
     </div>
     <div class="bar">
@@ -73,7 +75,7 @@
     watch: {
       currentTime (value) {
         let ratio = (value / this.duration) * 100;
-        this.$refs['range'].style.background = `linear-gradient(to right, #4caf50, #4caf50 ${ratio}%, white 0, white 100%)`
+        this.$refs['range'].style.background = `linear-gradient(to right, #029688, #029688 ${ratio}%, white 0, white 100%)`
       }
     }
   }
@@ -109,10 +111,12 @@
           font-size (12/font)rem
           line-height (12/font)rem
           color #888888
+          span + span
+            margin-left (5/font)rem
     .bar
       flex 0 0 (105/font)rem
       width (105/font)rem
-      color #4caf50
+      color #029688
       font-size 0
       .pre, .next
         display inline-block
@@ -140,7 +144,7 @@
       left 0
       background linear-gradient(to right, #fff 0, #fff 100%)
       &::-webkit-slider-runnable-track
-        height (2/font)rem
+        display: none
       &::-webkit-slider-runnable-thumb
         -webkit-appearance: none
 </style>

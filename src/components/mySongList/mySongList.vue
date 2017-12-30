@@ -28,7 +28,7 @@
         <ul class="list-menu">
           <li class="list" @click="showSongList(index)" v-for="(item,index) in songListMenu" :key="index">
             <div class="list-avatar">
-              <img v-lazy="item.coverImgUrl" alt="" width="50" height="50">
+              <img v-lazy="item.coverImgUrl" alt="" width="50" height="50" />
             </div>
             <div class="list-content border-1px-bottom">
               <div class="name">{{item.name}}</div>
@@ -38,7 +38,7 @@
         </ul>
       </div>
     </div>
-    <songListDetail ref="detail" name="detail"></songListDetail>
+    <songListDetail ref="detail" name="detail" />
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -47,6 +47,8 @@
   import songListDetail from 'components/songListDetail/songListDetail'
   import API from 'API'
   import BScroll from 'better-scroll'
+  import { setItem, getItem } from 'common/js/localStorage';
+
   export default {
     name: 'mySongList',
     data () {
@@ -56,14 +58,17 @@
       songListDetail
     },
     created () {
-      let that = this;
-      API.getSongListMenu().then((res) => {
+      const storage = getItem(type.INIT_SONGLISTMENU);
+      if (storage) {
+        this.$store.commit(type.INIT_SONGLISTMENU, storage);
+        this.$nextTick(() => this.initScroll());
+      }
+      API.getSongListMenu().then(res => {
         res = res.data;
         if (res.code === 200) {
-          that.$store.commit(type.INIT_SONGLISTMENU, res.playlist);
-          that.$nextTick(() => {
-            that.initScroll();
-          })
+          this.$store.commit(type.INIT_SONGLISTMENU, res.playlist);
+          this.$nextTick(() => this.initScroll());
+          setItem(type.INIT_SONGLISTMENU, res.playlist);
         }
       })
     },
@@ -110,7 +115,7 @@
             display inline-block
             font-size (21/font)rem
             font-weight bold
-            color #5dae52
+            color #029688
         .text
           flex 1
           padding (16/font)rem 0

@@ -43,6 +43,6 @@
           font-size (14/font)rem
           font-weight 200
           &.active
-            border-2px-bottom(#4caf50)
-            color #4caf50
+            border-2px-bottom(#029688)
+            color #029688
 </style>
