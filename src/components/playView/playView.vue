@@ -7,7 +7,7 @@
         <!--头部和打碟-->
         <div class="playView-up">
           <div class="header">
-            <div class="back" @click.stop="hidePlayView">
+            <div class="back" @click.stop="setPlayViewShow(false)">
               <i class="iconfont icon-fanhui"></i>
             </div>
             <div class="content">
@@ -39,8 +39,7 @@
               <i class="iconfont icon-shoucang" :class="{active:collectStatus}" @click="collect"></i>
             </div>
             <div class="content">
-              <i class="iconfont icon-xiazai" @click="download"></i>
-              <a :href="MusicSource" title="download" ref="download" download hidden></a>
+              <a :href="MusicSource" title="download" download><i class="iconfont icon-xiazai"></i></a>
             </div>
             <div class="content">
               <i class="iconfont icon-pinglun" @click="_showSongComments"></i>
@@ -68,7 +67,7 @@
                      :src="MusicSource"
                      @loadedmetadata="initTime($event)"
                      @timeupdate="startCountTime($event)"
-                     @error="autoSwitch"
+                     @error="error"
                      @canplay="setCanPlay"
                      @ended="nextSong"
                      controls hidden
@@ -92,15 +91,17 @@
         <!--sticky footer布局-->
       </div>
     </transition>
-    <songComments ref="songComments"></songComments>
+    <songComments ref="songComments" />
   </div>
 </template>
 <script type="text/ecmascript-6">
   import axios from 'axios'
   import API from 'API'
   import * as type from '@/store/mutation-types'
-  import {mapState, mapMutations} from 'vuex'
+  import {mapState, mapActions} from 'vuex'
   import songComments from 'components/songComments/songComments'
+  import { debounce } from 'common/js/util';
+
   export default {
     name: 'playView',
     data () {
@@ -137,62 +138,34 @@
         duration: (state) => state.player.duration,
         // 获取歌曲元素
         em: (state) => state.player.em,
-        // 获取音质类型(0,1,2对应低,中,高)
-        musicQuality: (state) => state.player.musicQuality,
-        // 获取高音质url
-        hMusicSource: (state) => state.player.hMusicSource,
-        // 获取中音质url
-        mMusicSource: (state) => state.player.mMusicSource,
-        // 获取低音质url
-        lMusicSource: (state) => state.player.lMusicSource,
         // 获取最终渲染url
         MusicSource: (state) => state.player.MusicSource,
-        // 获取资源是否可以播放
-        canPlay: (state) => state.player.canPlay,
-        // 获得歌曲在集合中的位置
-        songPosition: (state) => state.songPosition,
-        // 获取歌曲集合
-        tracks: (state) => state.tracks,
+        // tips内容
+        tipsWords: state => state.player.tipsWords,
         // 获取歌曲信息
         songInfo: (state) => state.songInfo
       }),
-      // 提取歌曲资源为对象，准备发送至后台解码
-      initMusicSource () {
-        return {
-          hMusic: {
-            dfsId: this.songInfo.hMusic.dfsId
-          },
-          mMusic: {
-            dfsId: this.songInfo.mMusic.dfsId
-          },
-          lMusic: {
-            dfsId: this.songInfo.lMusic.dfsId
-          }
-        };
-      },
       // 获取&&改变播放进度
       currentTime: {
         get () {
-          return this.$store.state.player.currentTime;
+          return this.player.currentTime;
         },
         set (newValue) {
           this.setCurrentTime(newValue);
-          this.$store.state.player.em.currentTime = newValue;
+          this.em.currentTime = newValue;
         }
       }
     },
     methods: {
+      ...mapActions({
+        nextSong: type.NEXT_SONG,
+        preSong: type.PRE_SONG,
+        togglePlay: type.TOGGLE_PLAY,
+        setCanPlay: type.SET_CANPLAY
+      }),
       // 展示评论
       _showSongComments () {
         this.$refs['songComments'].showSongComments()
-      },
-      // 播放器开始工作入口
-      mainStart () {
-        // 等待songInfo数据更新
-        this.$nextTick(() => {
-          this.resetPlayer();
-          this.getMusic();
-        });
       },
       // 设置播放器界面状态
       setPlayViewShow (newValue) {
@@ -202,64 +175,6 @@
       collect () {
         this.collectStatus = !this.collectStatus;
       },
-      // 设置歌曲是否可以播放(如果资源可以播放&&拖动音轨 会触发canplay事件执行setCanPlay函数)
-      setCanPlay () {
-        console.log('可以播放')
-        this.$store.commit(type.SET_CANPLAY, true);
-        // 歌曲可播放时自动开始播放 && 拖动音轨改为播放
-        this.em.play();
-        this.changePlayStatus(true);
-      },
-      // 准备播放上一首
-      preSong () {
-        // 歌曲位置-1
-        this.setSongPosition(this.songPosition - 1);
-        this.setSongInfo(this.tracks[this.songPosition]);
-        this.mainStart();
-        // 延迟执行1500ms，等待音乐资源结束判断是否跳转上一首
-        setTimeout(() => {
-          console.log('开始检测音乐资源');
-          if (this.musicQuality === 2 && !this.canPlay) {
-            console.log('切换上一首中');
-            this.preSong();
-          }
-        }, 1500)
-      },
-      // 准备播放下一首
-      nextSong () {
-        // 歌曲位置+1
-        this.setSongPosition(this.songPosition + 1);
-        this.setSongInfo(this.tracks[this.songPosition]);
-        this.mainStart();
-        // 延迟执行1500ms，等待音乐资源结束判断是否跳转下一首
-        setTimeout(() => {
-          console.log('开始检测音乐资源');
-          if (this.musicQuality === 2 && !this.canPlay) {
-            console.log('切换下一首中');
-            this.nextSong();
-          }
-        }, 1500)
-      },
-      // 下载音乐
-      download () {
-        this.$refs['download'].click();
-      },
-      // 向后台获取解码歌曲资源
-      getMusic () {
-        API.getMusicSource({id: this.songInfo.id})
-          .then((res) => {
-            res = res.data;
-            if (res.code === 200) {
-              let data = res.data[0];
-              // 设置默认渲染url为低音质
-              this.setAllMusic(type.SET_MUSIC, data.url);
-              console.log('尝试加载低音质')
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-      },
       // 设置歌曲信息，为跳转音乐做准备
       setSongInfo (newValue) {
         this.$store.commit(type.SET_SONGINFO, newValue);
@@ -267,18 +182,6 @@
       // 设置歌曲在集合中的位置
       setSongPosition (newValue) {
         this.$store.commit(type.SET_SONGPOSITION, newValue);
-      },
-      // 设置音质类型
-      setMusicQuality (newValue) {
-        this.$store.commit(type.SET_MUSICQUALITY, newValue)
-      },
-      // 设置高、中、低三音质url及最终渲染url
-      setAllMusic (name, newValue) {
-        this.$store.commit(name, newValue)
-      },
-      // 改变播放状态
-      changePlayStatus (newValue) {
-        this.$store.commit(type.CHANGE_PLAYSTATUS, newValue);
       },
       // 播放进度时间的改变
       setCurrentTime (newValue) {
@@ -292,14 +195,6 @@
       setEm (newEm) {
         this.$store.commit(type.SET_EM, newEm);
       },
-      // 音乐界面展示
-      showPlayView () {
-        this.setPlayViewShow(true);
-      },
-      // 隐藏音乐界面
-      hidePlayView () {
-        this.setPlayViewShow(false);
-      },
       // 重置player数据
       resetPlayer () {
         this.$store.commit(type.RESET_PLAYER);
@@ -307,29 +202,11 @@
       // 当指定的音频/视频的元数据已加载时，会发生 loadedmetadata 事件，触发initTime()
       initTime (event) {
         console.log('正在缓冲数据');
-        if (this.em === '') {
+        if (!this.em) {
           this.setEm(event.target);
           // 获取音乐时间长度
           let newValue = Math.round(this.em.duration);
           this.setDuration(newValue);
-        }
-      },
-      // 暂停&&播放
-      togglePlay () {
-        if (this.canPlay) {
-          if (this.playStatus) {
-            this.em.pause();
-          } else {
-            this.em.play();
-          }
-          this.changePlayStatus(!this.playStatus);
-        } else {
-          console.log('资源加载中,请稍后');
-          this.tipsInfo = '资源加载中,请稍后';
-          this.tipsStatus = true;
-          setTimeout(() => {
-            this.tipsStatus = false;
-          }, 2000);
         }
       },
       // 音乐播放时改变其播放位置时运行脚本
@@ -338,33 +215,19 @@
         // let newValue = Math.floor(event.target.currentTime * 2) / 2;
         this.setCurrentTime(newValue);
       },
-      // 歌曲音质自动切换避免404
-      autoSwitch () {
-        this.$nextTick(() => {
-          if (!this.lMusicSource) {
-            return;
-          }
-          switch (this.musicQuality) {
-            case 0:
-              console.log('尝试加载中音质');
-              this.setAllMusic(type.SET_MUSIC, this.mMusicSource);
-              this.setMusicQuality(1);
-              break;
-            case 1:
-              console.log('尝试加载高音质');
-              this.setAllMusic(type.SET_MUSIC, this.hMusicSource);
-              this.setMusicQuality(2);
-              break;
-            case 2:
-              console.log('抱歉无资源,准备切换下一首');
-              this.tipsInfo = '抱歉无资源,准备切换下一首';
-              this.tipsStatus = true;
-              setTimeout(() => {
-                this.tipsStatus = false;
-              }, 2000);
-              break;
-          }
-        })
+      // 歌曲404
+      error () {
+        console.log('抱歉无资源,准备切换下一首');
+        this.$store.commit(type.SET_CANPLAY, false);
+        this.tipsDisplay('抱歉无资源,准备切换下一首');
+        this.nextSong();
+      },
+      tipsDisplay(info) {
+        this.tipsInfo = info;
+        this.tipsStatus = true;
+        setTimeout(() => {
+          this.tipsStatus = false;
+        }, 2000);
       }
     },
     watch: {
@@ -374,8 +237,11 @@
         this.$refs['range'].style.background = `linear-gradient(to right, #059CFA, #059CFA ${ratio}%, white 0, white 100%)`
       },
       // 发生改变就会触发开始播放
-      mainStartCount (value) {
+      mainStartCount () {
         this.mainStart();
+      },
+      tipsWords (value) {
+        this.tipsDisplay(value);
       }
     }
   }
@@ -603,7 +469,7 @@
                 width (16/font)rem
                 height (16/font)rem
                 border-radius 50%
-                background red
+                background #fff
                 margin-top (-7/font)rem
               &:focus
                 outline none

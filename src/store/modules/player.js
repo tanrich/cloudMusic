@@ -1,23 +1,18 @@
 import * as type from '../mutation-types'
+import API from 'API'
+
 const state = {
   playViewShow: false,
   startCountTime: null,
   playStatus: false,
   currentTime: 0,
   duration: 0,
-  em: '',
-  musicQuality: 0,
-  hMusicSource: '',
-  mMusicSource: '',
-  lMusicSource: '',
-  MusicSource: '',
+  em: null,
+  MusicSource: null,
   canPlay: false,
-  mainStartCount: 0
+  tipsWords: null
 };
 const mutations = {
-  [type.CHANGE_MAINSTART] (state, newValue) {
-    state.mainStartCount = state.mainStartCount + 1;
-  },
   [type.SET_PLAYVIEWSHOW] (state, newValue) {
     state.playViewShow = newValue;
   },
@@ -38,24 +33,8 @@ const mutations = {
     state.playStatus = newValue;
   },
   // 设置最终渲染歌曲资源
-  [type.SET_MUSIC] (state, newValue) {
+  [type.SET_MUSICSOURCE] (state, newValue) {
     state.MusicSource = newValue;
-  },
-  // 设置低音质资源
-  [type.SET_LMUSIC] (state, newValue) {
-    state.lMusicSource = newValue;
-  },
-  // 设置中音质资源
-  [type.SET_MMUSIC] (state, newValue) {
-    state.mMusicSource = newValue;
-  },
-  // 这只高音质资源
-  [type.SET_HMUSIC] (state, newValue) {
-    state.hMusicSource = newValue;
-  },
-  // 设置音乐品质0,1,2对应低，中，高
-  [type.SET_MUSICQUALITY] (state, newValue) {
-    state.musicQuality = newValue;
   },
   // 设置音乐资源是否可播放
   [type.SET_CANPLAY] (state, newValue) {
@@ -67,16 +46,80 @@ const mutations = {
     state.playStatus = false;
     state.currentTime = 0;
     state.duration = 0;
-    state.em = '';
-    state.musicQuality = 0;
-    state.hMusicSource = '';
-    state.mMusicSource = '';
-    state.lMusicSource = '';
-    state.MusicSource = '';
+    state.em = null;
+    state.MusicSource = null;
     state.canPlay = false;
+  },
+  // 设置tips内容
+  [type.SET_TIPSWORDS] (state, newValue) {
+    state.tipsWords = newValue;
+  }
+};
+const actions = {
+  [type.NEXT_SONG] ({ state, rootState, dispatch, commit }) {
+    // 歌曲位置+1
+    if (rootState.songPosition === rootState.tracks.length - 1) {
+      commit(type.SET_TIPSWORDS, '没有下一首歌曲啦');
+      return;
+    }
+    commit(type.SET_SONGPOSITION, rootState.songPosition + 1);
+    commit(type.SET_SONGINFO, rootState.tracks[rootState.songPosition])
+    dispatch(type.MAIN_START);
+    console.log('开始检测音乐资源');
+  },
+  [type.PRE_SONG] ({ state, rootState, dispatch, commit }) {
+    // 歌曲位置-1
+    if (rootState.songPosition === 0) {
+      commit(type.SET_TIPSWORDS, '没有上一首歌曲啦');
+      return;
+    }
+    commit(type.SET_SONGPOSITION, rootState.songPosition - 1);
+    commit(type.SET_SONGINFO, rootState.tracks[rootState.songPosition])
+    dispatch(type.MAIN_START);
+  },
+  [type.TOGGLE_PLAY] ({ state, rootState, dispatch, commit }) {
+    if (state.canPlay) {
+      if (state.playStatus) {
+        state.em.pause();
+      } else {
+        state.em.play();
+      }
+      commit(type.CHANGE_PLAYSTATUS, !state.playStatus);
+    } else {
+      console.log('资源加载中,请稍后');
+      commit(type.SET_TIPSWORDS, '资源加载中,请稍后');
+    }
+  },
+  [type.MAIN_START] ({ state, rootState, dispatch, commit }) {
+    commit(type.RESET_PLAYER);
+    dispatch(type.GET_MUSIC);
+  },
+  [type.GET_MUSIC] ({ state, rootState, dispatch, commit }) {
+    API.getMusicSource({id: rootState.songInfo.id})
+      .then(res => {
+        res = res.data;
+        if (res.code === 200) {
+          let data = res.data[0];
+          // 设置默认渲染能够播放的最高音质
+          commit(type.SET_MUSICSOURCE, data.url);
+          console.log('尝试加载能够播放的最高音质');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  },
+  // 设置歌曲是否可以播放(如果资源可以播放&&拖动音轨 会触发canplay事件执行setCanPlay函数)
+  [type.SET_CANPLAY] ({ state, rootState, dispatch, commit }) {
+    console.log('可以播放')
+    commit(type.SET_CANPLAY, true);
+    // 歌曲可播放时自动开始播放 && 拖动音轨改为播放
+    state.em.play();
+    commit(type.CHANGE_PLAYSTATUS, true);
   }
 };
 export default {
   state,
-  mutations
+  mutations,
+  actions
 }

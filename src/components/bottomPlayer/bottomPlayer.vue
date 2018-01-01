@@ -1,26 +1,28 @@
 <template>
   <div class="play" @click.stop="setPlayViewShow">
-    <playView ref="playView"></playView>
+    <playView ref="playView" />
     <div class="detail">
       <div class="avatar">
-        <img :src="defaultList.coverImgUrl" width="40" height="40">
+        <img v-if="songInfo.al" :src="songInfo.al.picUrl" width="40" height="40" />
+        <img v-else width="40" height="40" />
       </div>
-      <div class="info">
+      <div class="info" v-if="songInfo.name">
         <div class="title">{{songInfo.name}}</div>
         <div class="name" v-if="songInfo.ar">
           <span v-for="item in songInfo.ar">{{item.name}}</span>
         </div>
       </div>
+      <div class="info" v-else>去找点音乐吧~</div>
     </div>
     <div class="bar">
-      <div class="pre">
+      <div class="pre" @click.stop="preSong">
         <i class="iconfont icon-shangyishou"></i>
       </div>
-      <div class="go">
-        <i class="iconfont icon-bofang" @click.stop="togglePLay" v-show="!playStatus"></i>
-        <i class="iconfont icon-bofang1" @click.stop="togglePLay" v-show="playStatus"></i>
+      <div class="go" @click.stop="togglePlay">
+        <i class="iconfont icon-bofang" v-show="!playStatus"></i>
+        <i class="iconfont icon-bofang1" v-show="playStatus"></i>
       </div>
-      <div class="next">
+      <div class="next" @click.stop="nextSong">
         <i class="iconfont icon-xiayishou"></i>
       </div>
     </div>
@@ -29,7 +31,7 @@
 </template>
 <script type="text/ecmascript-6">
   import store from '@/store'
-  import {mapState} from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   import * as type from '@/store/mutation-types'
   import playView from 'components/playView/playView'
 
@@ -56,21 +58,14 @@
       })
     },
     methods: {
+      ...mapActions({
+        nextSong: type.NEXT_SONG,
+        preSong: type.PRE_SONG,
+        togglePlay: type.TOGGLE_PLAY
+      }),
       setPlayViewShow () {
         this.$store.commit(type.SET_PLAYVIEWSHOW, true);
       },
-      togglePLay () {
-        if (!this.em) {
-          console.log('请先打开播放器初始化');
-          return;
-        }
-        if (this.playStatus) {
-          this.em.pause();
-        } else {
-          this.em.play();
-        }
-        this.$store.commit(type.CHANGE_PLAYSTATUS, !this.playStatus);
-      }
     },
     watch: {
       currentTime (value) {
@@ -103,6 +98,8 @@
         display inline-block
         vertical-align top
         margin-left (8/font)rem
+        font-size (14/font)rem
+        line-height (40/font)rem
         .title
           font-size (14/font)rem
           line-height (24/font)rem

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import * as type from './mutation-types'
 import player from './modules/player'
-import rank from './modules/rank'
 Vue.use(Vuex);
 
 const state = {
@@ -45,8 +44,10 @@ const mutations = {
     newValue.tracks.forEach((value) => {
       state.tracks.push(value);
     });
-    // 设置默认歌曲信息为firstSong
-    state.songInfo = state.tracks[state.songPosition]
+    // 设置默认歌曲信息为firstSong, 如果songInfo有就不需要再次更新
+    if (!Object.keys(state.songInfo).length) {
+      state.songInfo = state.tracks[state.songPosition]
+    }
   },
   // 设置歌曲位置
   [type.SET_SONGPOSITION] (state, newValue) {
@@ -65,6 +66,5 @@ export default new Vuex.Store({
   actions,
   modules: {
     player,
-    rank
   }
 })

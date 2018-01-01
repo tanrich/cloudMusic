@@ -5,7 +5,7 @@
         <span class="back" @click="hideDetail">
           <i class="iconfont icon-fanhui"></i>
         </span>
-        <span class="name">歌单</span>
+        <span class="name">{{ defaultList.name }}</span>
       </div>
       <div ref="container" class="container">
         <div>
@@ -32,7 +32,7 @@
             <songListDetailToolBar />
           </div>
           <div class="middle-container">
-            <listItem @mainStart="_mainStart" ref="listItem" />
+            <listItem />
           </div>
         </div>
       </div>

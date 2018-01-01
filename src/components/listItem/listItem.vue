@@ -14,7 +14,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import {mapState} from 'vuex'
+  import { mapState, mapActions } from 'vuex'
   import BScroll from 'better-scroll'
   import * as type from '@/store/mutation-types'
 
@@ -40,23 +40,18 @@
           this.scroll.refresh();
         }
       },
-      // 初始化播放歌曲信息
-      initSongInfo(newValue) {
-        this.$store.commit(type.SET_SONGINFO, newValue);
-      },
-      // 初始化播放歌曲在集合中位置
-      initSongPosition(newValue) {
-        this.$store.commit(type.SET_SONGPOSITION, newValue);
-      },
       // 开始播放音乐
       mainStart(event, songInfo, songPosition) {
         // 网页版因为不存在preventDefault,所以阻止移动端的派发事件
         if (!event._constructed) {
           return false
         }
-        this.initSongInfo(songInfo);
-        this.initSongPosition(songPosition);
-        this.$store.commit(type.CHANGE_MAINSTART);
+        // 初始化播放歌曲信息
+        this.$store.commit(type.SET_SONGINFO, songInfo);
+        // 初始化播放歌曲在集合中位置
+        this.$store.commit(type.SET_SONGPOSITION, songPosition);
+        // 触发播放函数
+        this.$store.dispatch(type.MAIN_START);
       }
     }
   }

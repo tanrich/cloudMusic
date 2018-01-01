@@ -26,7 +26,7 @@
       </div>
       <div ref="menu" class="menu">
         <ul class="list-menu">
-          <li class="list" @click="showSongList(index)" v-for="(item,index) in songListMenu" :key="index">
+          <li class="list" @click.stop="showSongList(index)" v-for="(item,index) in songListMenu" :key="index">
             <div class="list-avatar">
               <img v-lazy="item.coverImgUrl" alt="" width="50" height="50" />
             </div>
