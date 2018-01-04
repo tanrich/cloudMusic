@@ -38,7 +38,7 @@
         </ul>
       </div>
     </div>
-    <songListDetail ref="detail" name="detail" />
+    <!--<songListDetail ref="detail" name="detail" />-->
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -57,20 +57,21 @@
     components: {
       songListDetail
     },
-    created () {
+    activated() {
       const storage = getItem(type.INIT_SONGLISTMENU);
       if (storage) {
         this.$store.commit(type.INIT_SONGLISTMENU, storage);
-        this.$nextTick(() => this.initScroll());
+        this.$nextTick(() => this.initScroll())
       }
-      API.getSongListMenu().then(res => {
-        res = res.data;
-        if (res.code === 200) {
-          this.$store.commit(type.INIT_SONGLISTMENU, res.playlist);
-          this.$nextTick(() => this.initScroll());
-          setItem(type.INIT_SONGLISTMENU, res.playlist);
-        }
-      })
+      API.getSongListMenu()
+        .then(res => {
+          res = res.data;
+          if (res.code === 200) {
+            this.$store.commit(type.INIT_SONGLISTMENU, res.playlist);
+            setItem(type.INIT_SONGLISTMENU, res.playlist);
+          }
+        })
+        .then(() => this.$nextTick(() => this.initScroll()))
     },
     computed: {
       ...mapState([
@@ -88,7 +89,8 @@
         }
       },
       showSongList (index) {
-        this.$refs['detail'].showDetail(index);
+        // this.$refs['detail'].showDetail(index);
+        this.$router.push({name: 'songListDetail', query: {index: index}})
       }
     }
   }
@@ -98,8 +100,12 @@
   @import "../../common/stylus/iconfont.css"
   font = 100
   .mySongList
-    position relative
+    fix-screen()
+    display flex
+    flex-direction column
+    overflow hidden
     .my-wrapper
+      flex 0 0 (106/font)rem
       background rgba(242, 244, 245, .6)
       .my-box
         font-size 0
@@ -137,8 +143,11 @@
         .text
           border-none()
     .music-wrapper
-      position relative
+      flex 1
+      display flex
+      flex-direction column
       .title
+        flex 0 0 (29/font)rem
         background #e6e8e9
         opacity .8
         h1
@@ -147,11 +156,7 @@
           line-height (29/font)rem
           color #757575
       .menu
-        position fixed
-        top (190/font)rem
-        right 0
-        left 0
-        bottom (50/font)rem
+        flex 1
         background rgba(242, 244, 245, .6)
         overflow hidden
       .list-menu

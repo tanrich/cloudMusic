@@ -5,12 +5,12 @@
     </div>
     <div class="bar">
       <span class="icon">
-        <router-link to="/mainPage">
+        <router-link to="/mainPage?id=1">
           <i class="iconfont icon-music3"></i>
         </router-link>
       </span>
       <span class="icon">
-        <router-link to="/mySongList">
+        <router-link to="/mySongList?id=2">
           <i class="iconfont icon-music2"></i>
         </router-link>
       </span>

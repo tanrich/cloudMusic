@@ -10,7 +10,7 @@ const state = {
   em: null,
   MusicSource: null,
   canPlay: false,
-  tipsWords: null
+  tipsWords: null,
 };
 const mutations = {
   [type.SET_PLAYVIEWSHOW] (state, newValue) {
@@ -53,7 +53,7 @@ const mutations = {
   // 设置tips内容
   [type.SET_TIPSWORDS] (state, newValue) {
     state.tipsWords = newValue;
-  }
+  },
 };
 const actions = {
   [type.NEXT_SONG] ({ state, rootState, dispatch, commit }) {
@@ -78,7 +78,9 @@ const actions = {
     dispatch(type.MAIN_START);
   },
   [type.TOGGLE_PLAY] ({ state, rootState, dispatch, commit }) {
-    if (state.canPlay) {
+    const a = true;
+    if (a) {
+      // DOMException: play() can only be initiated by a user gesture
       if (state.playStatus) {
         state.em.pause();
       } else {
@@ -93,29 +95,25 @@ const actions = {
   [type.MAIN_START] ({ state, rootState, dispatch, commit }) {
     commit(type.RESET_PLAYER);
     dispatch(type.GET_MUSIC);
+    // commit(type.SET_PLAYVIEWSHOW, true);
   },
-  [type.GET_MUSIC] ({ state, rootState, dispatch, commit }) {
-    API.getMusicSource({id: rootState.songInfo.id})
-      .then(res => {
-        res = res.data;
-        if (res.code === 200) {
-          let data = res.data[0];
-          // 设置默认渲染能够播放的最高音质
-          commit(type.SET_MUSICSOURCE, data.url);
-          console.log('尝试加载能够播放的最高音质');
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
+  async [type.GET_MUSIC] ({ state, rootState, dispatch, commit }) {
+    let res = await API.getMusicSource({id: rootState.songInfo.id});
+    res = res.data;
+    if (res.code === 200) {
+      let data = res.data[0];
+      // 设置默认渲染能够播放的最高音质
+      await commit(type.SET_MUSICSOURCE, data.url);
+      console.log('尝试加载能够播放的最高音质');
+    }
   },
   // 设置歌曲是否可以播放(如果资源可以播放&&拖动音轨 会触发canplay事件执行setCanPlay函数)
-  [type.SET_CANPLAY] ({ state, rootState, dispatch, commit }) {
+  async [type.SET_CANPLAY] ({ state, rootState, dispatch, commit }) {
     console.log('可以播放')
-    commit(type.SET_CANPLAY, true);
+    await commit(type.SET_CANPLAY, true);
     // 歌曲可播放时自动开始播放 && 拖动音轨改为播放
-    state.em.play();
-    commit(type.CHANGE_PLAYSTATUS, true);
+    await commit(type.CHANGE_PLAYSTATUS, false);
+    dispatch(type.TOGGLE_PLAY)
   }
 };
 export default {

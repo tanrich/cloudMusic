@@ -1,11 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import recommend from 'components/mainPage/recommend/recommend'
-import songList from 'components/mainPage/songList/songList'
-import radio from 'components/mainPage/radio/radio'
-import rank from 'components/mainPage/rank/rank'
-import mainPage from 'components/mainPage/mainPage'
-import mySongList from 'components/mySongList/mySongList'
 
 Vue.use(Router);
 
@@ -13,37 +7,43 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: mainPage
+      component: resolve => require(['components/mainPage/mainPage'], resolve)
     },
     {
       path: '/mainPage',
-      component: mainPage,
+      component: resolve => require(['components/mainPage/mainPage'], resolve),
       children: [
         {
           path: '',
-          component: recommend
+          component: resolve => require(['components/mainPage/recommend/recommend'], resolve)
         },
         {
           path: 'recommend',
-          component: recommend
+          component: resolve => require(['components/mainPage/recommend/recommend'], resolve)
         },
         {
           path: 'songList',
-          component: songList
+          component: resolve => require(['components/mainPage/songList/songList'], resolve)
         },
         {
           path: 'radio',
-          component: radio
+          component: resolve => require(['components/mainPage/radio/radio'], resolve)
         },
         {
           path: 'rank',
-          component: rank
+          component: resolve => require(['components/mainPage/rank/rank'], resolve)
         }
       ]
     },
     {
       path: '/mySongList',
-      component: mySongList
+      name: 'mySongList',
+      component: resolve => require(['components/mySongList/mySongList'], resolve)
+    },
+    {
+      path: '/mySongList/songListDetail',
+      name: 'songListDetail',
+      component: resolve => require(['components/songListDetail/songListDetail'], resolve)
     }
   ],
   linkActiveClass: 'active'

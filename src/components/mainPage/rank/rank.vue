@@ -25,7 +25,8 @@
         globalRankData: [],
         officalRankDataNew: [],
         globalRankDataNew: [],
-        showDetailData: []
+        showDetailData: [],
+        refresh: null,
       }
     },
     components: {
@@ -33,7 +34,11 @@
     },
     created() {
       this.getOfficalRank();
-      // this.getGlobalRank();
+      this.getGlobalRank();
+      this.refresh = setInterval(() => this.initScroll(), 500);
+    },
+    deactivated() {
+      clearInterval(this.refresh);
     },
     methods: {
       initScroll() {
@@ -53,17 +58,14 @@
           this.getOfficalRankItem(i);
         }
         this.officalRankData = this.officalRankDataNew;
-        this.$nextTick(() => {
-          this.initScroll();
-        })
       },
       getGlobalRank() {
         for (let i = 4; i < 22; i++) {
+          const storage = getItem(`${type.INIT_DEFAULT_LIST}_${i}`);
+          if (storage) this.globalRankData.push(storage);
           this.getGlobalRankItem(i);
         }
-        this.$nextTick(() => {
-          this.initScroll();
-        })
+        this.globalRankData = this.globalRankDataNew;
       },
       getOfficalRankItem(value) {
         API.getRank({idx: value})
@@ -85,7 +87,7 @@
               throw new Error();
             }
             this.globalRankDataNew.push(res.data.playlist);
-            setItem(`${type.INIT_DEFAULT_LIST}_${value}`)
+            setItem(`${type.INIT_DEFAULT_LIST}_${value}`, res.data.playlist)
           })
           .catch(() => {
             this.getGlobalRankItem(value)
@@ -105,10 +107,10 @@
     background-color rgba(242,244,245,0.6)
     overflow hidden
     position absolute
-    top (259.2/font)rem
+    top (108/font)rem
     left 0
     right 0
-    bottom (135/font)rem
+    bottom 0
     .rank-scroll
       overflow hidden
       .title

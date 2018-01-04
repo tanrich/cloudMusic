@@ -95,8 +95,6 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import axios from 'axios'
-  import API from 'API'
   import * as type from '@/store/mutation-types'
   import {mapState, mapActions} from 'vuex'
   import songComments from 'components/songComments/songComments'
@@ -155,6 +153,9 @@
           this.em.currentTime = newValue;
         }
       }
+    },
+    created() {
+      console.log(1)
     },
     methods: {
       ...mapActions({
@@ -235,10 +236,6 @@
       currentTime (value) {
         let ratio = (value / this.duration) * 100;
         this.$refs['range'].style.background = `linear-gradient(to right, #059CFA, #059CFA ${ratio}%, white 0, white 100%)`
-      },
-      // 发生改变就会触发开始播放
-      mainStartCount () {
-        this.mainStart();
       },
       tipsWords (value) {
         this.tipsDisplay(value);

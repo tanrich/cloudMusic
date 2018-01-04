@@ -1,7 +1,5 @@
 <template>
-  <div class="recommend">
-    我是推荐
-  </div>
+  <div class="recommend"></div>
 </template>
 <script type="text/ecmascript-6">
   export default {

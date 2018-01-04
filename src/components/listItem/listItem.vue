@@ -21,13 +21,18 @@
   export default {
     name: 'listItem',
     data() {
-      return {}
+      return {
+        count: 1
+      }
     },
     components: {},
     computed: {
-      ...mapState([
-        'defaultList', 'tracks'
-      ])
+      ...mapState({
+        defaultList: 'defaultList',
+        tracks: 'tracks',
+        currentTime: state => state.player.currentTime,
+        canPlay: state => state.player.canPlay,
+      })
     },
     methods: {
       // 滚动初始化
@@ -41,17 +46,18 @@
         }
       },
       // 开始播放音乐
-      mainStart(event, songInfo, songPosition) {
+      async mainStart(event, songInfo, songPosition) {
         // 网页版因为不存在preventDefault,所以阻止移动端的派发事件
         if (!event._constructed) {
           return false
         }
         // 初始化播放歌曲信息
-        this.$store.commit(type.SET_SONGINFO, songInfo);
+        await this.$store.commit(type.SET_SONGINFO, songInfo);
         // 初始化播放歌曲在集合中位置
-        this.$store.commit(type.SET_SONGPOSITION, songPosition);
+        await this.$store.commit(type.SET_SONGPOSITION, songPosition);
         // 触发播放函数
-        this.$store.dispatch(type.MAIN_START);
+        await this.$store.dispatch(type.MAIN_START);
+        this.$emit('accessShow');
       }
     }
   }

@@ -1,29 +1,45 @@
 <template>
   <div id="app" @touchmove.prevent>
-    <v-header></v-header>
-    <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
-    <v-play></v-play>
+    <v-header />
+    <transition :name="transitionName">
+      <keep-alive>
+        <router-view class="child-view" :tsName="transitionName"></router-view>
+      </keep-alive>
+    </transition>
+    <v-play />
   </div>
 </template>
 <script type="text/ecmascript-6">
   import Header from 'components/header/header'
   import mainPage from 'components/mainPage/mainPage'
   import buttonPlay from 'components/bottomPlayer/bottomPlayer'
-  import axios from 'axios'
   import store from '@/store'
-  import * as type from '@/store/mutation-types'
+
   export default {
     name: 'app',
     data () {
-      return {}
+      return {
+        transitionName: 'slide-left'
+      }
     },
     store,
     components: {
       'v-header': Header,
       'v-mainPage': mainPage,
       'v-play': buttonPlay
+    },
+    watch: {
+      '$route' (to, from) {
+        const toDepth = to.path.split('/').length;
+        const fromDepth = from.path.split('/').length;
+        const toId = parseInt(to.query.id);
+        const fromId = parseInt(from.query.id);
+        if (toDepth > fromDepth || toId > fromId) {
+          this.transitionName = 'slide-left';
+        } else if (toDepth < fromDepth || toId < fromId) {
+          this.transitionName = 'slide-right';
+        }
+      }
     }
   }
 </script>
@@ -32,4 +48,16 @@
   #app
     font-family: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
     -webkit-font-smoothing antialiased
+    min-height 100vh
+    .child-view
+      height calc(100vh - 0.56rem - 0.5rem)
+      overflow hidden
+      &.slide-right-enter-active, &.slide-right-leave-active, &.slide-left-enter-active, &.slide-left-leave-active
+        transition all .5s
+      &.slide-right-enter, &.slide-left-leave-to
+        opacity 0
+        transform translate3d(-100%, 0, 0)
+      &.slide-right-leave-to, &.slide-left-enter
+        opacity 0
+        transform translate3d(100%, 0, 0)
 </style>
