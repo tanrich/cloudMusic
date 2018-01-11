@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div class="name">
+    <div class="name" @click="openLeftBar(true)">
       <i class="iconfont icon-wangyi"></i>
     </div>
     <div class="bar">
@@ -21,10 +21,18 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import * as type from '@/store/mutation-types'
+  import { mapMutations } from 'vuex'
+
   export default {
     name: 'header',
     data () {
       return {}
+    },
+    methods: {
+      ...mapMutations({
+        openLeftBar: type.SET_LEFTBARSHOW
+      })
     }
   }
 </script>

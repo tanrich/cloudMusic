@@ -7,12 +7,16 @@
       </keep-alive>
     </transition>
     <v-play />
+    <v-leftBar />
+    <v-auth />
   </div>
 </template>
 <script type="text/ecmascript-6">
   import Header from 'components/header/header'
   import mainPage from 'components/mainPage/mainPage'
   import buttonPlay from 'components/bottomPlayer/bottomPlayer'
+  import leftBar from 'components/leftBar/leftBar'
+  import auth from 'components/auth/auth'
   import store from '@/store'
 
   export default {
@@ -26,7 +30,9 @@
     components: {
       'v-header': Header,
       'v-mainPage': mainPage,
-      'v-play': buttonPlay
+      'v-play': buttonPlay,
+      'v-leftBar': leftBar,
+      'v-auth': auth,
     },
     watch: {
       '$route' (to, from) {

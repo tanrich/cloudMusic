@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import * as type from './mutation-types'
 import player from './modules/player'
+import leftBar from './modules/leftBar'
+import auth from './modules/auth'
 Vue.use(Vuex);
 
 const state = {
@@ -66,5 +68,7 @@ export default new Vuex.Store({
   actions,
   modules: {
     player,
+    leftBar,
+    auth,
   }
 })

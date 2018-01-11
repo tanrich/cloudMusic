@@ -154,9 +154,6 @@
         }
       }
     },
-    created() {
-      console.log(1)
-    },
     methods: {
       ...mapActions({
         nextSong: type.NEXT_SONG,

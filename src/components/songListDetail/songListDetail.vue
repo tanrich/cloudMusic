@@ -187,7 +187,7 @@
       position fixed
       top 0
       width 100%
-      padding (20/font)rem (17/font)rem
+      padding (17/font)rem (16/font)rem
       box-sizing border-box
       z-index 2
       &::after
