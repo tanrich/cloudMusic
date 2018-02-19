@@ -43,7 +43,7 @@
 </template>
 <script type="text/ecmascript-6">
   import * as type from '@/store/mutation-types'
-  import {mapState} from 'vuex'
+  import { mapState, mapMutations } from 'vuex'
   import songListDetail from 'components/songListDetail/songListDetail'
   import API from 'API'
   import BScroll from 'better-scroll'
@@ -57,28 +57,29 @@
     components: {
       songListDetail
     },
+    created() {
+      this.getSongListMenu();
+    },
     activated() {
       const storage = getItem(type.INIT_SONGLISTMENU);
       if (storage) {
         this.$store.commit(type.INIT_SONGLISTMENU, storage);
         this.$nextTick(() => this.initScroll())
       }
-      API.getSongListMenu()
-        .then(res => {
-          res = res.data;
-          if (res.code === 200) {
-            this.$store.commit(type.INIT_SONGLISTMENU, res.playlist);
-            setItem(type.INIT_SONGLISTMENU, res.playlist);
-          }
-        })
-        .then(() => this.$nextTick(() => this.initScroll()))
+      this.getSongListMenu();
     },
     computed: {
       ...mapState([
-        'songListMenu'
-      ])
+        'songListMenu',
+      ]),
+      ...mapState({
+        username: state => state.leftBar.username,
+      })
     },
     methods: {
+      ...mapMutations({
+        setAuthShow: type.SET_AUTHSHOW,
+      }),
       initScroll () {
         if (!this.menu) {
           this.menu = new BScroll(this.$refs['menu'], {
@@ -89,8 +90,21 @@
         }
       },
       showSongList (index) {
-        // this.$refs['detail'].showDetail(index);
         this.$router.push({name: 'songListDetail', query: {index: index}})
+      },
+      getSongListMenu () {
+        API.getSongListMenu()
+          .then(res => {
+            res = res.data;
+            if (res.code === 200) {
+              this.$store.commit(type.INIT_SONGLISTMENU, res.playlist);
+              setItem(type.INIT_SONGLISTMENU, res.playlist);
+            } else {
+              this.setAuthShow(true);
+            }
+          })
+          .then(() => this.$nextTick(() => this.initScroll()))
+          .catch(err => console.log(err))
       }
     }
   }

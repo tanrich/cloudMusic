@@ -6,7 +6,7 @@
           <i class="iconfont icon-fanhui"></i>
         </div>
         <div class="content">
-          <div class="title">评论 ({{songComments.total}})</div>
+          <div class="title">评论 ({{songComments.total || 0 }})</div>
         </div>
       </div>
       <div class="content-wrapper" ref="content-wrapper">
@@ -23,7 +23,8 @@
           <div class="comments" v-if="songComments">
             <div class="comments-wrapper">
               <div class="title">精彩评论</div>
-              <ul v-if="hotComments">
+              <ul>
+                <li v-if="!hotComments.length" class="list-none">一条精彩评论都没有~</li>
                 <li class="list" v-for="item in hotComments">
                   <div class="avatar">
                     <img v-lazy="item.user.avatarUrl" width="32" height="32">
@@ -32,9 +33,9 @@
                     <div class="name">{{item.user.nickname}}</div>
                     <div class="time">{{item.time | dateFormat}}</div>
                     <div class="text">{{item.content}}</div>
-                    <div class="agree" @click.stop="clickAgree($event)">
+                    <div class="agree" @click.stop="clickAgree($event, item)">
                       <span class="count">{{item.likedCount}}</span>
-                      <i class="iconfont icon-down" :class="{active:agree}"></i>
+                      <i class="iconfont icon-down" :class="{active: item.agree}"></i>
                     </div>
                   </div>
                 </li>
@@ -42,7 +43,8 @@
             </div>
             <div class="comments-wrapper">
               <div class="title">最新评论</div>
-              <ul v-if="newComments">
+              <ul>
+                <li v-if="!newComments.length" class="list-none">一条最新的评论都没有~</li>
                 <li class="list" v-for="item in newComments">
                   <div class="avatar">
                     <img v-lazy="item.user.avatarUrl" width="32" height="32">
@@ -51,15 +53,15 @@
                     <div class="name">{{item.user.nickname}}</div>
                     <div class="time">{{item.time | dateFormat}}</div>
                     <div class="text">{{item.content}}</div>
-                    <div class="agree">
+                    <div class="agree" @click.stop="clickAgree($event, item)">
                       <span class="count">{{item.likedCount}}</span>
-                      <i class="iconfont icon-down"></i>
+                      <i class="iconfont icon-down" :class="{active: item.agree}"></i>
                     </div>
                   </div>
                 </li>
               </ul>
             </div>
-            <div class="loading" v-show="resWait">
+            <div class="loading" v-show="reqWait && newComments.length">
               正在加载中……
               <!--<img src="./loading1.gif" alt="" width="100%" height="200/font)rem">-->
             </div>
@@ -68,10 +70,10 @@
       </div>
       <div class="push-comments">
         <div class="text">
-          <input type="text" placeholder="写评论">
+          <input type="text" placeholder="写评论" v-model="commentContent">
         </div>
         <div class="send">
-          <button type="button">发送</button>
+          <button type="button" @click.stop="sendComment">发送</button>
         </div>
       </div>
     </div>
@@ -90,15 +92,14 @@
         songInfoDiffer: false,
         songCommentsShow: false,
         songComments: {},
+        songCommentsId: null,
         hotComments: [],
         newComments: [],
-        agree: false,
         scrollY: 0,
         offset: 0,
         // 请求等待
         reqWait: false,
-        // 返回等待
-        resWait: true
+        commentContent: null,
       }
     },
     filters: {
@@ -151,17 +152,15 @@
           let cmEyeHeight = window.innerHeight - 110;
           // 真正评论高度
           let cmReallyHeight = this.$refs['content-height'].clientHeight;
-          if (cmEyeHeight + this.scrollY > cmReallyHeight && !this.wait) {
+          if (cmEyeHeight + this.scrollY > cmReallyHeight && !this.reqWait) {
             console.log('到底了！');
-            if (!this.reqWait) {
-              this.offset += 10;
-              this.getMusicComments();
-              // 设置加载评论时间间隔
-              setTimeout(() => {
-                this.reqWait = false;
-              }, 1000)
-            }
             this.reqWait = true;
+            this.offset += 10;
+            this.getMusicComments();
+            // 设置加载评论时间间隔
+            setTimeout(() => {
+              this.reqWait = false;
+            }, 1000)
           }
         })
       },
@@ -173,7 +172,7 @@
       showSongComments() {
         this.songCommentsShow = true;
         // 如果评论为空||歌曲信息改变 会触发get请求
-        if (this.isEmptyObject(this.songInfoDiffer) || this.songInfoDiffer) {
+        if (this.isEmptyObject(this.songComments) || this.songInfoDiffer) {
           this.getMusicComments();
         }
       },
@@ -186,28 +185,49 @@
         })
           .then((res) => {
             res = res.data;
-            this.songComments = res;
-            // 热门评论不用更新
-            if (this.hotComments.length === 0) {
-              this.hotComments = res.hotComments;
+            if (res.code === 200) {
+              this.songComments = res;
+              // 热门评论不用更新
+              if (this.hotComments.length === 0) {
+                this.hotComments = res.hotComments;
+              }
+              if (!res.comments.length) {
+                this.offset -= 10;
+                return;
+              }
+              this.songCommentsId = res.id;
+              // 最新评论与原来的合并
+              this.newComments = this.newComments.concat(res.comments.reverse());
+              // 更新DOM
+              this.$nextTick(() => {
+                this.initScroll();
+              })
             }
-            // 最新评论与原来的合并
-            this.newComments = this.newComments.concat(res.comments);
-            // 更新DOM
-            this.$nextTick(() => {
-              this.initScroll();
-            })
           })
           .catch((err) => {
             console.log(err);
           })
       },
       // 点赞
-      clickAgree(event) {
+      clickAgree(event, item) {
         if (!event._constructed) {
           return;
         }
-        this.agree = !this.agree;
+        item.agree = !item.agree;
+        API.commentLike({
+          _id: this.songComments._id,
+          commentId: item.commentId,
+          agree: item.agree,
+        })
+          .then(res => {
+            res = res.data;
+            if (res.code === 200) {
+              item.likedCount = item.agree ? item.likedCount + 1 : item.likedCount - 1;
+            } else {
+              throw new Error('网络不畅');
+            }
+          })
+          .catch(err => console.log(err))
       },
       // 重置评论
       reset() {
@@ -219,6 +239,25 @@
         this.offset = 0;
         this.reqWait = false;
         this.songInfoDiffer = false;
+      },
+      // 发送评论
+      sendComment() {
+        if (!this.commentContent) return;
+        API.sendComment({
+          id: this.songInfo.id,
+          content: this.commentContent,
+        })
+          .then(res => {
+            res = res.data;
+            if (res.code === 200) {
+              this.newComments = res.comments.concat(this.newComments);
+              this.commentContent = '';
+              this.$nextTick(() => this.initScroll());
+            } else {
+              throw new Error('未发表成功');
+            }
+          })
+          .catch(err => console.log(err))
       }
     },
     watch: {
@@ -314,6 +353,10 @@
           opacity .8
           color #999999
           box-sizing border-box
+        .list-none
+          display block
+          padding (10/font)rem (11/font)rem
+          font-size (12/font)rem
         .list
           padding-left (10/font)rem
           padding-top (11/font)rem
@@ -420,6 +463,7 @@
           height 100%
           border (1/font)rem solid #e6e6e6
           border-radius (3/font)rem
-          background #fff
-          color #999999
+          background #029688
+          color #fff
+          outline none
 </style>

@@ -22,14 +22,21 @@ const localApi = axios.create({
 
 export default {
   // 79094369 1324447822
-  getSongListMenu: () => request.get('/user/playlist?uid=79094369'),
+  // getSongListMenu: () => request.get('/user/playlist?uid=79094369'),
+  getSongListMenu: () => localApi.get('/user/playlist'),
   // 获取默认歌单
-  getDefaultSongList: params => request.get('/playlist/detail', {params}),
+  // getDefaultSongList: params => request.get('/playlist/detail', {params}),
+  getDefaultSongList: params => localApi.get('playlist/detail', {params}),
   // 获取歌曲资源
   getMusicSource: params => request.get('/music/url', {params}),
-  // 获取歌曲资源
-  getMusicComments: params => request.get('/comment/music', {params}),
+  // getMusicComments: params => request.get('/comment/music', {params}),
   // 获取歌曲评论
+  getMusicComments: params => localApi.get('/comment/music', {params}),
+  // 发送评论
+  sendComment: body => localApi.post('/comment/publish', body),
+  // 点赞&&取消评论
+  commentLike: body => localApi.put('/comment/like', body),
+  // 获取排行榜
   getRank: params => request.get('/top/list', {params}),
   // 注册
   register: body => localApi.post('/user/register', body),

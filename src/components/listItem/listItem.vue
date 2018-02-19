@@ -1,6 +1,6 @@
 <template>
   <div class="listItem" ref="listItem">
-    <ul v-show="defaultList.trackCount">
+    <ul v-if="defaultList.trackCount">
       <li v-for="(item,index) in tracks" :key="index" class="item" @click.stop="mainStart($event,item,index)">
         <div class="num">{{index + 1}}</div>
         <div class="content border-1px-bottom">
@@ -27,9 +27,8 @@
     },
     components: {},
     computed: {
+      ...mapState([ 'defaultList', 'tracks' ]),
       ...mapState({
-        defaultList: 'defaultList',
-        tracks: 'tracks',
         currentTime: state => state.player.currentTime,
         canPlay: state => state.player.canPlay,
       })

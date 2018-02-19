@@ -18,6 +18,8 @@
   import leftBar from 'components/leftBar/leftBar'
   import auth from 'components/auth/auth'
   import store from '@/store'
+  import { mapState, mapMutations } from 'vuex';
+  import * as type from '@/store/mutation-types'
 
   export default {
     name: 'app',
@@ -34,6 +36,16 @@
       'v-leftBar': leftBar,
       'v-auth': auth,
     },
+    computed: {
+      ...mapState({
+        username: state => state.leftBar.username,
+      })
+    },
+    methods: {
+      ...mapMutations({
+        setAuthShow: type.SET_AUTHSHOW,
+      })
+    },
     watch: {
       '$route' (to, from) {
         const toDepth = to.path.split('/').length;
@@ -44,6 +56,11 @@
           this.transitionName = 'slide-left';
         } else if (toDepth < fromDepth || toId < fromId) {
           this.transitionName = 'slide-right';
+        }
+      },
+      'username' (cur) {
+        if (cur === null) {
+          this.setAuthShow(true);
         }
       }
     }

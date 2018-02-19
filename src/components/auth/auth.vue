@@ -37,6 +37,7 @@
                      v-model="rUsername"
                      placeholder="设置用户名，字母或者数字"
                      @focus="errRUsername = ''"
+                     ref="registerInput"
               >
               <span class="err">{{errRUsername}}</span>
             </div>
@@ -68,6 +69,7 @@
                 v-model="lUsername"
                 placeholder="请输入用户名"
                 @focus="errLUsername = ''"
+                ref="loginInput"
               >
               <span class="err">{{errLUsername}}</span>
             </div>
@@ -100,10 +102,10 @@
     name: 'auth',
     data () {
       return {
-        activeL: false,
+        activeL: null,
         activeR: false,
         homePage: true,
-        registerShow: false,
+        registerShow: null,
         headerName: '',
         rUsername: '',
         rPasswd: '',
@@ -162,13 +164,15 @@
         }
         API.login({ username: lUsername, password: lPasswd })
           .then(res => {
-            const status = res.data ? res.data.status : 0;
-            if (!status) {
+            const code = res.data ? res.data.code === 200 : 0;
+            if (!code) {
               _self.errLUsername = '用户名与密码不匹配';
             } else {
-              _self.setUsername(res.data ? res.data.username : null);
-              _self.setAuthShow(false);
-              _self.back();
+              this.$router.push('/');
+              window.location.reload();
+              // _self.setUsername(res.data ? res.data.username : null);
+              // _self.setAuthShow(false);
+              // _self.back();
             }
           })
       },
@@ -189,14 +193,27 @@
           password: rPasswd
         })
           .then(res => {
-            const status = res.data ? res.data.status : 0;
-            if (!status) {
+            const code = res.data ? res.data.code === 200 : 0;
+            if (!code) {
               _self.errRUsername = '用户名已经被注册'
             } else {
               _self.back();
               _self.openActionPage(null, 'login');
             }
           })
+      }
+    },
+    watch: {
+      registerShow(cur) {
+        if (cur) {
+          setTimeout(() => {
+            this.$refs['registerInput'].focus();
+          }, 100);
+        } else {
+          setTimeout(() => {
+            this.$refs['loginInput'].focus();
+          }, 100);
+        }
       }
     }
   }

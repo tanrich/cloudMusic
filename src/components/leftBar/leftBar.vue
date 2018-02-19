@@ -72,7 +72,7 @@
         API.logout()
           .then(res => {
             if (res.data && res.data.status === 0) {
-              _self.setUsername(null)
+              _self.setUsername(null);
             } else {
               throw new Error();
             }
