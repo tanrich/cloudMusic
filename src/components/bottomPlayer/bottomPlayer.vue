@@ -4,12 +4,16 @@
     <div class="detail">
       <div class="avatar">
         <img v-if="songInfo.al" :src="songInfo.al.picUrl" width="40" height="40" />
+        <img v-else-if="songInfo.album" :src="songInfo.album.picUrl" width="40" height="40">
         <img v-else width="40" height="40" />
       </div>
       <div class="info" v-if="songInfo.name">
         <div class="title">{{songInfo.name}}</div>
         <div class="name" v-if="songInfo.ar">
           <span v-for="item in songInfo.ar">{{item.name}}</span>
+        </div>
+        <div class="name" v-else>
+          <span v-for="item in songInfo.artists">{{item.name}}</span>
         </div>
       </div>
       <div class="info" v-else>去找点音乐吧~</div>

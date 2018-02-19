@@ -12,7 +12,8 @@
             </div>
             <div class="content">
               <div class="title">{{songInfo.name}}</div>
-              <div class="name" v-for="item in songInfo.ar">{{item.name}}</div>
+              <div class="name" v-if="songInfo.ar" v-for="item in songInfo.ar">{{item.name}}</div>
+              <div class="name" v-else v-for="item in songInfo.artists">{{item.name}}</div>
             </div>
             <div class="share">
               <i class="iconfont icon-share"></i>
@@ -26,7 +27,8 @@
             </div>
             <div class="disk" :class="{active:playStatus}">
               <div class="pic-wrapper">
-                <img :src="songInfo.al.picUrl" v-if="songInfo.al" width="185" height="185" class="img-album">
+                <img v-if="songInfo.al" :src="songInfo.al.picUrl" width="185" height="185" class="img-album">
+                <img v-else :src="songInfo.album.picUrl" width="185" height="185" class="img-album">
               </div>
             </div>
             <div class="tips" :class="{active:tipsStatus}">{{tipsInfo}}</div>

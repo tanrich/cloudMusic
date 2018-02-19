@@ -46,6 +46,7 @@ const mutations = {
     newValue.tracks.forEach((value) => {
       state.tracks.push(value);
     });
+    console.log(state.tracks)
     // 设置默认歌曲信息为firstSong, 如果songInfo有就不需要再次更新
     if (!Object.keys(state.songInfo).length) {
       state.songInfo = state.tracks[state.songPosition]

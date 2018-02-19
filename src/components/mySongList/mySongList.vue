@@ -72,6 +72,7 @@
           }
         })
         .then(() => this.$nextTick(() => this.initScroll()))
+        .catch(err => console.log(err))
     },
     computed: {
       ...mapState([

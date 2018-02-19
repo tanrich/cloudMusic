@@ -129,8 +129,8 @@
           .then(res => {
             res = res.data;
             if (res.code === 200) {
-              this.$store.commit(type.INIT_DEFAULT_LIST, res.playlist);
-              setItem(`${type.INIT_DEFAULT_LIST}_${id}`, res.playlist);
+              this.$store.commit(type.INIT_DEFAULT_LIST, res.result);
+              setItem(`${type.INIT_DEFAULT_LIST}_${id}`, res.result);
             }
           })
           .then(() => {

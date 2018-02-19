@@ -6,7 +6,8 @@
         <div class="content border-1px-bottom">
           <h1 class="name">{{item.name}}</h1>
           <div class="extra">
-            <span class="artist">{{item.ar[0].name}} - {{item.al.name}}</span>
+            <span class="artist" v-if="item.ar && item.al">{{item.ar[0].name}} - {{item.al.name}}</span>
+            <span class="artist" v-else>{{item.artists[0].name}} - {{item.album.name}}</span>
           </div>
         </div>
       </li>

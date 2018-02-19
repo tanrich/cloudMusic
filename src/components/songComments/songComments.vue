@@ -13,11 +13,12 @@
         <div ref="content-height">
           <div class="song">
             <div class="avatar">
-              <img :src="songInfo.al.picUrl" v-if="songInfo.al" width="71" height="71">
+              <img v-if="songInfo.al" :src="songInfo.al.picUrl" width="71" height="71">
+              <img v-else :src="songInfo.album.picUrl" width="71" height="71">
             </div>
             <div class="content">
               <div class="title">{{songInfo.name}}</div>
-              <div class="name" v-show="songInfo.ar" v-for="item in songInfo.ar">{{item.name}}</div>
+              <div class="name" v-if="songInfo.ar || songInfo.artists" v-for="item in songInfo.ar || songInfo.artists">{{item.name}}</div>
             </div>
           </div>
           <div class="comments" v-if="songComments">
