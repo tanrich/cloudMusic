@@ -19,13 +19,13 @@
                     <i class="iconfont icon-icon14"></i>
                     <span>{{defaultList.playCount}}</span>
                   </span>
-                <img :src="defaultList.coverImgUrl" alt="" width="110" height="110">
+                <img :src="defaultList.coverImgUrl" style="width: 1.1rem;">
               </div>
               <div class="content">
                 <h1 class="title">{{defaultList.name}}</h1>
                 <div class="info">
               <span class="avatar">
-                <img :src="creator.avatarUrl" width="25" height="25">
+                <img :src="creator.avatarUrl" style="width: 0.25rem;">
               </span>
                   <span class="name">{{creator.nickname}}</span>
                 </div>

@@ -11,7 +11,7 @@
         <router-link to="/mainPage/radio?id=3">主播电台</router-link>
       </div>
       <div class="tabItem border-1px-bottom">
-        <router-link to="/mainPage/rank?id=4">排行版</router-link>
+        <router-link to="/mainPage/rank?id=4">排行榜</router-link>
       </div>
     </div>
     <transition :name="tsName">

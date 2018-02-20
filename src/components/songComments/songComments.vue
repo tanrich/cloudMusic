@@ -13,7 +13,7 @@
         <div ref="content-height">
           <div class="song">
             <div class="avatar">
-              <img :src="songInfo.al.picUrl" v-if="songInfo.al" width="71" height="71">
+              <img :src="songInfo.al.picUrl" v-if="songInfo.al" style="width: 0.72rem">
             </div>
             <div class="content">
               <div class="title">{{songInfo.name}}</div>
@@ -27,7 +27,7 @@
                 <li v-if="!hotComments.length" class="list-none">一条精彩评论都没有~</li>
                 <li class="list" v-for="item in hotComments">
                   <div class="avatar">
-                    <img v-lazy="item.user.avatarUrl" width="32" height="32">
+                    <img v-lazy="item.user.avatarUrl" style="width: 0.32rem">
                   </div>
                   <div class="content border-1px-bottom">
                     <div class="name">{{item.user.nickname}}</div>
@@ -47,7 +47,7 @@
                 <li v-if="!newComments.length" class="list-none">一条最新的评论都没有~</li>
                 <li class="list" v-for="item in newComments">
                   <div class="avatar">
-                    <img v-lazy="item.user.avatarUrl" width="32" height="32">
+                    <img v-lazy="item.user.avatarUrl" style="width: 0.32rem">
                   </div>
                   <div class="content border-1px-bottom">
                     <div class="name">{{item.user.nickname}}</div>
@@ -250,6 +250,10 @@
           .then(res => {
             res = res.data;
             if (res.code === 200) {
+              this.songComments = {
+                total: res.total,
+                _id: res._id,
+              };
               this.newComments = res.comments.concat(this.newComments);
               this.commentContent = '';
               this.$nextTick(() => this.initScroll());
@@ -461,6 +465,7 @@
           padding 0
           width 100%
           height 100%
+          font-size (14/font)rem
           border (1/font)rem solid #e6e6e6
           border-radius (3/font)rem
           background #029688

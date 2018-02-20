@@ -37,6 +37,7 @@
       color #fff
       text-align center
       .iconfont
+        font-size (12/font)rem
         font-weight bold
       .name
         margin-top (3/font)rem

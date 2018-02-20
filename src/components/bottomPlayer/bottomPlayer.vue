@@ -3,8 +3,7 @@
     <playView ref="playView" />
     <div class="detail">
       <div class="avatar">
-        <img v-if="songInfo.al" :src="songInfo.al.picUrl" width="40" height="40" />
-        <img v-else width="40" height="40" />
+        <img v-if="songInfo.al" :src="songInfo.al.picUrl" style="width: 0.4rem;height: 0.4rem;"/>
       </div>
       <div class="info" v-if="songInfo.name">
         <div class="title">{{songInfo.name}}</div>

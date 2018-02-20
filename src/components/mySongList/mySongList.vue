@@ -7,7 +7,7 @@
         </span>
         <span class="text border-1px-bottom">
           <span class="name">我的歌手</span>
-          <span class="count">(1)</span>
+          <span class="count">(0)</span>
         </span>
       </div>
       <div class="my-box my-radio">
@@ -16,7 +16,7 @@
         </span>
         <span class="text border-1px-bottom">
           <span class="name">我的电台</span>
-          <span class="count">(1)</span>
+          <span class="count">(0)</span>
         </span>
       </div>
     </div>
@@ -28,7 +28,7 @@
         <ul class="list-menu">
           <li class="list" @click.stop="showSongList(index)" v-for="(item,index) in songListMenu" :key="index">
             <div class="list-avatar">
-              <img v-lazy="item.coverImgUrl" alt="" width="50" height="50" />
+              <img v-lazy="item.coverImgUrl" style="width: 0.5rem"/>
             </div>
             <div class="list-content border-1px-bottom">
               <div class="name">{{item.name}}</div>

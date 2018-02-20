@@ -21,12 +21,12 @@
           <div class="album">
             <div class="pin">
               <div class="pic-wrapper" :class="{active:playStatus}">
-                <img src="./pin.png" width="100" class="img-pin">
+                <img src="./pin.png" style="width: 1rem" class="img-pin">
               </div>
             </div>
             <div class="disk" :class="{active:playStatus}">
               <div class="pic-wrapper">
-                <img :src="songInfo.al.picUrl" v-if="songInfo.al" width="185" height="185" class="img-album">
+                <img :src="songInfo.al.picUrl" v-if="songInfo.al" style="width: 1.85rem" class="img-album">
               </div>
             </div>
             <div class="tips" :class="{active:tipsStatus}">{{tipsInfo}}</div>
@@ -453,7 +453,7 @@
               height (2/font)rem
               border-radius: (10/font)rem
               box-sizing border-box
-              background linear-gradient(to right, white 0, white 100%)
+              background -webkit-linear-gradient(to right, white 0, white 100%)
               cursor pointer
               &::-webkit-slider-runnable-track
                 height (2/font)rem
