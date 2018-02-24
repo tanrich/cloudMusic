@@ -63,7 +63,7 @@ const actions = {
       return;
     }
     commit(type.SET_SONGPOSITION, rootState.songPosition + 1);
-    commit(type.SET_SONGINFO, rootState.tracks[rootState.songPosition])
+    commit(type.SET_SONGINFO, rootState.tracks[rootState.songPosition]);
     dispatch(type.MAIN_START);
     console.log('开始检测音乐资源');
   },
@@ -95,7 +95,6 @@ const actions = {
   [type.MAIN_START] ({ state, rootState, dispatch, commit }) {
     commit(type.RESET_PLAYER);
     dispatch(type.GET_MUSIC);
-    // commit(type.SET_PLAYVIEWSHOW, true);
   },
   async [type.GET_MUSIC] ({ state, rootState, dispatch, commit }) {
     let res = await API.getMusicSource({id: rootState.songInfo.id});

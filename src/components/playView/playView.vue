@@ -12,7 +12,9 @@
             </div>
             <div class="content">
               <div class="title">{{songInfo.name}}</div>
-              <div class="name" v-for="item in songInfo.ar">{{item.name}}</div>
+              <div class="name">
+                <span v-for="item in songInfo.ar || songInfo.artists">{{item.name}}&nbsp;</span>
+              </div>
             </div>
             <div class="share">
               <i class="iconfont icon-share"></i>

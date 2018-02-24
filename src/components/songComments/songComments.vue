@@ -17,7 +17,9 @@
             </div>
             <div class="content">
               <div class="title">{{songInfo.name}}</div>
-              <div class="name" v-show="songInfo.ar" v-for="item in songInfo.ar">{{item.name}}</div>
+              <div class="name">
+                <span v-show="songInfo.ar" v-for="item in songInfo.ar || songInfo.artist">{{item.name}}&nbsp;</span>
+              </div>
             </div>
           </div>
           <div class="comments" v-if="songComments">

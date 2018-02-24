@@ -114,7 +114,6 @@
         this.initSongList(id);
       },
       hideDetail () {
-        // this.show = false;
         this.$router.go(-1);
       },
       initSongList (id) {

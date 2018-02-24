@@ -27,6 +27,8 @@ export default {
   // 获取默认歌单
   // getDefaultSongList: params => request.get('/playlist/detail', {params}),
   getDefaultSongList: params => localApi.get('playlist/detail', {params}),
+  // 获取歌曲详情
+  getSongInfo: params => request.get('/song/detail', {params}),
   // 获取歌曲资源
   getMusicSource: params => request.get('/music/url', {params}),
   // getMusicComments: params => request.get('/comment/music', {params}),
@@ -43,5 +45,9 @@ export default {
   // 登陆
   login: params => localApi.get('/user/login', {params}),
   // 退出登录
-  logout: () => localApi.put('/user/logout')
+  logout: () => localApi.put('/user/logout'),
+  // 搜索
+  search: (params) => request.get('/search', {params}),
+  // 搜索预测
+  searchSuggest: (params) => request.get('/search/suggest', {params})
 }

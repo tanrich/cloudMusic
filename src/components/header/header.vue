@@ -16,7 +16,9 @@
       </span>
     </div>
     <div class="search">
-      <i class="iconfont icon-icons01"></i>
+      <router-link to="/search">
+        <i class="iconfont icon-icons01"></i>
+      </router-link>
     </div>
   </div>
 </template>

@@ -44,6 +44,11 @@ export default new Router({
       path: '/mySongList/songListDetail',
       name: 'songListDetail',
       component: resolve => require(['components/songListDetail/songListDetail'], resolve)
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: resolve => require(['components/search/search'], resolve)
     }
   ],
   linkActiveClass: 'active'
