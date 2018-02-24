@@ -47,7 +47,9 @@ export default {
   // 退出登录
   logout: () => localApi.put('/user/logout'),
   // 搜索
-  search: (params) => request.get('/search', {params}),
+  search: params => request.get('/search', {params}),
   // 搜索预测
-  searchSuggest: (params) => request.get('/search/suggest', {params})
+  searchSuggest: params => request.get('/search/suggest', {params}),
+  // 收藏
+  collect: body => localApi.put('/user/collect', body),
 }

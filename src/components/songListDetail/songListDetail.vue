@@ -108,9 +108,9 @@
         index = index > length - 1 ? length - 1 : index;
         const id = this.songListMenu[index].id;
         // 若两次点击歌单相同，则不发送ajax
-        if (this.defaultList.id === id) {
-          return;
-        }
+        // if (this.defaultList.id === id) {
+        //   return;
+        // }
         this.initSongList(id);
       },
       hideDetail () {

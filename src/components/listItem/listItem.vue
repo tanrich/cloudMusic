@@ -93,7 +93,7 @@
             width 3rem
             display inline-block
             font-size (12/font)rem
-            line-height (12/font)rem
+            line-height (14/font)rem
             color #999999
             overflow hidden
             white-space nowrap

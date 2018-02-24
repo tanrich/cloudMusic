@@ -50,8 +50,8 @@
       '$route' (to, from) {
         const toDepth = to.path === '/' ? 1 : to.path.split('/').length;
         const fromDepth = from.path === '/' ? 1 : from.path.split('/').length;
-        const toId = parseInt(to.query.id);
-        const fromId = parseInt(from.query.id);
+        const toId = parseInt(to.query.linkcode);
+        const fromId = parseInt(from.query.linkcode);
         if (toDepth > fromDepth || toId > fromId) {
           this.transitionName = 'slide-left';
         } else if (toDepth < fromDepth || toId < fromId) {

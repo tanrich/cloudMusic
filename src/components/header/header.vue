@@ -1,22 +1,23 @@
 <template>
   <div class="header">
     <div class="name" @click="openLeftBar(true)">
-      <i class="iconfont icon-wangyi"></i>
+      <!--<i class="iconfont icon-wangyi"></i>-->
+      <img src="./logo-muhan.png" alt="" style="display: block; width: 1.2rem">
     </div>
     <div class="bar">
-      <span class="icon">
-        <router-link to="/mainPage?id=1">
-          <i class="iconfont icon-music3"></i>
-        </router-link>
-      </span>
-      <span class="icon">
-        <router-link to="/mySongList?id=2">
-          <i class="iconfont icon-music2"></i>
-        </router-link>
-      </span>
+      <!--<span class="icon">-->
+        <!--<router-link to="/mainPage?linkcode=1">-->
+          <!--<i class="iconfont icon-music3"></i>-->
+        <!--</router-link>-->
+      <!--</span>-->
+      <!--<span class="icon">-->
+        <!--<router-link to="/mySongList?linkcode=2">-->
+          <!--<i class="iconfont icon-music2"></i>-->
+        <!--</router-link>-->
+      <!--</span>-->
     </div>
     <div class="search">
-      <router-link to="/search">
+      <router-link to="/search?linkcode=3">
         <i class="iconfont icon-icons01"></i>
       </router-link>
     </div>

@@ -6,14 +6,19 @@
         <i class="iconfont icon-fanhui"></i>
       </span>
       <span class="input-content">
-        <input type="text" placeholder="搜索单曲" v-model.trim="searchContent">
-        <span class="search-icon">
+        <input
+          type="text"
+          placeholder="搜索单曲"
+          v-model.trim="searchContent"
+          @focus="suggestShow = true"
+        >
+        <span class="search-icon" @click.stop="search()">
           <i class="iconfont icon-icons01"></i>
         </span>
       </span>
-      <div class="result">
+      <div class="result" v-show="searchContent && suggestShow">
         <ul>
-          <li v-show="searchContent" class="result-list result-search">搜索&nbsp;&nbsp;"{{searchContent}}"</li>
+          <li v-show="searchContent" class="result-list result-search" @click.stop="search()">搜索&nbsp;&nbsp;"{{searchContent}}"</li>
           <li v-for="item in suggestRes" class="result-list" @click.stop="getSongInfo(item.id)">
             <span class="search-icon"><i class="iconfont icon-icons01"></i></span>
             <span class="song-name">{{item.name}}</span>
@@ -21,6 +26,18 @@
           </li>
         </ul>
       </div>
+    </div>
+    <div class="content" v-show="searchRes.length">
+      <ul>
+        <li v-for="item in searchRes" class="result-list" @click.stop="getSongInfo(item.id)">
+          <div class="song-name">{{ item.name }}</div>
+          <div class="ar-al-name">
+            <span v-for="(list, index) in item.artists">{{ list.name }}<i v-if="index < item.artists.length - 1">/</i></span>
+            <i>-</i>
+            <span v-if="item.album">{{ item.album.name }}</span>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -34,7 +51,9 @@
     data () {
       return {
         searchContent: null,
+        suggestShow: true,
         suggestRes: [],
+        searchRes: [],
       }
     },
     mounted() {
@@ -68,6 +87,14 @@
         this.searchContent = null;
         this.suggestRes = [];
         this.$router.go(-1);
+      },
+      async search() {
+        if (!this.searchContent) return;
+        this.suggestShow = false;
+        let res = await API.search({ keywords: this.searchContent, limit: 5 });
+        if (res.status !== 200 || res.data.code !== 200 || !res.data.result) return;
+        this.searchRes = res.data.result.songs || [];
+        console.log(this.searchRes)
       }
     },
     watch: {
@@ -180,4 +207,24 @@
               color #555
         .result-search
           color #4464a6
+    .content
+      padding-top (57/font)rem
+      .result-list
+        display block
+        box-sizing border-box
+        padding (14/font)rem (10/font)rem
+        border-1px-bottom(#dfe4e7)
+        font-size (16/font)rem
+        color #333
+        .song-name
+          overflow hidden
+          white-space nowrap
+          text-overflow ellipsis
+        .ar-al-name
+          margin-top (10/font)rem
+          font-size (12/font)rem
+          color #abb0b3;
+          overflow hidden
+          white-space nowrap
+          text-overflow ellipsis
 </style>

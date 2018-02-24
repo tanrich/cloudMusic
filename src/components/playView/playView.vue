@@ -101,6 +101,7 @@
   import {mapState, mapActions} from 'vuex'
   import songComments from 'components/songComments/songComments'
   import { debounce } from 'common/js/util';
+  import API from 'API';
 
   export default {
     name: 'playView',
@@ -172,8 +173,16 @@
         this.$store.commit(type.SET_PLAYVIEWSHOW, newValue);
       },
       // collect功能未实现，后期修改<!mark>
-      collect () {
+      async collect () {
         this.collectStatus = !this.collectStatus;
+        try {
+          let res = await API.collect({ songInfo: this.songInfo });
+          if (res.status !== 200 || res.data.code !== 200) return;
+          res = res.data.collect;
+          this.tipsDisplay(res);
+        } catch (err) {
+          console.log(err)
+        }
       },
       // 设置歌曲信息，为跳转音乐做准备
       setSongInfo (newValue) {
@@ -370,11 +379,11 @@
           color #fff
           bottom (10/font)rem
           left 50%
-          margin-left (-59/font)rem
+          transform translateX(-50%)
           padding (3/font)rem (8/font)rem (4/font)rem (8/font)rem
           border (1/font)rem solid #fff
           border-radius (5/font)rem
-          text-align center
+          text-align centers
           opacity 0
           transition all 1s
           &.active
