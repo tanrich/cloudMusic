@@ -11,6 +11,7 @@ const state = {
   MusicSource: null,
   canPlay: false,
   tipsWords: null,
+  lyric: []
 };
 const mutations = {
   [type.SET_PLAYVIEWSHOW] (state, newValue) {
@@ -54,28 +55,32 @@ const mutations = {
   [type.SET_TIPSWORDS] (state, newValue) {
     state.tipsWords = newValue;
   },
+  // 设置歌曲歌词
+  [type.GET_LYRIC] (state, newValue) {
+    state.lyric = newValue;
+  }
 };
 const actions = {
-  [type.NEXT_SONG] ({ state, rootState, dispatch, commit }) {
+  async [type.NEXT_SONG] ({ state, rootState, dispatch, commit }) {
     // 歌曲位置+1
     if (rootState.songPosition === rootState.tracks.length - 1) {
       commit(type.SET_TIPSWORDS, '没有下一首歌曲啦');
       return;
     }
     commit(type.SET_SONGPOSITION, rootState.songPosition + 1);
-    commit(type.SET_SONGINFO, rootState.tracks[rootState.songPosition]);
-    dispatch(type.MAIN_START);
+    await dispatch(type.SET_SONGINFO, rootState.tracks[rootState.songPosition]);
+    await dispatch(type.MAIN_START);
     console.log('开始检测音乐资源');
   },
-  [type.PRE_SONG] ({ state, rootState, dispatch, commit }) {
+  async [type.PRE_SONG] ({ state, rootState, dispatch, commit }) {
     // 歌曲位置-1
     if (rootState.songPosition === 0) {
       commit(type.SET_TIPSWORDS, '没有上一首歌曲啦');
       return;
     }
     commit(type.SET_SONGPOSITION, rootState.songPosition - 1);
-    commit(type.SET_SONGINFO, rootState.tracks[rootState.songPosition])
-    dispatch(type.MAIN_START);
+    await dispatch(type.SET_SONGINFO, rootState.tracks[rootState.songPosition])
+    await dispatch(type.MAIN_START);
   },
   [type.TOGGLE_PLAY] ({ state, rootState, dispatch, commit }) {
     const a = true;
@@ -113,6 +118,24 @@ const actions = {
     // 歌曲可播放时自动开始播放 && 拖动音轨改为播放
     await commit(type.CHANGE_PLAYSTATUS, false);
     dispatch(type.TOGGLE_PLAY)
+  },
+  // 获取歌词
+  async [type.GET_LYRIC] ({ rootState, dispatch, commit }) {
+    try {
+      const res = await API.getLyric({ id: rootState.songInfo.id });
+      if (res.status !== 200 || res.data.code !== 200) return;
+      let lines = res.data.lrc.lyric.split('\n');
+      const pattern = /\[\d+:\d+.\d+\]/g;
+      lines = lines.map(item => {
+        let regRes = item.match(pattern);
+        if (regRes === null) return [];
+        const time = parseInt(regRes[0].slice(1, 3)) * 60 + parseInt(regRes[0].slice(4, 6));
+        return [time, item.slice(regRes[0].length)];
+      });
+      commit(type.GET_LYRIC, lines);
+    } catch (err) {
+      console.log(err);
+    }
   }
 };
 export default {

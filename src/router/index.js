@@ -7,7 +7,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: resolve => require(['components/mainPage/mainPage'], resolve)
+      component: resolve => require(['components/mySongList/mySongList'], resolve)
     },
     {
       path: '/mainPage',

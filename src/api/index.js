@@ -52,4 +52,6 @@ export default {
   searchSuggest: params => request.get('/search/suggest', {params}),
   // 收藏
   collect: body => localApi.put('/user/collect', body),
+  // 获取歌词
+  getLyric: params => request.get('/lyric', {params}),
 }

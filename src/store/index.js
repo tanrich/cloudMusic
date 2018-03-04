@@ -18,7 +18,7 @@ const state = {
   // 歌曲在集合中序号
   songPosition: 0,
   // 歌曲信息
-  songInfo: {}
+  songInfo: {},
 };
 const getter = {};
 const mutations = {
@@ -60,7 +60,12 @@ const mutations = {
     state.songInfo = newValue;
   }
 };
-const actions = {};
+const actions = {
+  [type.SET_SONGINFO] ({ dispatch, commit }, newValue) {
+    commit(type.SET_SONGINFO, newValue);
+    dispatch(type.GET_LYRIC);
+  }
+};
 export default new Vuex.Store({
   state,
   getter,

@@ -51,10 +51,10 @@
           return false
         }
         // 初始化播放歌曲信息
-        await this.$store.commit(type.SET_SONGINFO, songInfo);
+        await this.$store.dispatch(type.SET_SONGINFO, songInfo);
         // 初始化播放歌曲在集合中位置
         await this.$store.commit(type.SET_SONGPOSITION, songPosition);
-        // 触发播放函数
+        // // 触发播放函数
         await this.$store.dispatch(type.MAIN_START);
         this.$emit('accessShow');
       }

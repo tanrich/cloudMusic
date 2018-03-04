@@ -20,25 +20,33 @@
               <i class="iconfont icon-share"></i>
             </div>
           </div>
-          <div class="album">
-            <div class="pin">
-              <div class="pic-wrapper" :class="{active:playStatus}">
-                <img src="./pin.png" style="width: 1rem" class="img-pin">
-              </div>
-            </div>
-            <div class="disk" :class="{active:playStatus}">
-              <div class="pic-wrapper">
-                <img :src="songInfo.al.picUrl" v-if="songInfo.al" style="width: 1.85rem" class="img-album">
-              </div>
-            </div>
+          <div class="al-ly" @click.stop="_changeAlbumShow">
             <div class="tips" :class="{active:tipsStatus}">{{tipsInfo}}</div>
+            <div class="album" v-show="albumShow">
+              <div class="pin">
+                <div class="pic-wrapper" :class="{active:playStatus}">
+                  <img src="./pin.png" style="width: 1rem" class="img-pin">
+                </div>
+              </div>
+              <div class="disk" :class="{active:playStatus}">
+                <div class="pic-wrapper">
+                  <img :src="songInfo.al.picUrl" v-if="songInfo.al" style="width: 1.85rem" class="img-album">
+                </div>
+              </div>
+            </div>
+            <div class="lyric" v-show="!albumShow" ref="lyricScroll">
+              <ul class="lyric-all">
+                <!--<li class="lyric-list" @click.stop="getLyric()">获取</li>-->
+                <li v-for="(item, index) in lyric" class="lyric-list" :class="{'lyric-list-active': currentIndex == index}">{{item[1]}}</li>
+              </ul>
+            </div>
           </div>
         </div>
         <!--进度条、工具栏、控制按钮-->
         <div class="playView-down">
           <div class="tools-bar">
             <div class="content">
-              <i class="iconfont icon-shoucang" :class="{active:collectStatus}" @click="collect"></i>
+              <i class="iconfont icon-shoucang" :class="{active: false}" @click.stop="collect"></i>
             </div>
             <div class="content">
               <a :href="MusicSource" title="download" download><i class="iconfont icon-xiazai"></i></a>
@@ -60,6 +68,7 @@
               step="1"
               min="0"
               :max="duration"
+              @change="rangeChange"
               v-model="currentTime"
             >
           </span>
@@ -99,8 +108,9 @@
 <script type="text/ecmascript-6">
   import * as type from '@/store/mutation-types'
   import {mapState, mapActions} from 'vuex'
+  import BScroll from 'better-scroll'
   import songComments from 'components/songComments/songComments'
-  import { debounce } from 'common/js/util';
+  import { throttle } from 'common/js/util';
   import API from 'API';
 
   export default {
@@ -109,11 +119,23 @@
       return {
         tipsStatus: false,
         tipsInfo: '',
-        collectStatus: false
+        collectStatus: false,
+        currentIndex: 0,
+        lyric_bak: [],
+        albumShow: true,
       }
     },
     components: {
       songComments
+    },
+    mounted() {
+      this.changeTipDisplay = throttle();
+      this.lyricScroll = new BScroll(this.$refs.lyricScroll, {
+        click: true,
+        // 获取探针位置
+        probeType: 3,
+      });
+      this.range = this.$refs.range;
     },
     filters: {
       // 对于时间进行格式化
@@ -128,23 +150,25 @@
     },
     computed: {
       ...mapState({
-        player: (state) => state.player,
+        player: state => state.player,
         // 触发开始函数
-        mainStartCount: (state) => state.player.mainStartCount,
+        mainStartCount: state => state.player.mainStartCount,
         // 获取界面展示||隐藏状态
-        playViewShow: (state) => state.player.playViewShow,
+        playViewShow: state => state.player.playViewShow,
         // 获取播放状态
-        playStatus: (state) => state.player.playStatus,
+        playStatus: state => state.player.playStatus,
         // 获取歌曲时间长度
-        duration: (state) => state.player.duration,
+        duration: state => state.player.duration,
         // 获取歌曲元素
         em: (state) => state.player.em,
         // 获取最终渲染url
-        MusicSource: (state) => state.player.MusicSource,
+        MusicSource: state => state.player.MusicSource,
         // tips内容
         tipsWords: state => state.player.tipsWords,
         // 获取歌曲信息
-        songInfo: (state) => state.songInfo
+        songInfo: state => state.songInfo,
+        // 歌词
+        lyric: state => state.player.lyric,
       }),
       // 获取&&改变播放进度
       currentTime: {
@@ -162,7 +186,8 @@
         nextSong: type.NEXT_SONG,
         preSong: type.PRE_SONG,
         togglePlay: type.TOGGLE_PLAY,
-        setCanPlay: type.SET_CANPLAY
+        setCanPlay: type.SET_CANPLAY,
+        getLyric: type.GET_LYRIC,
       }),
       // 展示评论
       _showSongComments () {
@@ -176,21 +201,16 @@
       async collect () {
         this.collectStatus = !this.collectStatus;
         try {
-          let res = await API.collect({ songInfo: this.songInfo });
+          let res = await API.collect({
+            songInfo: this.songInfo,
+            playListId: this.$store.state.songListMenu[0].id || null
+          });
           if (res.status !== 200 || res.data.code !== 200) return;
           res = res.data.collect;
           this.tipsDisplay(res);
         } catch (err) {
           console.log(err)
         }
-      },
-      // 设置歌曲信息，为跳转音乐做准备
-      setSongInfo (newValue) {
-        this.$store.commit(type.SET_SONGINFO, newValue);
-      },
-      // 设置歌曲在集合中的位置
-      setSongPosition (newValue) {
-        this.$store.commit(type.SET_SONGPOSITION, newValue);
       },
       // 播放进度时间的改变
       setCurrentTime (newValue) {
@@ -203,10 +223,6 @@
       // 设置歌曲元素
       setEm (newEm) {
         this.$store.commit(type.SET_EM, newEm);
-      },
-      // 重置player数据
-      resetPlayer () {
-        this.$store.commit(type.RESET_PLAYER);
       },
       // 当指定的音频/视频的元数据已加载时，会发生 loadedmetadata 事件，触发initTime()
       initTime (event) {
@@ -237,16 +253,45 @@
         setTimeout(() => {
           this.tipsStatus = false;
         }, 2000);
+      },
+      rangeChange() {
+        this.currentIndex = 0;
+      },
+      _changeAlbumShow() {
+        this.albumShow = !this.albumShow;
+        if (!this.albumShow) setTimeout(() => this.lyricScroll.refresh(), 50);
       }
     },
     watch: {
       // 进度条填充色
-      currentTime (value) {
-        let ratio = (value / this.duration) * 100;
-        this.$refs['range'].style.background = `linear-gradient(to right, #059CFA, #059CFA ${ratio}%, white 0, white 100%)`
+      currentTime (newValue, oldValue) {
+        let ratio = (newValue / this.duration) * 100;
+        this.range.style.background = `linear-gradient(to right, #059CFA, #059CFA ${ratio}%, white 0, white 100%)`;
+        if (!this.lyric_bak.length) return;
+        /**
+         * 这里因为是不断重复遍历, 所以减少遍历次数
+         * 起始值 i 跟随 currentIndex 变化
+         * 这里还有一个细节就是使用备份 bak ，是因为实测从 vuex 重复取数据性能会下降
+         * 如果进度条拉到播放过的阶段，要重置 currentIndex 重新遍历查找定位
+         */
+        this.currentIndex = newValue > oldValue ? this.currentIndex : 0;
+        for (let i = this.currentIndex, len = this.lyric_bak.length; i < len; i++) {
+          // 排除 undefined null 等异常 value， 所以必须用 else if
+          if (newValue >= this.lyric_bak[i][0]) {
+            this.currentIndex = i;
+          } else if (newValue < this.lyric_bak[i][0]) {
+            break;
+          }
+        }
+        this.lyricScroll.scrollToElement(`.lyric-list:nth-child(${this.currentIndex - 3})`)
       },
       tipsWords (value) {
         this.tipsDisplay(value);
+      },
+      lyric(newValue) {
+        this.lyric_bak = newValue.slice();
+        this.currentIndex = 0;
+        if (!this.albumShow) this.$nextTick(() => this.lyricScroll.refresh());
       }
     }
   }
@@ -325,54 +370,10 @@
             font-size (20/font)rem
             font-weight bold
             color #fff
-
-      .album
-        position relative
-        overflow hidden
+      .al-ly
         flex 1
-        .pin
-          position absolute
-          display inline-block
-          top (-18/font)rem
-          left 50%
-          margin-left (-16/font)rem
-          z-index 99
-          .pic-wrapper
-            width (100/font)rem
-            transform-origin (18/font)rem (18/font)rem
-            transform rotate(-30deg)
-            transition all .5s
-            &.active
-              transform rotate(-2deg)
-        .disk
-          position absolute
-          width (275/font)rem
-          height (275/font)rem
-          top 0
-          right 0
-          bottom 0
-          left 0
-          margin auto
-          background url("./disk.png") no-repeat
-          background-size 100% 100%
-          animation rotate 25s infinite linear
-          animation-play-state paused;
-          @keyframes rotate
-            to
-              transform rotate(1turn)
-          &.active
-            animation-play-state running
-          .pic-wrapper
-            position absolute
-            top 0
-            right 0
-            bottom 0
-            left 0
-            width (183/font)rem
-            height (183/font)rem
-            margin auto
-            border-radius 50%
-            overflow hidden
+        display flex
+        position relative
         .tips
           position absolute
           font-size (12/font)rem
@@ -388,38 +389,95 @@
           transition all 1s
           &.active
             opacity 1
-        @media only screen and (max-width 320px)
-          pin
-            .pic-wrapper
-              width (70/font)rem
-              .img-pin
-                width inherit
-
-          .disk
-            width (230/font)rem
-            height (230/font)rem
-            .pic-wrapper
-              width (154/font)rem
-              height (154/font)rem
-              .img-album
-                width inherit
-                height inherit
-        @media only screen and (max-width 360px)
+        .album
+          position relative
+          overflow hidden
+          flex 1
           .pin
+            position absolute
+            display inline-block
+            top (-18/font)rem
+            left 50%
+            margin-left (-16/font)rem
+            z-index 99
             .pic-wrapper
-              width (96/font)rem
-              .img-pin
-                width inherit
-
+              width (100/font)rem
+              transform-origin (18/font)rem (18/font)rem
+              transform rotate(-30deg)
+              transition all .5s
+              &.active
+                transform rotate(-2deg)
           .disk
-            width (264/font)rem
-            height (264/font)rem
+            position absolute
+            width (275/font)rem
+            height (275/font)rem
+            top 0
+            right 0
+            bottom 0
+            left 0
+            margin auto
+            background url("./disk.png") no-repeat
+            background-size 100% 100%
+            animation rotate 25s infinite linear
+            animation-play-state paused;
+            @keyframes rotate
+              to
+                transform rotate(1turn)
+            &.active
+              animation-play-state running
             .pic-wrapper
-              width (174/font)rem
-              height (174/font)rem
-              .img-album
-                width inherit
-                height inherit
+              position absolute
+              top 0
+              right 0
+              bottom 0
+              left 0
+              width (183/font)rem
+              height (183/font)rem
+              margin auto
+              border-radius 50%
+              overflow hidden
+          @media only screen and (max-width 320px)
+            pin
+              .pic-wrapper
+                width (70/font)rem
+                .img-pin
+                  width inherit
+
+            .disk
+              width (230/font)rem
+              height (230/font)rem
+              .pic-wrapper
+                width (154/font)rem
+                height (154/font)rem
+                .img-album
+                  width inherit
+                  height inherit
+          @media only screen and (max-width 360px)
+            .pin
+              .pic-wrapper
+                width (96/font)rem
+                .img-pin
+                  width inherit
+
+            .disk
+              width (264/font)rem
+              height (264/font)rem
+              .pic-wrapper
+                width (174/font)rem
+                height (174/font)rem
+                .img-album
+                  width inherit
+                  height inherit
+        .lyric
+          overflow hidden
+          flex 1
+          .lyric-list
+            text-align center
+            font-size (14/font)rem
+            line-height (40/font)rem
+            color #a8a7a7
+          .lyric-list-active
+            color #fff
     .playView-down
       position: relative
       margin-top (-185/font)rem

@@ -74,14 +74,15 @@
         await this._mainStart(res);
       },
       async _mainStart(songInfo) {
+        // 展示播放界面
+        this.$store.commit(type.SET_PLAYVIEWSHOW, true);
+        await new Promise(resolve => setTimeout(() => resolve(), 600));
         // 初始化播放歌曲信息
-        await this.$store.commit(type.SET_SONGINFO, songInfo);
+        await this.$store.dispatch(type.SET_SONGINFO, songInfo);
         // 初始化播放歌曲在集合中位置
         await this.$store.commit(type.SET_SONGPOSITION, -1);
         // 触发播放函数
         await this.$store.dispatch(type.MAIN_START);
-        // 展示播放界面
-        await this.$store.commit(type.SET_PLAYVIEWSHOW, true);
       },
       _back() {
         this.searchContent = null;
@@ -91,7 +92,10 @@
       async search() {
         if (!this.searchContent) return;
         this.suggestShow = false;
-        let res = await API.search({ keywords: this.searchContent, limit: 5 });
+        let res = await API.search({
+          keywords: this.searchContent,
+          limit: 5,
+        });
         if (res.status !== 200 || res.data.code !== 200 || !res.data.result) return;
         this.searchRes = res.data.result.songs || [];
         console.log(this.searchRes)

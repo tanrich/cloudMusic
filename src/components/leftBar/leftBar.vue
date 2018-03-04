@@ -97,7 +97,7 @@
     .left-bar-container
       display flex
       flex-direction column
-      min-height 100vh
+      height 100%
       width 82%
       background-color #fff
       &.container-show-enter-active, &.container-show-leave-active
